@@ -16,6 +16,11 @@ void textLog(String ext) {
   );
 }
 
+
+void exceptionLog(Object ext, StackTrace trace) {
+  LogVault.addException(ext, trace);
+}
+
 void stateLog(String key, String value) {
   LogVault.addEntry(
     MonitoringEntry.stateChange(
