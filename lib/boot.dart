@@ -26,7 +26,8 @@ QAToolsGuardMain<TEnv extends IApplicationEnvironment>(
 }
 
 launchWithoutOberon<TEnv extends IApplicationEnvironment>(
-    TEnv env, Launcher<TEnv> launcher) {
+    TEnv env, Launcher<TEnv> launcher) async {
+  await LogVault.initVault(env);
   //initServices();
   launcher(
       env,
