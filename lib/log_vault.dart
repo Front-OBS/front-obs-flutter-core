@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:device_uuid/device_uuid.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +31,7 @@ class LogVault extends ChangeNotifier {
         options: ChannelOptions(
           credentials: ChannelCredentials.insecure(),
         ));
-    final deviceInfo = await DeviceInfoPlugin().deviceInfo;
-    final uuid = deviceInfo.data["identifierForVendor"];
-    deviceCode = uuid;
+    deviceCode = await DeviceUuid().getUUID() ?? "UNKNOWN";
     await openSendStream();
   }
 

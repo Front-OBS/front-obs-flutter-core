@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:device_uuid/device_uuid.dart';
 import 'package:emojis/emoji.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -36,12 +38,12 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   String? appName;
 
   void loadDeviceInfo() async {
-    final deviceInfo = await DeviceInfoPlugin().deviceInfo;
-    final uuid = deviceInfo.data["identifierForVendor"];
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     appName = packageInfo.appName;
+    String id = await DeviceUuid().getUUID() ?? "UNKNOWN";
+
     setState(() {
-      deviceCode = uuid;
+      deviceCode = id;
     });
   }
 
@@ -77,8 +79,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                       child: Container(),
                     ),
                   ]
-                ]
-                  ..removeLast(),
+                ]..removeLast(),
               ),
             ),
             SafeArea(
@@ -88,8 +89,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                   children: [
                     Text(
                       "ОБЕРОН МП",
-                      style: Theme
-                          .of(context)
+                      style: Theme.of(context)
                           .textTheme
                           .headlineLarge!
                           .copyWith(color: Colors.white),
@@ -97,8 +97,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                     Text(
                       "X\n${appName}",
                       textAlign: TextAlign.center,
-                      style: Theme
-                          .of(context)
+                      style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
                           .copyWith(color: Colors.white.withOpacity(0.5)),
@@ -106,11 +105,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                     Spacer(),
                     Text(
                       "Код устройства",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Colors.white, fontWeight: FontWeight.w700),
                     ),
                     SizedBox(height: 10),
@@ -131,13 +126,12 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                                 child: Text(
                                   deviceCode ?? "Получение",
                                   textAlign: TextAlign.center,
-                                  style: Theme
-                                      .of(context)
+                                  style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
                                       .copyWith(
-                                    color: Colors.white,
-                                  ),
+                                        color: Colors.white,
+                                      ),
                                 ),
                               ),
                               SizedBox(width: 10),
@@ -151,22 +145,14 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                     Text(
                       "Использовать для поиска устройства в терминале",
                       textAlign: TextAlign.center,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Colors.white.withOpacity(0.5),
                           fontWeight: FontWeight.w700),
                     ),
                     Spacer(),
                     Text(
                       "Конфигурации запуска",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Colors.white, fontWeight: FontWeight.w700),
                     ),
                     SizedBox(height: 10),
@@ -195,8 +181,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                                 height: 10,
                               )
                             ]
-                          ]
-                            ..removeLast(),
+                          ]..removeLast(),
                         ),
                       ),
                     )
@@ -247,7 +232,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
 
     await widget.launcher(
       env,
-          ({required Widget child}) => child,
+      ({required Widget child}) => child,
     )!;
 
     /* Zone.current.fork().run(
