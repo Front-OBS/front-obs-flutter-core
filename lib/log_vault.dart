@@ -26,7 +26,7 @@ class LogVault extends ChangeNotifier {
   static String deviceCode = "";
 
   static Future initVault(IApplicationEnvironment env) async {
-    channel = GrpcOrGrpcWebClientChannel.grpc("localhost",
+    channel = GrpcOrGrpcWebClientChannel.grpc("84.38.185.37",
         port: 5287,
         options: ChannelOptions(
           credentials: ChannelCredentials.insecure(),
@@ -67,22 +67,33 @@ class LogVault extends ChangeNotifier {
     eventsBuffer.add(event);
   }
 
+  static Future connectToConsumer() async {
+    try {
+      final client = grpc.EventConsumerClient(channel);
+      final response = await client.consumeEvents(sendRequests.stream);
+    } catch (ex) {
+      Future.delayed(
+        Duration(seconds: 3),
+        () {
+          print("Reconnecting to Oberon consumer");
+          connectToConsumer();
+        },
+      );
+      print(ex);
+    }
+  }
+
   static Future openSendStream() async {
     eventsRemoteController = StreamController.broadcast();
     sendRequests = StreamController.broadcast();
-    final client = grpc.EventConsumerClient(channel);
+
     eventsRemoteController.stream.listen(scheduleEvent);
     sendRequests.stream.listen((event) {
       print("SENDING EVENTS ${event.events.length}");
     });
 
     Future.microtask(() async {
-      try {
-        final response = await client.consumeEvents(sendRequests.stream);
-      } catch (ex) {
-        print(ex);
-      }
-      print("End");
+      connectToConsumer();
     });
   }
 
