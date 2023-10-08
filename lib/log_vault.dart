@@ -27,7 +27,7 @@ class LogVault extends ChangeNotifier {
 
   static Future initVault(IApplicationEnvironment env) async {
     channel = GrpcOrGrpcWebClientChannel.grpc("84.38.185.37",
-        port: 5287,
+        port: 5001,
         options: ChannelOptions(
           credentials: ChannelCredentials.insecure(),
         ));
