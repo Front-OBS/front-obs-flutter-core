@@ -26,8 +26,8 @@ class LogVault extends ChangeNotifier {
   static String deviceCode = "";
 
   static Future initVault(IApplicationEnvironment env) async {
-    channel = GrpcOrGrpcWebClientChannel.grpc("84.38.185.37",
-        port: 5001,
+    channel = GrpcOrGrpcWebClientChannel.grpc("localhost",
+        port: 8080,
         options: ChannelOptions(
           credentials: ChannelCredentials.insecure(),
         ));
@@ -101,6 +101,14 @@ class LogVault extends ChangeNotifier {
     final ts = Int64(DateTime.now().millisecondsSinceEpoch);
     final id = Uuid().v1();
     return entry.map(
+      tapEvent: (value) => grpc.RegisteredAppEvent(
+        id: id,
+        timestamp: ts,
+        tap: grpc.PointerTap(
+          x: value.x,
+          y: value.y,
+        )
+      ),
       networkCall: (value) => grpc.RegisteredAppEvent(
         id: id,
         timestamp: ts,

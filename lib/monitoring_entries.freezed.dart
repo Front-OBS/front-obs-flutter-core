@@ -841,6 +841,8 @@ MonitoringEntry _$MonitoringEntryFromJson(Map<String, dynamic> json) {
       return MonitoringEntryTextLog.fromJson(json);
     case 'stateChange':
       return MonitoringEntryStateLog.fromJson(json);
+    case 'tapEvent':
+      return MonitoringEntryTapEventLog.fromJson(json);
 
     default:
       throw CheckedFromJsonException(json, 'runtimeType', 'MonitoringEntry',
@@ -886,6 +888,9 @@ mixin _$MonitoringEntry {
     required TResult Function(EventSeverity severity, String text, String id,
             @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
         stateChange,
+    required TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)
+        tapEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -930,6 +935,9 @@ mixin _$MonitoringEntry {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult? Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -974,6 +982,9 @@ mixin _$MonitoringEntry {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -985,6 +996,7 @@ mixin _$MonitoringEntry {
     required TResult Function(MonitoringEntryException value) exception,
     required TResult Function(MonitoringEntryTextLog value) textLog,
     required TResult Function(MonitoringEntryStateLog value) stateChange,
+    required TResult Function(MonitoringEntryTapEventLog value) tapEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -994,6 +1006,7 @@ mixin _$MonitoringEntry {
     TResult? Function(MonitoringEntryException value)? exception,
     TResult? Function(MonitoringEntryTextLog value)? textLog,
     TResult? Function(MonitoringEntryStateLog value)? stateChange,
+    TResult? Function(MonitoringEntryTapEventLog value)? tapEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1003,6 +1016,7 @@ mixin _$MonitoringEntry {
     TResult Function(MonitoringEntryException value)? exception,
     TResult Function(MonitoringEntryTextLog value)? textLog,
     TResult Function(MonitoringEntryStateLog value)? stateChange,
+    TResult Function(MonitoringEntryTapEventLog value)? tapEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1273,6 +1287,9 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
     required TResult Function(EventSeverity severity, String text, String id,
             @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
         stateChange,
+    required TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)
+        tapEvent,
   }) {
     return networkCall(severity, uri, id, logTimestamp, start, requestQuery,
         request, requestHeaders, end, statusCode, responseHeaders, response);
@@ -1321,6 +1338,9 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult? Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
   }) {
     return networkCall?.call(
         severity,
@@ -1380,6 +1400,9 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
     required TResult orElse(),
   }) {
     if (networkCall != null) {
@@ -1398,6 +1421,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
     required TResult Function(MonitoringEntryException value) exception,
     required TResult Function(MonitoringEntryTextLog value) textLog,
     required TResult Function(MonitoringEntryStateLog value) stateChange,
+    required TResult Function(MonitoringEntryTapEventLog value) tapEvent,
   }) {
     return networkCall(this);
   }
@@ -1410,6 +1434,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
     TResult? Function(MonitoringEntryException value)? exception,
     TResult? Function(MonitoringEntryTextLog value)? textLog,
     TResult? Function(MonitoringEntryStateLog value)? stateChange,
+    TResult? Function(MonitoringEntryTapEventLog value)? tapEvent,
   }) {
     return networkCall?.call(this);
   }
@@ -1422,6 +1447,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
     TResult Function(MonitoringEntryException value)? exception,
     TResult Function(MonitoringEntryTextLog value)? textLog,
     TResult Function(MonitoringEntryStateLog value)? stateChange,
+    TResult Function(MonitoringEntryTapEventLog value)? tapEvent,
     required TResult orElse(),
   }) {
     if (networkCall != null) {
@@ -1653,6 +1679,9 @@ class _$MonitoringEntryStarageOperationImpl
     required TResult Function(EventSeverity severity, String text, String id,
             @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
         stateChange,
+    required TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)
+        tapEvent,
   }) {
     return storageOperation(
         severity, storage, storageName, key, value, logTimestamp, frames);
@@ -1701,6 +1730,9 @@ class _$MonitoringEntryStarageOperationImpl
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult? Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
   }) {
     return storageOperation?.call(
         severity, storage, storageName, key, value, logTimestamp, frames);
@@ -1749,6 +1781,9 @@ class _$MonitoringEntryStarageOperationImpl
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
     required TResult orElse(),
   }) {
     if (storageOperation != null) {
@@ -1767,6 +1802,7 @@ class _$MonitoringEntryStarageOperationImpl
     required TResult Function(MonitoringEntryException value) exception,
     required TResult Function(MonitoringEntryTextLog value) textLog,
     required TResult Function(MonitoringEntryStateLog value) stateChange,
+    required TResult Function(MonitoringEntryTapEventLog value) tapEvent,
   }) {
     return storageOperation(this);
   }
@@ -1779,6 +1815,7 @@ class _$MonitoringEntryStarageOperationImpl
     TResult? Function(MonitoringEntryException value)? exception,
     TResult? Function(MonitoringEntryTextLog value)? textLog,
     TResult? Function(MonitoringEntryStateLog value)? stateChange,
+    TResult? Function(MonitoringEntryTapEventLog value)? tapEvent,
   }) {
     return storageOperation?.call(this);
   }
@@ -1791,6 +1828,7 @@ class _$MonitoringEntryStarageOperationImpl
     TResult Function(MonitoringEntryException value)? exception,
     TResult Function(MonitoringEntryTextLog value)? textLog,
     TResult Function(MonitoringEntryStateLog value)? stateChange,
+    TResult Function(MonitoringEntryTapEventLog value)? tapEvent,
     required TResult orElse(),
   }) {
     if (storageOperation != null) {
@@ -1962,6 +2000,9 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
     required TResult Function(EventSeverity severity, String text, String id,
             @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
         stateChange,
+    required TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)
+        tapEvent,
   }) {
     return exception(severity, text, frames);
   }
@@ -2009,6 +2050,9 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult? Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
   }) {
     return exception?.call(severity, text, frames);
   }
@@ -2056,6 +2100,9 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
     required TResult orElse(),
   }) {
     if (exception != null) {
@@ -2073,6 +2120,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
     required TResult Function(MonitoringEntryException value) exception,
     required TResult Function(MonitoringEntryTextLog value) textLog,
     required TResult Function(MonitoringEntryStateLog value) stateChange,
+    required TResult Function(MonitoringEntryTapEventLog value) tapEvent,
   }) {
     return exception(this);
   }
@@ -2085,6 +2133,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
     TResult? Function(MonitoringEntryException value)? exception,
     TResult? Function(MonitoringEntryTextLog value)? textLog,
     TResult? Function(MonitoringEntryStateLog value)? stateChange,
+    TResult? Function(MonitoringEntryTapEventLog value)? tapEvent,
   }) {
     return exception?.call(this);
   }
@@ -2097,6 +2146,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
     TResult Function(MonitoringEntryException value)? exception,
     TResult Function(MonitoringEntryTextLog value)? textLog,
     TResult Function(MonitoringEntryStateLog value)? stateChange,
+    TResult Function(MonitoringEntryTapEventLog value)? tapEvent,
     required TResult orElse(),
   }) {
     if (exception != null) {
@@ -2274,6 +2324,9 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
     required TResult Function(EventSeverity severity, String text, String id,
             @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
         stateChange,
+    required TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)
+        tapEvent,
   }) {
     return textLog(severity, text, id, logTimestamp, frames);
   }
@@ -2321,6 +2374,9 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult? Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
   }) {
     return textLog?.call(severity, text, id, logTimestamp, frames);
   }
@@ -2368,6 +2424,9 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
     required TResult orElse(),
   }) {
     if (textLog != null) {
@@ -2385,6 +2444,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
     required TResult Function(MonitoringEntryException value) exception,
     required TResult Function(MonitoringEntryTextLog value) textLog,
     required TResult Function(MonitoringEntryStateLog value) stateChange,
+    required TResult Function(MonitoringEntryTapEventLog value) tapEvent,
   }) {
     return textLog(this);
   }
@@ -2397,6 +2457,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
     TResult? Function(MonitoringEntryException value)? exception,
     TResult? Function(MonitoringEntryTextLog value)? textLog,
     TResult? Function(MonitoringEntryStateLog value)? stateChange,
+    TResult? Function(MonitoringEntryTapEventLog value)? tapEvent,
   }) {
     return textLog?.call(this);
   }
@@ -2409,6 +2470,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
     TResult Function(MonitoringEntryException value)? exception,
     TResult Function(MonitoringEntryTextLog value)? textLog,
     TResult Function(MonitoringEntryStateLog value)? stateChange,
+    TResult Function(MonitoringEntryTapEventLog value)? tapEvent,
     required TResult orElse(),
   }) {
     if (textLog != null) {
@@ -2594,6 +2656,9 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
     required TResult Function(EventSeverity severity, String text, String id,
             @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
         stateChange,
+    required TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)
+        tapEvent,
   }) {
     return stateChange(severity, text, id, logTimestamp, frames);
   }
@@ -2641,6 +2706,9 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult? Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
   }) {
     return stateChange?.call(severity, text, id, logTimestamp, frames);
   }
@@ -2688,6 +2756,9 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp,
             List<StackFrame> frames)?
         stateChange,
+    TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
     required TResult orElse(),
   }) {
     if (stateChange != null) {
@@ -2705,6 +2776,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
     required TResult Function(MonitoringEntryException value) exception,
     required TResult Function(MonitoringEntryTextLog value) textLog,
     required TResult Function(MonitoringEntryStateLog value) stateChange,
+    required TResult Function(MonitoringEntryTapEventLog value) tapEvent,
   }) {
     return stateChange(this);
   }
@@ -2717,6 +2789,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
     TResult? Function(MonitoringEntryException value)? exception,
     TResult? Function(MonitoringEntryTextLog value)? textLog,
     TResult? Function(MonitoringEntryStateLog value)? stateChange,
+    TResult? Function(MonitoringEntryTapEventLog value)? tapEvent,
   }) {
     return stateChange?.call(this);
   }
@@ -2729,6 +2802,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
     TResult Function(MonitoringEntryException value)? exception,
     TResult Function(MonitoringEntryTextLog value)? textLog,
     TResult Function(MonitoringEntryStateLog value)? stateChange,
+    TResult Function(MonitoringEntryTapEventLog value)? tapEvent,
     required TResult orElse(),
   }) {
     if (stateChange != null) {
@@ -2773,5 +2847,328 @@ abstract class MonitoringEntryStateLog extends MonitoringEntry {
   @override
   @JsonKey(ignore: true)
   _$$MonitoringEntryStateLogImplCopyWith<_$MonitoringEntryStateLogImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$MonitoringEntryTapEventLogImplCopyWith<$Res>
+    implements $MonitoringEntryCopyWith<$Res> {
+  factory _$$MonitoringEntryTapEventLogImplCopyWith(
+          _$MonitoringEntryTapEventLogImpl value,
+          $Res Function(_$MonitoringEntryTapEventLogImpl) then) =
+      __$$MonitoringEntryTapEventLogImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {EventSeverity severity,
+      double x,
+      double y,
+      @DateTimeConverter() DateTime logTimestamp});
+}
+
+/// @nodoc
+class __$$MonitoringEntryTapEventLogImplCopyWithImpl<$Res>
+    extends _$MonitoringEntryCopyWithImpl<$Res,
+        _$MonitoringEntryTapEventLogImpl>
+    implements _$$MonitoringEntryTapEventLogImplCopyWith<$Res> {
+  __$$MonitoringEntryTapEventLogImplCopyWithImpl(
+      _$MonitoringEntryTapEventLogImpl _value,
+      $Res Function(_$MonitoringEntryTapEventLogImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? severity = null,
+    Object? x = null,
+    Object? y = null,
+    Object? logTimestamp = null,
+  }) {
+    return _then(_$MonitoringEntryTapEventLogImpl(
+      severity: null == severity
+          ? _value.severity
+          : severity // ignore: cast_nullable_to_non_nullable
+              as EventSeverity,
+      x: null == x
+          ? _value.x
+          : x // ignore: cast_nullable_to_non_nullable
+              as double,
+      y: null == y
+          ? _value.y
+          : y // ignore: cast_nullable_to_non_nullable
+              as double,
+      logTimestamp: null == logTimestamp
+          ? _value.logTimestamp
+          : logTimestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
+  _$MonitoringEntryTapEventLogImpl(
+      {required this.severity,
+      required this.x,
+      required this.y,
+      @DateTimeConverter() required this.logTimestamp,
+      final String? $type})
+      : $type = $type ?? 'tapEvent',
+        super._();
+
+  factory _$MonitoringEntryTapEventLogImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$MonitoringEntryTapEventLogImplFromJson(json);
+
+  @override
+  EventSeverity severity;
+  @override
+  double x;
+  @override
+  double y;
+  @override
+  @DateTimeConverter()
+  DateTime logTimestamp;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'MonitoringEntry.tapEvent(severity: $severity, x: $x, y: $y, logTimestamp: $logTimestamp)';
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MonitoringEntryTapEventLogImplCopyWith<_$MonitoringEntryTapEventLogImpl>
+      get copyWith => __$$MonitoringEntryTapEventLogImplCopyWithImpl<
+          _$MonitoringEntryTapEventLogImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            EventSeverity severity,
+            String uri,
+            String id,
+            @DateTimeConverter() DateTime logTimestamp,
+            @DateTimeConverter() DateTime start,
+            Map<String, String> requestQuery,
+            MonitoringNetworkCallPayload request,
+            Map<String, String> requestHeaders,
+            DateTime? end,
+            int statusCode,
+            Map<String, String>? responseHeaders,
+            MonitoringNetworkCallPayload? response)
+        networkCall,
+    required TResult Function(
+            EventSeverity severity,
+            StarageOperationType storage,
+            String storageName,
+            String key,
+            String value,
+            @DateTimeConverter() DateTime logTimestamp,
+            List<StackFrame> frames)
+        storageOperation,
+    required TResult Function(
+            EventSeverity severity, String text, List<StackFrame> frames)
+        exception,
+    required TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+        textLog,
+    required TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+        stateChange,
+    required TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)
+        tapEvent,
+  }) {
+    return tapEvent(severity, x, y, logTimestamp);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            EventSeverity severity,
+            String uri,
+            String id,
+            @DateTimeConverter() DateTime logTimestamp,
+            @DateTimeConverter() DateTime start,
+            Map<String, String> requestQuery,
+            MonitoringNetworkCallPayload request,
+            Map<String, String> requestHeaders,
+            DateTime? end,
+            int statusCode,
+            Map<String, String>? responseHeaders,
+            MonitoringNetworkCallPayload? response)?
+        networkCall,
+    TResult? Function(
+            EventSeverity severity,
+            StarageOperationType storage,
+            String storageName,
+            String key,
+            String value,
+            @DateTimeConverter() DateTime logTimestamp,
+            List<StackFrame> frames)?
+        storageOperation,
+    TResult? Function(
+            EventSeverity severity, String text, List<StackFrame> frames)?
+        exception,
+    TResult? Function(
+            EventSeverity severity,
+            String text,
+            String id,
+            @DateTimeConverter() DateTime logTimestamp,
+            List<StackFrame> frames)?
+        textLog,
+    TResult? Function(
+            EventSeverity severity,
+            String text,
+            String id,
+            @DateTimeConverter() DateTime logTimestamp,
+            List<StackFrame> frames)?
+        stateChange,
+    TResult? Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
+  }) {
+    return tapEvent?.call(severity, x, y, logTimestamp);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            EventSeverity severity,
+            String uri,
+            String id,
+            @DateTimeConverter() DateTime logTimestamp,
+            @DateTimeConverter() DateTime start,
+            Map<String, String> requestQuery,
+            MonitoringNetworkCallPayload request,
+            Map<String, String> requestHeaders,
+            DateTime? end,
+            int statusCode,
+            Map<String, String>? responseHeaders,
+            MonitoringNetworkCallPayload? response)?
+        networkCall,
+    TResult Function(
+            EventSeverity severity,
+            StarageOperationType storage,
+            String storageName,
+            String key,
+            String value,
+            @DateTimeConverter() DateTime logTimestamp,
+            List<StackFrame> frames)?
+        storageOperation,
+    TResult Function(
+            EventSeverity severity, String text, List<StackFrame> frames)?
+        exception,
+    TResult Function(
+            EventSeverity severity,
+            String text,
+            String id,
+            @DateTimeConverter() DateTime logTimestamp,
+            List<StackFrame> frames)?
+        textLog,
+    TResult Function(
+            EventSeverity severity,
+            String text,
+            String id,
+            @DateTimeConverter() DateTime logTimestamp,
+            List<StackFrame> frames)?
+        stateChange,
+    TResult Function(EventSeverity severity, double x, double y,
+            @DateTimeConverter() DateTime logTimestamp)?
+        tapEvent,
+    required TResult orElse(),
+  }) {
+    if (tapEvent != null) {
+      return tapEvent(severity, x, y, logTimestamp);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MonitoringEntryNetworkCall value) networkCall,
+    required TResult Function(MonitoringEntryStarageOperation value)
+        storageOperation,
+    required TResult Function(MonitoringEntryException value) exception,
+    required TResult Function(MonitoringEntryTextLog value) textLog,
+    required TResult Function(MonitoringEntryStateLog value) stateChange,
+    required TResult Function(MonitoringEntryTapEventLog value) tapEvent,
+  }) {
+    return tapEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MonitoringEntryNetworkCall value)? networkCall,
+    TResult? Function(MonitoringEntryStarageOperation value)? storageOperation,
+    TResult? Function(MonitoringEntryException value)? exception,
+    TResult? Function(MonitoringEntryTextLog value)? textLog,
+    TResult? Function(MonitoringEntryStateLog value)? stateChange,
+    TResult? Function(MonitoringEntryTapEventLog value)? tapEvent,
+  }) {
+    return tapEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MonitoringEntryNetworkCall value)? networkCall,
+    TResult Function(MonitoringEntryStarageOperation value)? storageOperation,
+    TResult Function(MonitoringEntryException value)? exception,
+    TResult Function(MonitoringEntryTextLog value)? textLog,
+    TResult Function(MonitoringEntryStateLog value)? stateChange,
+    TResult Function(MonitoringEntryTapEventLog value)? tapEvent,
+    required TResult orElse(),
+  }) {
+    if (tapEvent != null) {
+      return tapEvent(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$MonitoringEntryTapEventLogImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class MonitoringEntryTapEventLog extends MonitoringEntry {
+  factory MonitoringEntryTapEventLog(
+          {required EventSeverity severity,
+          required double x,
+          required double y,
+          @DateTimeConverter() required DateTime logTimestamp}) =
+      _$MonitoringEntryTapEventLogImpl;
+  MonitoringEntryTapEventLog._() : super._();
+
+  factory MonitoringEntryTapEventLog.fromJson(Map<String, dynamic> json) =
+      _$MonitoringEntryTapEventLogImpl.fromJson;
+
+  @override
+  EventSeverity get severity;
+  set severity(EventSeverity value);
+  double get x;
+  set x(double value);
+  double get y;
+  set y(double value);
+  @DateTimeConverter()
+  DateTime get logTimestamp;
+  @DateTimeConverter()
+  set logTimestamp(DateTime value);
+  @override
+  @JsonKey(ignore: true)
+  _$$MonitoringEntryTapEventLogImplCopyWith<_$MonitoringEntryTapEventLogImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

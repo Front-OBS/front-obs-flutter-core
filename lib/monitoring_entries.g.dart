@@ -220,3 +220,24 @@ Map<String, dynamic> _$$MonitoringEntryStateLogImplToJson(
       'frames': instance.frames,
       'runtimeType': instance.$type,
     };
+
+_$MonitoringEntryTapEventLogImpl _$$MonitoringEntryTapEventLogImplFromJson(
+        Map<String, dynamic> json) =>
+    _$MonitoringEntryTapEventLogImpl(
+      severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
+      x: (json['x'] as num).toDouble(),
+      y: (json['y'] as num).toDouble(),
+      logTimestamp:
+          const DateTimeConverter().fromJson(json['logTimestamp'] as String),
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$MonitoringEntryTapEventLogImplToJson(
+        _$MonitoringEntryTapEventLogImpl instance) =>
+    <String, dynamic>{
+      'severity': _$EventSeverityEnumMap[instance.severity]!,
+      'x': instance.x,
+      'y': instance.y,
+      'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
+      'runtimeType': instance.$type,
+    };

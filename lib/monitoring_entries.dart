@@ -15,7 +15,7 @@ enum StarageOperationType {
   read,
 }
 
-enum MonitorEventKind { state, network, log, storage, exception }
+enum MonitorEventKind { state, network, log, storage, exception, tap }
 
 enum EventSeverity {
   critical,
@@ -29,7 +29,7 @@ class MonitoringNetworkCallPayload with _$MonitoringNetworkCallPayload {
       _MonitoringNetworkCallPayloadCustomCtor;
 
   factory MonitoringNetworkCallPayload.json({required String json}) =
-  _MonitoringNetworkCallPayloadJsonCtor;
+      _MonitoringNetworkCallPayloadJsonCtor;
 
   factory MonitoringNetworkCallPayload.formdata({
     required Map<String, String> data,
@@ -125,6 +125,13 @@ class MonitoringEntry with _$MonitoringEntry {
     required List<StackFrame> frames,
   }) = MonitoringEntryStateLog;
 
+  factory MonitoringEntry.tapEvent({
+    required EventSeverity severity,
+    required double x,
+    required double y,
+    @DateTimeConverter() required DateTime logTimestamp,
+  }) = MonitoringEntryTapEventLog;
+
 /*
   factory MonitoringEntry.blocEvent({
     required String sourceBlocType,
@@ -139,6 +146,7 @@ class MonitoringEntry with _$MonitoringEntry {
         networkCall: (value) => MonitorEventKind.network,
         textLog: (value) => MonitorEventKind.log,
         stateChange: (value) => MonitorEventKind.state,
+        tapEvent: (value) => MonitorEventKind.tap,
       );
 
   factory MonitoringEntry.fromJson(Map<String, dynamic> json) =>
