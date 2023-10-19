@@ -23,6 +23,7 @@ dependencies:
   easy_debounce: ^2.0.3
   fixnum: ^1.1.0
   device_uuid: ^0.0.4
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:

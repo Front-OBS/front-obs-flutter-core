@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_uuid/device_uuid.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -13,6 +15,13 @@ import 'package:stack_trace/stack_trace.dart';
 import 'package:uuid/uuid.dart';
 
 import 'monitoring_entries.dart';
+
+Future<String> getDeviceCode() async {
+  return Uuid.unparse(md5
+      .convert(
+          Utf8Encoder().convert((await DeviceUuid().getUUID()) ?? "UNKNOWN"))
+      .bytes);
+}
 
 class LogVault extends ChangeNotifier {
   static final logsStreamController =
@@ -31,7 +40,8 @@ class LogVault extends ChangeNotifier {
         options: ChannelOptions(
           credentials: ChannelCredentials.insecure(),
         ));
-    deviceCode = await DeviceUuid().getUUID() ?? "UNKNOWN";
+    deviceCode = await getDeviceCode();
+
     await openSendStream();
   }
 
@@ -102,13 +112,12 @@ class LogVault extends ChangeNotifier {
     final id = Uuid().v1();
     return entry.map(
       tapEvent: (value) => grpc.RegisteredAppEvent(
-        id: id,
-        timestamp: ts,
-        tap: grpc.PointerTap(
-          x: value.x,
-          y: value.y,
-        )
-      ),
+          id: id,
+          timestamp: ts,
+          tap: grpc.PointerTap(
+            x: value.x,
+            y: value.y,
+          )),
       networkCall: (value) => grpc.RegisteredAppEvent(
         id: id,
         timestamp: ts,

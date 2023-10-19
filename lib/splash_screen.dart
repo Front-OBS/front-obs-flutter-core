@@ -40,7 +40,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   void loadDeviceInfo() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     appName = packageInfo.appName;
-    String id = await DeviceUuid().getUUID() ?? "UNKNOWN";
+    String id = await getDeviceCode();
 
     setState(() {
       deviceCode = id;
