@@ -48,9 +48,9 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   }
 
   @override
-  void initState() async {
+  void initState() {
     loadDeviceInfo();
-    await LogVault.initVault(true);
+    LogVault.initVault(true);
     super.initState();
   }
 
@@ -164,6 +164,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                           children: [
                             for (final env in widget.options.environments) ...[
                               GestureDetector(
+                                behavior: HitTestBehavior.translucent,
                                 onTap: () async {
                                   startEnv(env);
                                 },
@@ -197,7 +198,6 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   }
 
   Future<void> startEnv(TEnv env) async {
-
     /*setState(() {
       isLaunching = true;
     });*/
