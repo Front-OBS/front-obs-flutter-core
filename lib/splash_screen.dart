@@ -48,8 +48,9 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   }
 
   @override
-  void initState() {
+  void initState() async {
     loadDeviceInfo();
+    await LogVault.initVault(true);
     super.initState();
   }
 
@@ -196,7 +197,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   }
 
   Future<void> startEnv(TEnv env) async {
-    await LogVault.initVault(env);
+
     /*setState(() {
       isLaunching = true;
     });*/

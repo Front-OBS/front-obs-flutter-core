@@ -34,7 +34,10 @@ class LogVault extends ChangeNotifier {
 
   static String deviceCode = "";
 
-  static Future initVault(IApplicationEnvironment env) async {
+  static late bool doLiveStreams;
+
+  static Future initVault(bool liveStreams) async {
+    doLiveStreams = liveStreams;
     channel = GrpcOrGrpcWebClientChannel.grpc("84.38.185.37",
         port: 5001,
         options: ChannelOptions(
@@ -55,7 +58,7 @@ class LogVault extends ChangeNotifier {
 
     sendRequests.sink.add(
       grpc.EventsBatch(
-        isLive: true,
+        isLive: doLiveStreams,
         identification: grpc.IdentificationInfo(
           code: deviceCode,
         ),
@@ -77,10 +80,18 @@ class LogVault extends ChangeNotifier {
     eventsBuffer.add(event);
   }
 
+  static bool consuming = false;
+
   static Future connectToConsumer() async {
     try {
+      if (consuming) {
+        print("ALREDY OPENED CONNECTION");
+        return;
+      }
+      consuming = true;
       final client = grpc.EventConsumerClient(channel);
       final response = await client.consumeEvents(sendRequests.stream);
+      consuming = false;
     } catch (ex) {
       Future.delayed(
         Duration(seconds: 3),
@@ -90,6 +101,8 @@ class LogVault extends ChangeNotifier {
         },
       );
       print(ex);
+    } finally {
+      consuming = false;
     }
   }
 
