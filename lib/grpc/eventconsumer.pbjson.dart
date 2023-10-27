@@ -26,14 +26,23 @@ const StorageOperationKind$json = {
 final $typed_data.Uint8List storageOperationKindDescriptor = $convert.base64Decode(
     'ChRTdG9yYWdlT3BlcmF0aW9uS2luZBIJCgV3cml0ZRAAEggKBHJlYWQQAQ==');
 
-@$core.Deprecated('Use consumeEndDescriptor instead')
-const ConsumeEnd$json = {
-  '1': 'ConsumeEnd',
+@$core.Deprecated('Use stubDescriptor instead')
+const Stub$json = {
+  '1': 'Stub',
 };
 
-/// Descriptor for `ConsumeEnd`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List consumeEndDescriptor = $convert.base64Decode(
-    'CgpDb25zdW1lRW5k');
+/// Descriptor for `Stub`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stubDescriptor = $convert.base64Decode(
+    'CgRTdHVi');
+
+@$core.Deprecated('Use consumeOkDescriptor instead')
+const ConsumeOk$json = {
+  '1': 'ConsumeOk',
+};
+
+/// Descriptor for `ConsumeOk`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List consumeOkDescriptor = $convert.base64Decode(
+    'CglDb25zdW1lT2s=');
 
 @$core.Deprecated('Use deviceCommandDescriptor instead')
 const DeviceCommand$json = {
@@ -94,23 +103,18 @@ const IdentificationInfo$json = {
   '1': 'IdentificationInfo',
   '2': [
     {'1': 'code', '3': 2, '4': 1, '5': 9, '10': 'code'},
-    {'1': 'userPhone', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'userPhone', '17': true},
-    {'1': 'userName', '3': 4, '4': 1, '5': 9, '9': 1, '10': 'userName', '17': true},
-    {'1': 'userId', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'userId', '17': true},
+    {'1': 'userIdentification', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'userIdentification', '17': true},
   ],
   '8': [
-    {'1': '_userPhone'},
-    {'1': '_userName'},
-    {'1': '_userId'},
+    {'1': '_userIdentification'},
   ],
 };
 
 /// Descriptor for `IdentificationInfo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List identificationInfoDescriptor = $convert.base64Decode(
-    'ChJJZGVudGlmaWNhdGlvbkluZm8SEgoEY29kZRgCIAEoCVIEY29kZRIhCgl1c2VyUGhvbmUYAy'
-    'ABKAlIAFIJdXNlclBob25liAEBEh8KCHVzZXJOYW1lGAQgASgJSAFSCHVzZXJOYW1liAEBEhsK'
-    'BnVzZXJJZBgFIAEoCUgCUgZ1c2VySWSIAQFCDAoKX3VzZXJQaG9uZUILCglfdXNlck5hbWVCCQ'
-    'oHX3VzZXJJZA==');
+    'ChJJZGVudGlmaWNhdGlvbkluZm8SEgoEY29kZRgCIAEoCVIEY29kZRIzChJ1c2VySWRlbnRpZm'
+    'ljYXRpb24YAyABKAlIAFISdXNlcklkZW50aWZpY2F0aW9uiAEBQhUKE191c2VySWRlbnRpZmlj'
+    'YXRpb24=');
 
 @$core.Deprecated('Use registeredAppEventDescriptor instead')
 const RegisteredAppEvent$json = {

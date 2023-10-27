@@ -21,10 +21,14 @@ export 'eventconsumer.pb.dart';
 
 @$pb.GrpcServiceName('eventconsumer.EventConsumer')
 class EventConsumerClient extends $grpc.Client {
-  static final _$consumeEvents = $grpc.ClientMethod<$0.EventsBatch, $0.ConsumeEnd>(
+  static final _$consumeEvents = $grpc.ClientMethod<$0.EventsBatch, $0.ConsumeOk>(
       '/eventconsumer.EventConsumer/consumeEvents',
       ($0.EventsBatch value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.ConsumeEnd.fromBuffer(value));
+      ($core.List<$core.int> value) => $0.ConsumeOk.fromBuffer(value));
+  static final _$healthCheck = $grpc.ClientMethod<$0.Stub, $0.Stub>(
+      '/eventconsumer.EventConsumer/healthCheck',
+      ($0.Stub value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Stub.fromBuffer(value));
 
   EventConsumerClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -32,8 +36,12 @@ class EventConsumerClient extends $grpc.Client {
       : super(channel, options: options,
         interceptors: interceptors);
 
-  $grpc.ResponseFuture<$0.ConsumeEnd> consumeEvents($async.Stream<$0.EventsBatch> request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$consumeEvents, request, options: options).single;
+  $grpc.ResponseFuture<$0.ConsumeOk> consumeEvents($0.EventsBatch request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$consumeEvents, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Stub> healthCheck($0.Stub request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$healthCheck, request, options: options);
   }
 }
 
@@ -42,14 +50,30 @@ abstract class EventConsumerServiceBase extends $grpc.Service {
   $core.String get $name => 'eventconsumer.EventConsumer';
 
   EventConsumerServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.EventsBatch, $0.ConsumeEnd>(
+    $addMethod($grpc.ServiceMethod<$0.EventsBatch, $0.ConsumeOk>(
         'consumeEvents',
-        consumeEvents,
-        true,
+        consumeEvents_Pre,
+        false,
         false,
         ($core.List<$core.int> value) => $0.EventsBatch.fromBuffer(value),
-        ($0.ConsumeEnd value) => value.writeToBuffer()));
+        ($0.ConsumeOk value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Stub, $0.Stub>(
+        'healthCheck',
+        healthCheck_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Stub.fromBuffer(value),
+        ($0.Stub value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.ConsumeEnd> consumeEvents($grpc.ServiceCall call, $async.Stream<$0.EventsBatch> request);
+  $async.Future<$0.ConsumeOk> consumeEvents_Pre($grpc.ServiceCall call, $async.Future<$0.EventsBatch> request) async {
+    return consumeEvents(call, await request);
+  }
+
+  $async.Future<$0.Stub> healthCheck_Pre($grpc.ServiceCall call, $async.Future<$0.Stub> request) async {
+    return healthCheck(call, await request);
+  }
+
+  $async.Future<$0.ConsumeOk> consumeEvents($grpc.ServiceCall call, $0.EventsBatch request);
+  $async.Future<$0.Stub> healthCheck($grpc.ServiceCall call, $0.Stub request);
 }

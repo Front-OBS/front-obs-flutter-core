@@ -19,13 +19,13 @@ import 'monitoring_entries.dart';
 Future<String> getDeviceCode() async {
   return Uuid.unparse(md5
       .convert(
-          Utf8Encoder().convert((await DeviceUuid().getUUID()) ?? "UNKNOWN"))
+      Utf8Encoder().convert((await DeviceUuid().getUUID()) ?? "UNKNOWN"))
       .bytes);
 }
 
 class LogVault extends ChangeNotifier {
   static final logsStreamController =
-      StreamController<MonitoringEntry>.broadcast();
+  StreamController<MonitoringEntry>.broadcast();
   static late Stream<MonitoringEntry> logs = logsStreamController.stream;
 
   static late ClientChannel channel;
@@ -38,8 +38,8 @@ class LogVault extends ChangeNotifier {
 
   static Future initVault(bool liveStreams) async {
     doLiveStreams = liveStreams;
-    channel = GrpcOrGrpcWebClientChannel.grpc("84.38.185.37",
-        port: 5001,
+    channel = GrpcOrGrpcWebClientChannel.grpc("62.84.115.125",
+        port: 5000,
         options: ChannelOptions(
           credentials: ChannelCredentials.insecure(),
         ));
@@ -52,11 +52,28 @@ class LogVault extends ChangeNotifier {
 
   static late StreamController<grpc.EventsBatch> sendRequests;
 
-  static void sendBatch() {
+  static void sendBatch() async {
     print("sending batch with ${eventsBuffer.length} events");
     EasyDebounce.cancel("oberon_event");
 
-    sendRequests.sink.add(
+    try {
+      consuming = true;
+      final client = grpc.EventConsumerClient(channel);
+      final response = await client.consumeEvents(
+          grpc.EventsBatch(
+            isLive: doLiveStreams,
+            identification: grpc.IdentificationInfo(
+              code: deviceCode,
+            ),
+            batchId: Uuid().v1(),
+            events: eventsBuffer,
+          )
+      );
+      consuming = false;
+    } catch (ex) {
+      print("BATCH SEND ERR");
+    }
+    /*sendRequests.sink.add(
       grpc.EventsBatch(
         isLive: doLiveStreams,
         identification: grpc.IdentificationInfo(
@@ -65,7 +82,7 @@ class LogVault extends ChangeNotifier {
         batchId: Uuid().v1(),
         events: eventsBuffer,
       ),
-    );
+    );*/
     eventsBuffer.clear();
   }
 
@@ -82,6 +99,7 @@ class LogVault extends ChangeNotifier {
 
   static bool consuming = false;
 
+/*
   static Future connectToConsumer() async {
     try {
       if (consuming) {
@@ -90,7 +108,7 @@ class LogVault extends ChangeNotifier {
       }
       consuming = true;
       final client = grpc.EventConsumerClient(channel);
-      final response = await client.consumeEvents(sendRequests.stream);
+      final response = await client.consumeEvents();
       consuming = false;
     } catch (ex) {
       Future.delayed(
@@ -104,7 +122,7 @@ class LogVault extends ChangeNotifier {
     } finally {
       consuming = false;
     }
-  }
+  }*/
 
   static Future openSendStream() async {
     eventsRemoteController = StreamController.broadcast();
@@ -114,110 +132,123 @@ class LogVault extends ChangeNotifier {
     sendRequests.stream.listen((event) {
       print("SENDING EVENTS ${event.events.length}");
     });
-
-    Future.microtask(() async {
-      connectToConsumer();
-    });
   }
 
   static grpc.RegisteredAppEvent mapEventToRemote(MonitoringEntry entry) {
-    final ts = Int64(DateTime.now().millisecondsSinceEpoch);
+    final ts = Int64(DateTime
+        .now()
+        .millisecondsSinceEpoch);
     final id = Uuid().v1();
     return entry.map(
-      tapEvent: (value) => grpc.RegisteredAppEvent(
-          id: id,
-          timestamp: ts,
-          tap: grpc.PointerTap(
-            x: value.x,
-            y: value.y,
-          )),
-      networkCall: (value) => grpc.RegisteredAppEvent(
-        id: id,
-        timestamp: ts,
-        network: grpc.NetworkRequest(
-          requestHeaders: value.requestHeaders,
-          responseHeaders: value.responseHeaders,
-          url: value.uri,
-          statusCode: value.statusCode,
-          requestPayload: value.request.map(
-            json: (value) => grpc.NetworkCallPayload(
-              json: value.json,
-            ),
-            custom: (value) => grpc.NetworkCallPayload(
-              custom: value.content,
-            ),
-            formdata: (value) => grpc.NetworkCallPayload(
-              form: grpc.FormBody(entries: value.data),
-            ),
-          ),
-          responsePayload: value.response?.map(
-            json: (value) => grpc.NetworkCallPayload(
-              json: value.json,
-            ),
-            custom: (value) => grpc.NetworkCallPayload(
-              custom: value.content,
-            ),
-            formdata: (value) => grpc.NetworkCallPayload(
-              form: grpc.FormBody(entries: value.data),
-            ),
-          ),
-        ),
-      ),
-      storageOperation: (value) => grpc.RegisteredAppEvent(
-        timestamp: ts,
-        id: id,
-        storage: grpc.StorageOperation(
-          operation: value.storage == StarageOperationType.write
-              ? grpc.StorageOperationKind.write
-              : grpc.StorageOperationKind.read,
-        ),
-      ),
-      exception: (value) => grpc.RegisteredAppEvent(
-        id: id,
-        timestamp: ts,
-        exception: grpc.ExceptionEvent(
-          exception: value.text,
-          traces: value.frames.map(
-            (e) => grpc.Trace(
-              column: e.column,
-              line: e.line,
-              function: e.funcName,
-              path: e.path,
+      tapEvent: (value) =>
+          grpc.RegisteredAppEvent(
+              id: id,
+              timestamp: ts,
+              tap: grpc.PointerTap(
+                x: value.x,
+                y: value.y,
+              )),
+      networkCall: (value) =>
+          grpc.RegisteredAppEvent(
+            id: id,
+            timestamp: ts,
+            network: grpc.NetworkRequest(
+              requestHeaders: value.requestHeaders,
+              responseHeaders: value.responseHeaders,
+              url: value.uri,
+              statusCode: value.statusCode,
+              requestPayload: value.request.map(
+                json: (value) =>
+                    grpc.NetworkCallPayload(
+                      json: value.json,
+                    ),
+                custom: (value) =>
+                    grpc.NetworkCallPayload(
+                      custom: value.content,
+                    ),
+                formdata: (value) =>
+                    grpc.NetworkCallPayload(
+                      form: grpc.FormBody(entries: value.data),
+                    ),
+              ),
+              responsePayload: value.response?.map(
+                json: (value) =>
+                    grpc.NetworkCallPayload(
+                      json: value.json,
+                    ),
+                custom: (value) =>
+                    grpc.NetworkCallPayload(
+                      custom: value.content,
+                    ),
+                formdata: (value) =>
+                    grpc.NetworkCallPayload(
+                      form: grpc.FormBody(entries: value.data),
+                    ),
+              ),
             ),
           ),
-        ),
-      ),
-      textLog: (value) => grpc.RegisteredAppEvent(
-        id: id,
-        timestamp: ts,
-        text: grpc.TextAppEvent(
-          text: value.text,
-          traces: value.frames.map(
-            (e) => grpc.Trace(
-              column: e.column,
-              line: e.line,
-              function: e.funcName,
-              path: e.path,
+      storageOperation: (value) =>
+          grpc.RegisteredAppEvent(
+            timestamp: ts,
+            id: id,
+            storage: grpc.StorageOperation(
+              operation: value.storage == StarageOperationType.write
+                  ? grpc.StorageOperationKind.write
+                  : grpc.StorageOperationKind.read,
             ),
           ),
-        ),
-      ),
-      stateChange: (value) => grpc.RegisteredAppEvent(
-        id: id,
-        timestamp: ts,
-        stateChange: grpc.StateChangeEvent(
-          value: value.text,
-          stateName: value.id,
-          traces: value.frames.map(
-            (e) => grpc.Trace(
-              column: e.column,
-              line: e.line,
-              function: e.funcName,
-              path: e.path,
+      exception: (value) =>
+          grpc.RegisteredAppEvent(
+            id: id,
+            timestamp: ts,
+            exception: grpc.ExceptionEvent(
+              exception: value.text,
+              traces: value.frames.map(
+                    (e) =>
+                    grpc.Trace(
+                      column: e.column,
+                      line: e.line,
+                      function: e.funcName,
+                      path: e.path,
+                    ),
+              ).take(30),
             ),
           ),
-        ),
-      ),
+      textLog: (value) =>
+          grpc.RegisteredAppEvent(
+            id: id,
+            timestamp: ts,
+            text: grpc.TextAppEvent(
+              text: value.text,
+              traces: value.frames.map(
+                    (e) =>
+                    grpc.Trace(
+                      column: e.column,
+                      line: e.line,
+                      function: e.funcName,
+                      path: e.path,
+                    ),
+              ).take(30),
+            ),
+          ),
+      stateChange: (value) =>
+          grpc.RegisteredAppEvent(
+            id: id,
+            timestamp: ts,
+            stateChange: grpc.StateChangeEvent(
+              value: value.text,
+              stateName: value.id,
+              traces: value.frames.map(
+                    (e) =>
+                    grpc.Trace(
+                      column: e.column,
+                      line: e.line,
+                      function: e.funcName,
+                      path: e.path,
+                    ),
+              ).take(30),
+            ),
+          ),
     );
   }
 

@@ -18,13 +18,13 @@ import 'eventconsumer.pbenum.dart';
 
 export 'eventconsumer.pbenum.dart';
 
-class ConsumeEnd extends $pb.GeneratedMessage {
-  factory ConsumeEnd() => create();
-  ConsumeEnd._() : super();
-  factory ConsumeEnd.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ConsumeEnd.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+class Stub extends $pb.GeneratedMessage {
+  factory Stub() => create();
+  Stub._() : super();
+  factory Stub.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Stub.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ConsumeEnd', package: const $pb.PackageName(_omitMessageNames ? '' : 'eventconsumer'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Stub', package: const $pb.PackageName(_omitMessageNames ? '' : 'eventconsumer'), createEmptyInstance: create)
     ..hasRequiredFields = false
   ;
 
@@ -32,22 +32,54 @@ class ConsumeEnd extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  ConsumeEnd clone() => ConsumeEnd()..mergeFromMessage(this);
+  Stub clone() => Stub()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  ConsumeEnd copyWith(void Function(ConsumeEnd) updates) => super.copyWith((message) => updates(message as ConsumeEnd)) as ConsumeEnd;
+  Stub copyWith(void Function(Stub) updates) => super.copyWith((message) => updates(message as Stub)) as Stub;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ConsumeEnd create() => ConsumeEnd._();
-  ConsumeEnd createEmptyInstance() => create();
-  static $pb.PbList<ConsumeEnd> createRepeated() => $pb.PbList<ConsumeEnd>();
+  static Stub create() => Stub._();
+  Stub createEmptyInstance() => create();
+  static $pb.PbList<Stub> createRepeated() => $pb.PbList<Stub>();
   @$core.pragma('dart2js:noInline')
-  static ConsumeEnd getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConsumeEnd>(create);
-  static ConsumeEnd? _defaultInstance;
+  static Stub getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Stub>(create);
+  static Stub? _defaultInstance;
+}
+
+class ConsumeOk extends $pb.GeneratedMessage {
+  factory ConsumeOk() => create();
+  ConsumeOk._() : super();
+  factory ConsumeOk.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ConsumeOk.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ConsumeOk', package: const $pb.PackageName(_omitMessageNames ? '' : 'eventconsumer'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ConsumeOk clone() => ConsumeOk()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ConsumeOk copyWith(void Function(ConsumeOk) updates) => super.copyWith((message) => updates(message as ConsumeOk)) as ConsumeOk;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ConsumeOk create() => ConsumeOk._();
+  ConsumeOk createEmptyInstance() => create();
+  static $pb.PbList<ConsumeOk> createRepeated() => $pb.PbList<ConsumeOk>();
+  @$core.pragma('dart2js:noInline')
+  static ConsumeOk getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConsumeOk>(create);
+  static ConsumeOk? _defaultInstance;
 }
 
 enum DeviceCommand_Command {
@@ -288,22 +320,14 @@ class EventsBatch extends $pb.GeneratedMessage {
 class IdentificationInfo extends $pb.GeneratedMessage {
   factory IdentificationInfo({
     $core.String? code,
-    $core.String? userPhone,
-    $core.String? userName,
-    $core.String? userId,
+    $core.String? userIdentification,
   }) {
     final $result = create();
     if (code != null) {
       $result.code = code;
     }
-    if (userPhone != null) {
-      $result.userPhone = userPhone;
-    }
-    if (userName != null) {
-      $result.userName = userName;
-    }
-    if (userId != null) {
-      $result.userId = userId;
+    if (userIdentification != null) {
+      $result.userIdentification = userIdentification;
     }
     return $result;
   }
@@ -313,9 +337,7 @@ class IdentificationInfo extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'IdentificationInfo', package: const $pb.PackageName(_omitMessageNames ? '' : 'eventconsumer'), createEmptyInstance: create)
     ..aOS(2, _omitFieldNames ? '' : 'code')
-    ..aOS(3, _omitFieldNames ? '' : 'userPhone', protoName: 'userPhone')
-    ..aOS(4, _omitFieldNames ? '' : 'userName', protoName: 'userName')
-    ..aOS(5, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..aOS(3, _omitFieldNames ? '' : 'userIdentification', protoName: 'userIdentification')
     ..hasRequiredFields = false
   ;
 
@@ -350,31 +372,13 @@ class IdentificationInfo extends $pb.GeneratedMessage {
   void clearCode() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get userPhone => $_getSZ(1);
+  $core.String get userIdentification => $_getSZ(1);
   @$pb.TagNumber(3)
-  set userPhone($core.String v) { $_setString(1, v); }
+  set userIdentification($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(3)
-  $core.bool hasUserPhone() => $_has(1);
+  $core.bool hasUserIdentification() => $_has(1);
   @$pb.TagNumber(3)
-  void clearUserPhone() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get userName => $_getSZ(2);
-  @$pb.TagNumber(4)
-  set userName($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasUserName() => $_has(2);
-  @$pb.TagNumber(4)
-  void clearUserName() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.String get userId => $_getSZ(3);
-  @$pb.TagNumber(5)
-  set userId($core.String v) { $_setString(3, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasUserId() => $_has(3);
-  @$pb.TagNumber(5)
-  void clearUserId() => clearField(5);
+  void clearUserIdentification() => clearField(3);
 }
 
 enum RegisteredAppEvent_Event {
