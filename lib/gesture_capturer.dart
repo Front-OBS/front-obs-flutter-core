@@ -12,19 +12,6 @@ class OberonGestureRecorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTapUp: (details) {
-        LogVault.addEntry(
-          MonitoringEntry.tapEvent(
-            logTimestamp: DateTime.now(),
-            severity: EventSeverity.info,
-            x: details.globalPosition.dx,
-            y: details.globalPosition.dy,
-          ),
-        );
-      },
-      child: child,
-    );
+    return child;
   }
 }
