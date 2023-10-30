@@ -1,34 +1,33 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:chopper/chopper.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_uuid/device_uuid.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
-import 'package:grpc/grpc_or_grpcweb.dart';
 import 'package:oberon_connector/environments.dart';
-import 'package:oberon_connector/grpc/eventconsumer.pbgrpc.dart' as grpc;
 import 'package:stack_trace/stack_trace.dart';
 import 'package:uuid/uuid.dart';
 
+import 'api/swagger.swagger.dart';
 import 'monitoring_entries.dart';
 
 Future<String> getDeviceCode() async {
   return Uuid.unparse(md5
       .convert(
-      Utf8Encoder().convert((await DeviceUuid().getUUID()) ?? "UNKNOWN"))
+          Utf8Encoder().convert((await DeviceUuid().getUUID()) ?? "UNKNOWN"))
       .bytes);
 }
 
 class LogVault extends ChangeNotifier {
   static final logsStreamController =
-  StreamController<MonitoringEntry>.broadcast();
+      StreamController<MonitoringEntry>.broadcast();
   static late Stream<MonitoringEntry> logs = logsStreamController.stream;
 
-  static late ClientChannel channel;
+  static late Swagger client;
 
   static final debouncingTime = Duration(milliseconds: 50);
 
@@ -38,19 +37,15 @@ class LogVault extends ChangeNotifier {
 
   static Future initVault(bool liveStreams) async {
     doLiveStreams = liveStreams;
-    channel = GrpcOrGrpcWebClientChannel.grpc("62.84.115.125",
-        port: 5000,
-        options: ChannelOptions(
-          credentials: ChannelCredentials.insecure(),
-        ));
+    client = Swagger.create(baseUrl:  Uri.parse("https://oberon-lab.ru/"));
     deviceCode = await getDeviceCode();
 
     await openSendStream();
   }
 
-  static late StreamController<grpc.RegisteredAppEvent> eventsRemoteController;
+  static late StreamController<RegisteredEvent> eventsRemoteController;
 
-  static late StreamController<grpc.EventsBatch> sendRequests;
+  static late StreamController<EventsBatch> sendRequests;
 
   static void sendBatch() async {
     print("sending batch with ${eventsBuffer.length} events");
@@ -58,20 +53,19 @@ class LogVault extends ChangeNotifier {
 
     try {
       consuming = true;
-      final client = grpc.EventConsumerClient(channel);
-      final response = await client.consumeEvents(
-          grpc.EventsBatch(
-            isLive: doLiveStreams,
-            identification: grpc.IdentificationInfo(
-              code: deviceCode,
-            ),
-            batchId: Uuid().v1(),
-            events: eventsBuffer,
-          )
+      final response = await client.apiConsumerConsumePost(
+        body: EventsBatch(
+          projectKey: "8e8b623a-fcff-4c9d-bfb5-606fd90fe02d",
+          isLive: doLiveStreams,
+          identification: Identification(
+            code: deviceCode,
+          ),
+          events: eventsBuffer,
+        ),
       );
       consuming = false;
     } catch (ex) {
-      print("BATCH SEND ERR");
+      print("BATCH SEND ERR $ex");
     }
     /*sendRequests.sink.add(
       grpc.EventsBatch(
@@ -86,9 +80,9 @@ class LogVault extends ChangeNotifier {
     eventsBuffer.clear();
   }
 
-  static final List<grpc.RegisteredAppEvent> eventsBuffer = [];
+  static final List<RegisteredEvent> eventsBuffer = [];
 
-  static void scheduleEvent(grpc.RegisteredAppEvent event) {
+  static void scheduleEvent(RegisteredEvent event) {
     EasyDebounce.debounce(
       'oberon_event',
       debouncingTime,
@@ -130,125 +124,102 @@ class LogVault extends ChangeNotifier {
 
     eventsRemoteController.stream.listen(scheduleEvent);
     sendRequests.stream.listen((event) {
-      print("SENDING EVENTS ${event.events.length}");
+      print("SENDING EVENTS ${event.events?.length}");
     });
   }
 
-  static grpc.RegisteredAppEvent mapEventToRemote(MonitoringEntry entry) {
-    final ts = Int64(DateTime
-        .now()
-        .millisecondsSinceEpoch);
+  static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
+    final ts = DateTime.now().millisecondsSinceEpoch;
     final id = Uuid().v1();
     return entry.map(
-      tapEvent: (value) =>
-          grpc.RegisteredAppEvent(
-              id: id,
-              timestamp: ts,
-              tap: grpc.PointerTap(
-                x: value.x,
-                y: value.y,
-              )),
-      networkCall: (value) =>
-          grpc.RegisteredAppEvent(
-            id: id,
-            timestamp: ts,
-            network: grpc.NetworkRequest(
-              requestHeaders: value.requestHeaders,
-              responseHeaders: value.responseHeaders,
-              url: value.uri,
-              statusCode: value.statusCode,
-              requestPayload: value.request.map(
-                json: (value) =>
-                    grpc.NetworkCallPayload(
-                      json: value.json,
-                    ),
-                custom: (value) =>
-                    grpc.NetworkCallPayload(
-                      custom: value.content,
-                    ),
-                formdata: (value) =>
-                    grpc.NetworkCallPayload(
-                      form: grpc.FormBody(entries: value.data),
-                    ),
-              ),
-              responsePayload: value.response?.map(
-                json: (value) =>
-                    grpc.NetworkCallPayload(
-                      json: value.json,
-                    ),
-                custom: (value) =>
-                    grpc.NetworkCallPayload(
-                      custom: value.content,
-                    ),
-                formdata: (value) =>
-                    grpc.NetworkCallPayload(
-                      form: grpc.FormBody(entries: value.data),
-                    ),
-              ),
+      tapEvent: (value) => RegisteredEvent(
+        id: id,
+        timestamp: ts,
+        kind: EventKind.swaggerGeneratedUnknown,
+      ),
+      networkCall: (value) => RegisteredEvent(
+        id: id,
+        timestamp: ts,
+        kind: EventKind.network,
+        networkEvent: NetworkEvent(
+          requestHeaders: value.requestHeaders,
+          responseHeaders: value.responseHeaders!,
+          url: value.uri,
+          statusCode: value.statusCode,
+          requestPayload: value.request.map(
+            json: (value) => NetworkPayload(
+              kind: NetworkPayloadKind.json,
+              json: value.json,
+            ),
+            custom: (value) => NetworkPayload(
+              kind: NetworkPayloadKind.json,
+              custom: value.content,
+            ),
+            formdata: (value) => NetworkPayload(
+              formData: value.data,
+              kind: NetworkPayloadKind.formdata,
             ),
           ),
-      storageOperation: (value) =>
-          grpc.RegisteredAppEvent(
-            timestamp: ts,
-            id: id,
-            storage: grpc.StorageOperation(
-              operation: value.storage == StarageOperationType.write
-                  ? grpc.StorageOperationKind.write
-                  : grpc.StorageOperationKind.read,
+          responsePayload: value.response?.map(
+            json: (value) => NetworkPayload(
+              kind: NetworkPayloadKind.json,
+              json: value.json,
+            ),
+            custom: (value) => NetworkPayload(
+              kind: NetworkPayloadKind.json,
+              custom: value.content,
+            ),
+            formdata: (value) => NetworkPayload(
+              formData: value.data,
+              kind: NetworkPayloadKind.formdata,
             ),
           ),
-      exception: (value) =>
-          grpc.RegisteredAppEvent(
-            id: id,
-            timestamp: ts,
-            exception: grpc.ExceptionEvent(
-              exception: value.text,
-              traces: value.frames.map(
-                    (e) =>
-                    grpc.Trace(
-                      column: e.column,
-                      line: e.line,
-                      function: e.funcName,
-                      path: e.path,
-                    ),
-              ).take(30),
-            ),
-          ),
-      textLog: (value) =>
-          grpc.RegisteredAppEvent(
-            id: id,
-            timestamp: ts,
-            text: grpc.TextAppEvent(
-              text: value.text,
-              traces: value.frames.map(
-                    (e) =>
-                    grpc.Trace(
-                      column: e.column,
-                      line: e.line,
-                      function: e.funcName,
-                      path: e.path,
-                    ),
-              ).take(30),
-            ),
-          ),
-      stateChange: (value) =>
-          grpc.RegisteredAppEvent(
-            id: id,
-            timestamp: ts,
-            stateChange: grpc.StateChangeEvent(
-              value: value.text,
-              stateName: value.id,
-              traces: value.frames.map(
-                    (e) =>
-                    grpc.Trace(
-                      column: e.column,
-                      line: e.line,
-                      function: e.funcName,
-                      path: e.path,
-                    ),
-              ).take(30),
-            ),
-          ),
+        ),
+      ),
+      storageOperation: (value) => RegisteredEvent(
+        timestamp: ts,
+        id: id,
+        kind: EventKind.swaggerGeneratedUnknown,
+        storageEvent: StorageEvent(
+          key: value.key,
+          value: value.value,
+        ),
+      ),
+      exception: (value) => RegisteredEvent(
+        id: id,
+        timestamp: ts,
+        kind: EventKind.exception,
+        exceptionEvent: ExceptionEvent(
+          exception: value.text,
+          traces: value.frames
+              .map(
+                (e) => TraceEntry(
+                  column: e.column!,
+                  line: e.line!,
+                  function: e.funcName!,
+                  path: e.path,
+                ),
+              )
+              .toList(),
+        ),
+      ),
+      textLog: (value) => RegisteredEvent(
+        id: id,
+        timestamp: ts,
+        kind: EventKind.text,
+        textEvent: TextEvent(
+          text: value.text,
+        ),
+      ),
+      stateChange: (value) => RegisteredEvent(
+        id: id,
+        timestamp: ts,
+        kind: EventKind.state,
+        stateEvent: StateEvent(
+          value: value.text,
+          stateName: value.id,
+        ),
+      ),
     );
   }
 
