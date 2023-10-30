@@ -50,11 +50,11 @@ class LogVault extends ChangeNotifier {
   static late StreamController<EventsBatch> sendRequests;*/
 
   static void sendBatch() async {
-    print("sending batch with ${eventsBuffer.length} events");
+
     EasyDebounce.cancel("oberon_event");
 
     var eventsToSend = eventsBuffer.toList();
-
+    print("sending batch with ${eventsBuffer.length} events ${eventsToSend.length} buffer size ${eventsBuffer.length}");
     try {
       consuming = true;
       final response = await client.apiConsumerConsumePost(
