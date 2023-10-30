@@ -35,6 +35,8 @@ class LogVault extends ChangeNotifier {
 
   static late bool doLiveStreams;
 
+  static int inQueueCount = 0;
+
   static Future initVault(bool liveStreams) async {
     debouncingTime =
         liveStreams ? Duration(milliseconds: 50) : Duration(seconds: 5);
@@ -42,46 +44,60 @@ class LogVault extends ChangeNotifier {
     client = Swagger.create(baseUrl: Uri.parse("https://oberon-lab.ru/"));
     deviceCode = await getDeviceCode();
 
+    sendingQueue.stream
+        .asyncMap((event) {
+          inQueueCount++;
+          return event;
+        })
+        .asyncMap(sendBatch)
+        .asyncMap((event) {
+          inQueueCount--;
+          return event;
+        })
+        .listen((event) {
+          print("Sent batch");
+        });
+
     await openSendStream();
   }
-/*
-  static late StreamController<RegisteredEvent> eventsRemoteController;
 
-  static late StreamController<EventsBatch> sendRequests;*/
+  static final sendingQueue = StreamController<EventsBatch>();
 
-  final sendingQueue = StreamController<List<RegisteredEvent>>();
-
-  static void sendBatch() async {
+  static void sendBatch(EventsBatch batch) async {
     EasyDebounce.cancel("oberon_event");
 
-    var eventsToSend = eventsBuffer.toList();
-    print("sending batch with ${eventsBuffer.length} events ${eventsToSend.length} buffer size ${eventsBuffer.length}");
+    print("Sending batch ${eventsBuffer.length} with ${inQueueCount} queue length");
     try {
       consuming = true;
       final response = await client.apiConsumerConsumePost(
-        body: EventsBatch(
-          projectKey: "8e8b623a-fcff-4c9d-bfb5-606fd90fe02d",
-          isLive: doLiveStreams,
-          identification: Identification(
-            code: deviceCode,
-          ),
-          events: eventsBuffer,
-        ),
+        body: batch
       );
       consuming = false;
     } catch (ex) {
-      print("BATCH SEND ERR $ex tried send ${eventsToSend.length} buffer size ${eventsBuffer.length}");
+      print("BATCH SEND ERR $ex tried send");
     }
-    eventsBuffer.removeRange(0, eventsToSend.length - 1);
+    //eventsBuffer.removeRange(0, eventsToSend.length - 1);
   }
 
   static final List<RegisteredEvent> eventsBuffer = [];
+
+  static void scheduleSend() {
+    sendingQueue.add(EventsBatch(
+      projectKey: "8e8b623a-fcff-4c9d-bfb5-606fd90fe02d",
+      isLive: doLiveStreams,
+      identification: Identification(
+        code: deviceCode,
+      ),
+      events: eventsBuffer.toList(),
+    ));
+    eventsBuffer.clear();
+  }
 
   static void scheduleEvent(RegisteredEvent event) {
     EasyDebounce.debounce(
       'oberon_event',
       debouncingTime,
-      sendBatch,
+      scheduleSend,
     );
     eventsBuffer.add(event);
   }
@@ -114,10 +130,10 @@ class LogVault extends ChangeNotifier {
   }*/
 
   static Future openSendStream() async {
-  /*  eventsRemoteController = StreamController.broadcast();
+    /*  eventsRemoteController = StreamController.broadcast();
     sendRequests = StreamController.broadcast();*/
 
-   /* eventsRemoteController.stream.listen(scheduleEvent);
+    /* eventsRemoteController.stream.listen(scheduleEvent);
     sendRequests.stream.listen((event) {
       print("SENDING EVENTS ${event.events?.length}");
     });*/
