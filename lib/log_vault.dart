@@ -37,6 +37,8 @@ class LogVault extends ChangeNotifier {
 
   static int inQueueCount = 0;
 
+  static bool initialized = false;
+
   static Future initVault(bool liveStreams) async {
     debouncingTime =
         liveStreams ? Duration(milliseconds: 50) : Duration(seconds: 5);
@@ -66,12 +68,11 @@ class LogVault extends ChangeNotifier {
   static void sendBatch(EventsBatch batch) async {
     EasyDebounce.cancel("oberon_event");
 
-    print("Sending batch with ${batch.events.length} ewents. In queue ${inQueueCount}");
+    print(
+        "Sending batch with ${batch.events.length} ewents. In queue ${inQueueCount}");
     try {
       consuming = true;
-      final response = await client.apiConsumerConsumePost(
-        body: batch
-      );
+      final response = await client.apiConsumerConsumePost(body: batch);
       consuming = false;
     } catch (ex) {
       print("BATCH SEND ERR $ex tried send");
@@ -238,6 +239,9 @@ class LogVault extends ChangeNotifier {
   void sendLog(MonitoringEntry entry) {}*/
 
   static void addEntry(MonitoringEntry entry) {
+    if (!initialized) {
+      print(entry);
+    }
     // entries.add(entry);
     //logsStreamController.sink.add(entry);
     print("got entry ${entry.kind}");
