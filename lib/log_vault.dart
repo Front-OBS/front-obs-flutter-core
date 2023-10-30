@@ -224,8 +224,7 @@ class LogVault extends ChangeNotifier {
     // entries.add(entry);
     //logsStreamController.sink.add(entry);
     print("got entry ${entry.kind}");
-    eventsBuffer.add(mapEventToRemote(entry));
-    scheduleEvent();
+    scheduleEvent(mapEventToRemote(entry));
     //notifyListeners();
   }
 
