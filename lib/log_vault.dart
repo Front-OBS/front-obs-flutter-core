@@ -49,6 +49,8 @@ class LogVault extends ChangeNotifier {
 
   static late StreamController<EventsBatch> sendRequests;*/
 
+  final sendingQueue = StreamController<List<RegisteredEvent>>();
+
   static void sendBatch() async {
     EasyDebounce.cancel("oberon_event");
 
