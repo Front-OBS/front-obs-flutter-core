@@ -28,7 +28,7 @@ QAToolsGuardMain<TEnv extends IApplicationEnvironment>(
 launchWithoutOberon<TEnv extends IApplicationEnvironment>(
     TEnv env, Launcher<TEnv> launcher) async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await LogVault.initVault(false);
+  await LogVault.initVault(false);
   //initServices();
   launcher(
       env,
