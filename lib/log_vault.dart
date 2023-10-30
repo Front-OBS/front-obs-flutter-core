@@ -40,6 +40,7 @@ class LogVault extends ChangeNotifier {
   static bool initialized = false;
 
   static Future initVault(bool liveStreams) async {
+
     debouncingTime =
         liveStreams ? Duration(milliseconds: 50) : Duration(seconds: 5);
     doLiveStreams = liveStreams;
@@ -59,6 +60,7 @@ class LogVault extends ChangeNotifier {
         .listen((event) {
           print("Sent batch");
         });
+    initialized = true;
 
     await openSendStream();
   }
@@ -241,6 +243,7 @@ class LogVault extends ChangeNotifier {
   static void addEntry(MonitoringEntry entry) {
     if (!initialized) {
       print(entry);
+      return;
     }
     // entries.add(entry);
     //logsStreamController.sink.add(entry);
