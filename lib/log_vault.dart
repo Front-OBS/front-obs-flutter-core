@@ -66,7 +66,7 @@ class LogVault extends ChangeNotifier {
   static void sendBatch(EventsBatch batch) async {
     EasyDebounce.cancel("oberon_event");
 
-    print("Sending batch ${eventsBuffer.length} with ${inQueueCount} queue length");
+    print("Sending batch with ${batch.events.length} ewents. In queue ${inQueueCount}");
     try {
       consuming = true;
       final response = await client.apiConsumerConsumePost(
