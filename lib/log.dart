@@ -11,7 +11,6 @@ void textLog(String ext) {
       text: ext,
       id: Uuid().v1(),
       logTimestamp: DateTime.now(),
-      frames: Trace.current().frames.map(StackFrame.fromTrace).toList(),
     ),
   );
 }
@@ -28,7 +27,6 @@ void stateLog(String key, String value) {
       text: value,
       id: key,
       logTimestamp: DateTime.now(),
-      frames: Trace.current().frames.map(StackFrame.fromTrace).toList(),
     ),
   );
 }

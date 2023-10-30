@@ -127,9 +127,6 @@ _$MonitoringEntryStarageOperationImpl
           value: json['value'] as String,
           logTimestamp: const DateTimeConverter()
               .fromJson(json['logTimestamp'] as String),
-          frames: (json['frames'] as List<dynamic>)
-              .map((e) => StackFrame.fromJson(e as Map<String, dynamic>))
-              .toList(),
           $type: json['runtimeType'] as String?,
         );
 
@@ -142,7 +139,6 @@ Map<String, dynamic> _$$MonitoringEntryStarageOperationImplToJson(
       'key': instance.key,
       'value': instance.value,
       'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
-      'frames': instance.frames,
       'runtimeType': instance.$type,
     };
 
@@ -179,9 +175,6 @@ _$MonitoringEntryTextLogImpl _$$MonitoringEntryTextLogImplFromJson(
       id: json['id'] as String,
       logTimestamp:
           const DateTimeConverter().fromJson(json['logTimestamp'] as String),
-      frames: (json['frames'] as List<dynamic>)
-          .map((e) => StackFrame.fromJson(e as Map<String, dynamic>))
-          .toList(),
       $type: json['runtimeType'] as String?,
     );
 
@@ -192,7 +185,6 @@ Map<String, dynamic> _$$MonitoringEntryTextLogImplToJson(
       'text': instance.text,
       'id': instance.id,
       'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
-      'frames': instance.frames,
       'runtimeType': instance.$type,
     };
 
@@ -204,9 +196,6 @@ _$MonitoringEntryStateLogImpl _$$MonitoringEntryStateLogImplFromJson(
       id: json['id'] as String,
       logTimestamp:
           const DateTimeConverter().fromJson(json['logTimestamp'] as String),
-      frames: (json['frames'] as List<dynamic>)
-          .map((e) => StackFrame.fromJson(e as Map<String, dynamic>))
-          .toList(),
       $type: json['runtimeType'] as String?,
     );
 
@@ -217,7 +206,6 @@ Map<String, dynamic> _$$MonitoringEntryStateLogImplToJson(
       'text': instance.text,
       'id': instance.id,
       'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
-      'frames': instance.frames,
       'runtimeType': instance.$type,
     };
 

@@ -29,15 +29,17 @@ class LogVault extends ChangeNotifier {
 
   static late Swagger client;
 
-  static final debouncingTime = Duration(milliseconds: 50);
+  static late final debouncingTime;
 
   static String deviceCode = "";
 
   static late bool doLiveStreams;
 
   static Future initVault(bool liveStreams) async {
+    debouncingTime =
+        liveStreams ? Duration(milliseconds: 50) : Duration(seconds: 5);
     doLiveStreams = liveStreams;
-    client = Swagger.create(baseUrl:  Uri.parse("https://oberon-lab.ru/"));
+    client = Swagger.create(baseUrl: Uri.parse("https://oberon-lab.ru/"));
     deviceCode = await getDeviceCode();
 
     await openSendStream();
@@ -50,6 +52,8 @@ class LogVault extends ChangeNotifier {
   static void sendBatch() async {
     print("sending batch with ${eventsBuffer.length} events");
     EasyDebounce.cancel("oberon_event");
+
+    var eventsToSend = eventsBuffer.toList();
 
     try {
       consuming = true;
@@ -65,19 +69,9 @@ class LogVault extends ChangeNotifier {
       );
       consuming = false;
     } catch (ex) {
-      print("BATCH SEND ERR $ex");
+      print("BATCH SEND ERR $ex tried send ${eventsToSend.length} buffer size ${eventsBuffer.length}");
     }
-    /*sendRequests.sink.add(
-      grpc.EventsBatch(
-        isLive: doLiveStreams,
-        identification: grpc.IdentificationInfo(
-          code: deviceCode,
-        ),
-        batchId: Uuid().v1(),
-        events: eventsBuffer,
-      ),
-    );*/
-    eventsBuffer.clear();
+    eventsBuffer.removeRange(0, eventsToSend.length - 1);
   }
 
   static final List<RegisteredEvent> eventsBuffer = [];

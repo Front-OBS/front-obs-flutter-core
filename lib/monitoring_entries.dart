@@ -100,7 +100,7 @@ class MonitoringEntry with _$MonitoringEntry {
     required String key,
     required String value,
     @DateTimeConverter() required DateTime logTimestamp,
-    required List<StackFrame> frames,
+
   }) = MonitoringEntryStarageOperation;
 
   factory MonitoringEntry.exception({
@@ -114,7 +114,7 @@ class MonitoringEntry with _$MonitoringEntry {
     required String text,
     required String id,
     @DateTimeConverter() required DateTime logTimestamp,
-    required List<StackFrame> frames,
+
   }) = MonitoringEntryTextLog;
 
   factory MonitoringEntry.stateChange({
@@ -122,7 +122,7 @@ class MonitoringEntry with _$MonitoringEntry {
     required String text,
     required String id,
     @DateTimeConverter() required DateTime logTimestamp,
-    required List<StackFrame> frames,
+
   }) = MonitoringEntryStateLog;
 
   factory MonitoringEntry.tapEvent({

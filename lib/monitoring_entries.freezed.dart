@@ -876,17 +876,16 @@ mixin _$MonitoringEntry {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
     required TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)
         exception,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         textLog,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)
@@ -915,25 +914,16 @@ mixin _$MonitoringEntry {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult? Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -962,25 +952,16 @@ mixin _$MonitoringEntry {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -1275,17 +1256,16 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
     required TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)
         exception,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         textLog,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)
@@ -1318,25 +1298,16 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult? Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -1380,25 +1351,16 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -1534,8 +1496,7 @@ abstract class _$$MonitoringEntryStarageOperationImplCopyWith<$Res>
       String storageName,
       String key,
       String value,
-      @DateTimeConverter() DateTime logTimestamp,
-      List<StackFrame> frames});
+      @DateTimeConverter() DateTime logTimestamp});
 }
 
 /// @nodoc
@@ -1557,7 +1518,6 @@ class __$$MonitoringEntryStarageOperationImplCopyWithImpl<$Res>
     Object? key = null,
     Object? value = null,
     Object? logTimestamp = null,
-    Object? frames = null,
   }) {
     return _then(_$MonitoringEntryStarageOperationImpl(
       severity: null == severity
@@ -1584,10 +1544,6 @@ class __$$MonitoringEntryStarageOperationImplCopyWithImpl<$Res>
           ? _value.logTimestamp
           : logTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      frames: null == frames
-          ? _value.frames
-          : frames // ignore: cast_nullable_to_non_nullable
-              as List<StackFrame>,
     ));
   }
 }
@@ -1603,7 +1559,6 @@ class _$MonitoringEntryStarageOperationImpl
       required this.key,
       required this.value,
       @DateTimeConverter() required this.logTimestamp,
-      required this.frames,
       final String? $type})
       : $type = $type ?? 'storageOperation',
         super._();
@@ -1625,15 +1580,13 @@ class _$MonitoringEntryStarageOperationImpl
   @override
   @DateTimeConverter()
   DateTime logTimestamp;
-  @override
-  List<StackFrame> frames;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'MonitoringEntry.storageOperation(severity: $severity, storage: $storage, storageName: $storageName, key: $key, value: $value, logTimestamp: $logTimestamp, frames: $frames)';
+    return 'MonitoringEntry.storageOperation(severity: $severity, storage: $storage, storageName: $storageName, key: $key, value: $value, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -1667,24 +1620,23 @@ class _$MonitoringEntryStarageOperationImpl
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
     required TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)
         exception,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         textLog,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
   }) {
     return storageOperation(
-        severity, storage, storageName, key, value, logTimestamp, frames);
+        severity, storage, storageName, key, value, logTimestamp);
   }
 
   @override
@@ -1710,32 +1662,23 @@ class _$MonitoringEntryStarageOperationImpl
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult? Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
   }) {
     return storageOperation?.call(
-        severity, storage, storageName, key, value, logTimestamp, frames);
+        severity, storage, storageName, key, value, logTimestamp);
   }
 
   @override
@@ -1761,25 +1704,16 @@ class _$MonitoringEntryStarageOperationImpl
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -1788,7 +1722,7 @@ class _$MonitoringEntryStarageOperationImpl
   }) {
     if (storageOperation != null) {
       return storageOperation(
-          severity, storage, storageName, key, value, logTimestamp, frames);
+          severity, storage, storageName, key, value, logTimestamp);
     }
     return orElse();
   }
@@ -1852,8 +1786,7 @@ abstract class MonitoringEntryStarageOperation extends MonitoringEntry {
           required String storageName,
           required String key,
           required String value,
-          @DateTimeConverter() required DateTime logTimestamp,
-          required List<StackFrame> frames}) =
+          @DateTimeConverter() required DateTime logTimestamp}) =
       _$MonitoringEntryStarageOperationImpl;
   MonitoringEntryStarageOperation._() : super._();
 
@@ -1875,8 +1808,6 @@ abstract class MonitoringEntryStarageOperation extends MonitoringEntry {
   DateTime get logTimestamp;
   @DateTimeConverter()
   set logTimestamp(DateTime value);
-  List<StackFrame> get frames;
-  set frames(List<StackFrame> value);
   @override
   @JsonKey(ignore: true)
   _$$MonitoringEntryStarageOperationImplCopyWith<
@@ -1988,17 +1919,16 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
     required TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)
         exception,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         textLog,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)
@@ -2030,25 +1960,16 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult? Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -2080,25 +2001,16 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -2199,8 +2111,7 @@ abstract class _$$MonitoringEntryTextLogImplCopyWith<$Res>
       {EventSeverity severity,
       String text,
       String id,
-      @DateTimeConverter() DateTime logTimestamp,
-      List<StackFrame> frames});
+      @DateTimeConverter() DateTime logTimestamp});
 }
 
 /// @nodoc
@@ -2219,7 +2130,6 @@ class __$$MonitoringEntryTextLogImplCopyWithImpl<$Res>
     Object? text = null,
     Object? id = null,
     Object? logTimestamp = null,
-    Object? frames = null,
   }) {
     return _then(_$MonitoringEntryTextLogImpl(
       severity: null == severity
@@ -2238,10 +2148,6 @@ class __$$MonitoringEntryTextLogImplCopyWithImpl<$Res>
           ? _value.logTimestamp
           : logTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      frames: null == frames
-          ? _value.frames
-          : frames // ignore: cast_nullable_to_non_nullable
-              as List<StackFrame>,
     ));
   }
 }
@@ -2254,7 +2160,6 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
       required this.text,
       required this.id,
       @DateTimeConverter() required this.logTimestamp,
-      required this.frames,
       final String? $type})
       : $type = $type ?? 'textLog',
         super._();
@@ -2271,15 +2176,13 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
   @override
   @DateTimeConverter()
   DateTime logTimestamp;
-  @override
-  List<StackFrame> frames;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'MonitoringEntry.textLog(severity: $severity, text: $text, id: $id, logTimestamp: $logTimestamp, frames: $frames)';
+    return 'MonitoringEntry.textLog(severity: $severity, text: $text, id: $id, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -2312,23 +2215,22 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
     required TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)
         exception,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         textLog,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
   }) {
-    return textLog(severity, text, id, logTimestamp, frames);
+    return textLog(severity, text, id, logTimestamp);
   }
 
   @override
@@ -2354,31 +2256,22 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult? Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
   }) {
-    return textLog?.call(severity, text, id, logTimestamp, frames);
+    return textLog?.call(severity, text, id, logTimestamp);
   }
 
   @override
@@ -2404,25 +2297,16 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -2430,7 +2314,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
     required TResult orElse(),
   }) {
     if (textLog != null) {
-      return textLog(severity, text, id, logTimestamp, frames);
+      return textLog(severity, text, id, logTimestamp);
     }
     return orElse();
   }
@@ -2489,11 +2373,11 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
 
 abstract class MonitoringEntryTextLog extends MonitoringEntry {
   factory MonitoringEntryTextLog(
-      {required EventSeverity severity,
-      required String text,
-      required String id,
-      @DateTimeConverter() required DateTime logTimestamp,
-      required List<StackFrame> frames}) = _$MonitoringEntryTextLogImpl;
+          {required EventSeverity severity,
+          required String text,
+          required String id,
+          @DateTimeConverter() required DateTime logTimestamp}) =
+      _$MonitoringEntryTextLogImpl;
   MonitoringEntryTextLog._() : super._();
 
   factory MonitoringEntryTextLog.fromJson(Map<String, dynamic> json) =
@@ -2510,8 +2394,6 @@ abstract class MonitoringEntryTextLog extends MonitoringEntry {
   DateTime get logTimestamp;
   @DateTimeConverter()
   set logTimestamp(DateTime value);
-  List<StackFrame> get frames;
-  set frames(List<StackFrame> value);
   @override
   @JsonKey(ignore: true)
   _$$MonitoringEntryTextLogImplCopyWith<_$MonitoringEntryTextLogImpl>
@@ -2531,8 +2413,7 @@ abstract class _$$MonitoringEntryStateLogImplCopyWith<$Res>
       {EventSeverity severity,
       String text,
       String id,
-      @DateTimeConverter() DateTime logTimestamp,
-      List<StackFrame> frames});
+      @DateTimeConverter() DateTime logTimestamp});
 }
 
 /// @nodoc
@@ -2551,7 +2432,6 @@ class __$$MonitoringEntryStateLogImplCopyWithImpl<$Res>
     Object? text = null,
     Object? id = null,
     Object? logTimestamp = null,
-    Object? frames = null,
   }) {
     return _then(_$MonitoringEntryStateLogImpl(
       severity: null == severity
@@ -2570,10 +2450,6 @@ class __$$MonitoringEntryStateLogImplCopyWithImpl<$Res>
           ? _value.logTimestamp
           : logTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      frames: null == frames
-          ? _value.frames
-          : frames // ignore: cast_nullable_to_non_nullable
-              as List<StackFrame>,
     ));
   }
 }
@@ -2586,7 +2462,6 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
       required this.text,
       required this.id,
       @DateTimeConverter() required this.logTimestamp,
-      required this.frames,
       final String? $type})
       : $type = $type ?? 'stateChange',
         super._();
@@ -2603,15 +2478,13 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
   @override
   @DateTimeConverter()
   DateTime logTimestamp;
-  @override
-  List<StackFrame> frames;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'MonitoringEntry.stateChange(severity: $severity, text: $text, id: $id, logTimestamp: $logTimestamp, frames: $frames)';
+    return 'MonitoringEntry.stateChange(severity: $severity, text: $text, id: $id, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -2644,23 +2517,22 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
     required TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)
         exception,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         textLog,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
   }) {
-    return stateChange(severity, text, id, logTimestamp, frames);
+    return stateChange(severity, text, id, logTimestamp);
   }
 
   @override
@@ -2686,31 +2558,22 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult? Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
   }) {
-    return stateChange?.call(severity, text, id, logTimestamp, frames);
+    return stateChange?.call(severity, text, id, logTimestamp);
   }
 
   @override
@@ -2736,25 +2599,16 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -2762,7 +2616,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
     required TResult orElse(),
   }) {
     if (stateChange != null) {
-      return stateChange(severity, text, id, logTimestamp, frames);
+      return stateChange(severity, text, id, logTimestamp);
     }
     return orElse();
   }
@@ -2821,11 +2675,11 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
 
 abstract class MonitoringEntryStateLog extends MonitoringEntry {
   factory MonitoringEntryStateLog(
-      {required EventSeverity severity,
-      required String text,
-      required String id,
-      @DateTimeConverter() required DateTime logTimestamp,
-      required List<StackFrame> frames}) = _$MonitoringEntryStateLogImpl;
+          {required EventSeverity severity,
+          required String text,
+          required String id,
+          @DateTimeConverter() required DateTime logTimestamp}) =
+      _$MonitoringEntryStateLogImpl;
   MonitoringEntryStateLog._() : super._();
 
   factory MonitoringEntryStateLog.fromJson(Map<String, dynamic> json) =
@@ -2842,8 +2696,6 @@ abstract class MonitoringEntryStateLog extends MonitoringEntry {
   DateTime get logTimestamp;
   @DateTimeConverter()
   set logTimestamp(DateTime value);
-  List<StackFrame> get frames;
-  set frames(List<StackFrame> value);
   @override
   @JsonKey(ignore: true)
   _$$MonitoringEntryStateLogImplCopyWith<_$MonitoringEntryStateLogImpl>
@@ -2969,17 +2821,16 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
     required TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)
         exception,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         textLog,
     required TResult Function(EventSeverity severity, String text, String id,
-            @DateTimeConverter() DateTime logTimestamp, List<StackFrame> frames)
+            @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)
@@ -3011,25 +2862,16 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult? Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult? Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult? Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
@@ -3061,25 +2903,16 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             String storageName,
             String key,
             String value,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+            @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
     TResult Function(
             EventSeverity severity, String text, List<StackFrame> frames)?
         exception,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         textLog,
-    TResult Function(
-            EventSeverity severity,
-            String text,
-            String id,
-            @DateTimeConverter() DateTime logTimestamp,
-            List<StackFrame> frames)?
+    TResult Function(EventSeverity severity, String text, String id,
+            @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(EventSeverity severity, double x, double y,
             @DateTimeConverter() DateTime logTimestamp)?
