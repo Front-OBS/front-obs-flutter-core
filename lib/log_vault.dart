@@ -44,10 +44,10 @@ class LogVault extends ChangeNotifier {
 
     await openSendStream();
   }
-
+/*
   static late StreamController<RegisteredEvent> eventsRemoteController;
 
-  static late StreamController<EventsBatch> sendRequests;
+  static late StreamController<EventsBatch> sendRequests;*/
 
   static void sendBatch() async {
     print("sending batch with ${eventsBuffer.length} events");
@@ -113,13 +113,13 @@ class LogVault extends ChangeNotifier {
   }*/
 
   static Future openSendStream() async {
-    eventsRemoteController = StreamController.broadcast();
-    sendRequests = StreamController.broadcast();
+  /*  eventsRemoteController = StreamController.broadcast();
+    sendRequests = StreamController.broadcast();*/
 
-    eventsRemoteController.stream.listen(scheduleEvent);
+   /* eventsRemoteController.stream.listen(scheduleEvent);
     sendRequests.stream.listen((event) {
       print("SENDING EVENTS ${event.events?.length}");
-    });
+    });*/
   }
 
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
@@ -224,7 +224,8 @@ class LogVault extends ChangeNotifier {
     // entries.add(entry);
     //logsStreamController.sink.add(entry);
     print("got entry ${entry.kind}");
-    eventsRemoteController.add(mapEventToRemote(entry));
+    eventsBuffer.add(mapEventToRemote(entry));
+    scheduleEvent();
     //notifyListeners();
   }
 
