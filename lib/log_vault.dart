@@ -241,14 +241,14 @@ class LogVault extends ChangeNotifier {
   void sendLog(MonitoringEntry entry) {}*/
 
   static void addEntry(MonitoringEntry entry) {
-    if (!initialized) {
+    /*if (!initialized) {
       print(entry);
       return;
     }
     // entries.add(entry);
     //logsStreamController.sink.add(entry);
     print("got entry ${entry.kind}");
-    scheduleEvent(mapEventToRemote(entry));
+    scheduleEvent(mapEventToRemote(entry));*/
     //notifyListeners();
   }
 
@@ -263,7 +263,7 @@ class LogVault extends ChangeNotifier {
   }*/
 
   static void addException(Object exception, StackTrace? trace) {
-    final t = trace != null ? Trace.from(trace) : null;
+    /*final t = trace != null ? Trace.from(trace) : null;
     addEntry(MonitoringEntry.exception(
       severity: EventSeverity.info,
       text: exception.toString(),
@@ -276,7 +276,7 @@ class LogVault extends ChangeNotifier {
                 line: trace.line,
                 path: trace.uri.toString()),
       ],
-    ));
+    ));*/
   }
 
 /*
