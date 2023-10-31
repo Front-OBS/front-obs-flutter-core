@@ -207,8 +207,8 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
     }*/
 /*
     GetIt.I.get<SessionVault>().appRestarted;*/
-
-    final newKey = GlobalKey();
+/*
+    final newKey = GlobalKey();*/
 /*
     final builder = ({
       required Widget child,
@@ -225,11 +225,11 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
 
     QaToolsLayer.visibility.value = false;
 */
-
+/*
     FlutterError.onError = (details) {
       LogVault.addException(details.exception, details.stack);
       //  GetIt.I.get<LogVault>().addException(details.exception, details.stack!);
-    };
+    };*/
 
     await widget.launcher(
       env,
