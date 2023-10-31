@@ -50,7 +50,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   @override
   void initState() {
     loadDeviceInfo();
-    LogVault.initVault(true);
+    //LogVault.initVault(true);
     super.initState();
   }
 
