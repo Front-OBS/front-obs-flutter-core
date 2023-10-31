@@ -50,7 +50,7 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   @override
   void initState() {
     loadDeviceInfo();
-    //LogVault.initVault(true);
+    LogVault.initVault(true);
     super.initState();
   }
 
@@ -225,16 +225,19 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
 
     QaToolsLayer.visibility.value = false;
 */
-/*
     FlutterError.onError = (details) {
       LogVault.addException(details.exception, details.stack);
       //  GetIt.I.get<LogVault>().addException(details.exception, details.stack!);
-    };*/
+    };
 
-    await widget.launcher(
-      env,
-      ({required Widget child}) => child,
-    )!;
+    try {
+      await widget.launcher(
+        env,
+        ({required Widget child}) => child,
+      )!;
+    } catch (ex, stack) {
+      LogVault.addException(ex, stack);
+    }
 
     /* Zone.current.fork().run(
           () async => await widget.launcher(
