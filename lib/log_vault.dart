@@ -263,7 +263,7 @@ class LogVault extends ChangeNotifier {
   }*/
 
   static void addException(Object exception, StackTrace? trace) {
-    print(exception.toString());
+    print(exception.toString() + trace.toString());
    /* final t = trace != null ? Trace.from(trace) : null;
     addEntry(MonitoringEntry.exception(
       severity: EventSeverity.info,
