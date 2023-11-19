@@ -46,6 +46,83 @@ abstract class Swagger extends ChopperService {
   }
 
   ///
+  Future<chopper.Response<SuccessAuthResponse?>> apiAuthAuthenticatePost(
+      {required AuthenticateRequest? body}) {
+    generatedMapping.putIfAbsent(
+        SuccessAuthResponse, () => SuccessAuthResponse.fromJsonFactory);
+
+    return _apiAuthAuthenticatePost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/api/auth/authenticate',
+    optionalBody: true,
+  )
+  Future<chopper.Response<SuccessAuthResponse?>> _apiAuthAuthenticatePost(
+      {@Body() required AuthenticateRequest? body});
+
+  ///
+  Future<chopper.Response<bool>> apiAuthRegisterPost(
+      {required RegisterRequest? body}) {
+    return _apiAuthRegisterPost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/api/auth/register',
+    optionalBody: true,
+  )
+  Future<chopper.Response<bool>> _apiAuthRegisterPost(
+      {@Body() required RegisterRequest? body});
+
+  ///
+  Future<chopper.Response<List<ProjectInfo>>> apiProjectListGet() {
+    generatedMapping.putIfAbsent(
+        ProjectInfo, () => ProjectInfo.fromJsonFactory);
+
+    return _apiProjectListGet();
+  }
+
+  ///
+  @Get(path: '/api/project/list')
+  Future<chopper.Response<List<ProjectInfo>>> _apiProjectListGet();
+
+  ///
+  Future<chopper.Response<List<ProjectUserSummary>>> apiProjectUsersPost(
+      {required GetProjectUsersRequest? body}) {
+    generatedMapping.putIfAbsent(
+        ProjectUserSummary, () => ProjectUserSummary.fromJsonFactory);
+
+    return _apiProjectUsersPost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/api/project/users',
+    optionalBody: true,
+  )
+  Future<chopper.Response<List<ProjectUserSummary>>> _apiProjectUsersPost(
+      {@Body() required GetProjectUsersRequest? body});
+
+  ///
+  Future<chopper.Response<ProjectInfo?>> apiProjectCreatePost(
+      {required String? body}) {
+    generatedMapping.putIfAbsent(
+        ProjectInfo, () => ProjectInfo.fromJsonFactory);
+
+    return _apiProjectCreatePost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/api/project/create',
+    optionalBody: true,
+  )
+  Future<chopper.Response<ProjectInfo?>> _apiProjectCreatePost(
+      {@Body() required String? body});
+
+  ///
   Future<chopper.Response<String>> get() {
     return _get();
   }
@@ -64,27 +141,36 @@ abstract class Swagger extends ChopperService {
   Future<chopper.Response<String>> _apiHealthcheckGet();
 
   ///
-  Future<chopper.Response<List<DeviceInfo>>> apiTerminalLivedevicesListGet() {
+  Future<chopper.Response<List<DeviceInfo>>> apiLiveListGet(
+      {required LiveDevicesListRequest? body}) {
     generatedMapping.putIfAbsent(DeviceInfo, () => DeviceInfo.fromJsonFactory);
 
-    return _apiTerminalLivedevicesListGet();
+    return _apiLiveListGet(body: body);
   }
 
   ///
-  @Get(path: '/api/terminal/livedevices/list')
-  Future<chopper.Response<List<DeviceInfo>>> _apiTerminalLivedevicesListGet();
+  @Get(path: '/api/live/list')
+  Future<chopper.Response<List<DeviceInfo>>> _apiLiveListGet(
+      {@Body() required LiveDevicesListRequest? body});
 
   ///
-  ///@param code
-  Future<chopper.Response> apiTerminalDeviceEventsGet({String? code}) {
-    return _apiTerminalDeviceEventsGet(code: code);
+  ///@param deviceID
+  ///@param projectID
+  Future<chopper.Response> apiLiveEventsGet({
+    String? deviceID,
+    String? projectID,
+  }) {
+    return _apiLiveEventsGet(deviceID: deviceID, projectID: projectID);
   }
 
   ///
-  ///@param code
-  @Get(path: '/api/terminal/deviceEvents')
-  Future<chopper.Response> _apiTerminalDeviceEventsGet(
-      {@Query('code') String? code});
+  ///@param deviceID
+  ///@param projectID
+  @Get(path: '/api/live/events')
+  Future<chopper.Response> _apiLiveEventsGet({
+    @Query('deviceID') String? deviceID,
+    @Query('projectID') String? projectID,
+  });
 
   ///
   Future<chopper.Response<bool>> apiConsumerConsumePost(
@@ -102,9 +188,398 @@ abstract class Swagger extends ChopperService {
 }
 
 @JsonSerializable(explicitToJson: true)
+class SuccessAuthResponse {
+  const SuccessAuthResponse({
+    required this.jwt,
+    required this.profileSummary,
+  });
+
+  factory SuccessAuthResponse.fromJson(Map<String, dynamic> json) =>
+      _$SuccessAuthResponseFromJson(json);
+
+  static const toJsonFactory = _$SuccessAuthResponseToJson;
+  Map<String, dynamic> toJson() => _$SuccessAuthResponseToJson(this);
+
+  @JsonKey(name: 'jwt')
+  final String jwt;
+  @JsonKey(name: 'profileSummary')
+  final ProfileSummary? profileSummary;
+  static const fromJsonFactory = _$SuccessAuthResponseFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is SuccessAuthResponse &&
+            (identical(other.jwt, jwt) ||
+                const DeepCollectionEquality().equals(other.jwt, jwt)) &&
+            (identical(other.profileSummary, profileSummary) ||
+                const DeepCollectionEquality()
+                    .equals(other.profileSummary, profileSummary)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(jwt) ^
+      const DeepCollectionEquality().hash(profileSummary) ^
+      runtimeType.hashCode;
+}
+
+extension $SuccessAuthResponseExtension on SuccessAuthResponse {
+  SuccessAuthResponse copyWith({String? jwt, ProfileSummary? profileSummary}) {
+    return SuccessAuthResponse(
+        jwt: jwt ?? this.jwt,
+        profileSummary: profileSummary ?? this.profileSummary);
+  }
+
+  SuccessAuthResponse copyWithWrapped(
+      {Wrapped<String>? jwt, Wrapped<ProfileSummary?>? profileSummary}) {
+    return SuccessAuthResponse(
+        jwt: (jwt != null ? jwt.value : this.jwt),
+        profileSummary: (profileSummary != null
+            ? profileSummary.value
+            : this.profileSummary));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ProfileSummary {
+  const ProfileSummary({
+    required this.userName,
+  });
+
+  factory ProfileSummary.fromJson(Map<String, dynamic> json) =>
+      _$ProfileSummaryFromJson(json);
+
+  static const toJsonFactory = _$ProfileSummaryToJson;
+  Map<String, dynamic> toJson() => _$ProfileSummaryToJson(this);
+
+  @JsonKey(name: 'userName')
+  final String userName;
+  static const fromJsonFactory = _$ProfileSummaryFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ProfileSummary &&
+            (identical(other.userName, userName) ||
+                const DeepCollectionEquality()
+                    .equals(other.userName, userName)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(userName) ^ runtimeType.hashCode;
+}
+
+extension $ProfileSummaryExtension on ProfileSummary {
+  ProfileSummary copyWith({String? userName}) {
+    return ProfileSummary(userName: userName ?? this.userName);
+  }
+
+  ProfileSummary copyWithWrapped({Wrapped<String>? userName}) {
+    return ProfileSummary(
+        userName: (userName != null ? userName.value : this.userName));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AuthenticateRequest {
+  const AuthenticateRequest({
+    required this.login,
+    required this.password,
+  });
+
+  factory AuthenticateRequest.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticateRequestFromJson(json);
+
+  static const toJsonFactory = _$AuthenticateRequestToJson;
+  Map<String, dynamic> toJson() => _$AuthenticateRequestToJson(this);
+
+  @JsonKey(name: 'login')
+  final String login;
+  @JsonKey(name: 'password')
+  final String password;
+  static const fromJsonFactory = _$AuthenticateRequestFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is AuthenticateRequest &&
+            (identical(other.login, login) ||
+                const DeepCollectionEquality().equals(other.login, login)) &&
+            (identical(other.password, password) ||
+                const DeepCollectionEquality()
+                    .equals(other.password, password)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(login) ^
+      const DeepCollectionEquality().hash(password) ^
+      runtimeType.hashCode;
+}
+
+extension $AuthenticateRequestExtension on AuthenticateRequest {
+  AuthenticateRequest copyWith({String? login, String? password}) {
+    return AuthenticateRequest(
+        login: login ?? this.login, password: password ?? this.password);
+  }
+
+  AuthenticateRequest copyWithWrapped(
+      {Wrapped<String>? login, Wrapped<String>? password}) {
+    return AuthenticateRequest(
+        login: (login != null ? login.value : this.login),
+        password: (password != null ? password.value : this.password));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class RegisterRequest {
+  const RegisterRequest({
+    required this.login,
+    required this.password,
+    required this.userName,
+  });
+
+  factory RegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$RegisterRequestFromJson(json);
+
+  static const toJsonFactory = _$RegisterRequestToJson;
+  Map<String, dynamic> toJson() => _$RegisterRequestToJson(this);
+
+  @JsonKey(name: 'login')
+  final String login;
+  @JsonKey(name: 'password')
+  final String password;
+  @JsonKey(name: 'userName')
+  final String userName;
+  static const fromJsonFactory = _$RegisterRequestFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is RegisterRequest &&
+            (identical(other.login, login) ||
+                const DeepCollectionEquality().equals(other.login, login)) &&
+            (identical(other.password, password) ||
+                const DeepCollectionEquality()
+                    .equals(other.password, password)) &&
+            (identical(other.userName, userName) ||
+                const DeepCollectionEquality()
+                    .equals(other.userName, userName)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(login) ^
+      const DeepCollectionEquality().hash(password) ^
+      const DeepCollectionEquality().hash(userName) ^
+      runtimeType.hashCode;
+}
+
+extension $RegisterRequestExtension on RegisterRequest {
+  RegisterRequest copyWith(
+      {String? login, String? password, String? userName}) {
+    return RegisterRequest(
+        login: login ?? this.login,
+        password: password ?? this.password,
+        userName: userName ?? this.userName);
+  }
+
+  RegisterRequest copyWithWrapped(
+      {Wrapped<String>? login,
+      Wrapped<String>? password,
+      Wrapped<String>? userName}) {
+    return RegisterRequest(
+        login: (login != null ? login.value : this.login),
+        password: (password != null ? password.value : this.password),
+        userName: (userName != null ? userName.value : this.userName));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ProjectInfo {
+  const ProjectInfo({
+    required this.id,
+    required this.name,
+    required this.mineRights,
+  });
+
+  factory ProjectInfo.fromJson(Map<String, dynamic> json) =>
+      _$ProjectInfoFromJson(json);
+
+  static const toJsonFactory = _$ProjectInfoToJson;
+  Map<String, dynamic> toJson() => _$ProjectInfoToJson(this);
+
+  @JsonKey(name: 'id')
+  final String id;
+  @JsonKey(name: 'name')
+  final String name;
+  @JsonKey(name: 'mineRights', defaultValue: <String>[])
+  final List<String> mineRights;
+  static const fromJsonFactory = _$ProjectInfoFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ProjectInfo &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.mineRights, mineRights) ||
+                const DeepCollectionEquality()
+                    .equals(other.mineRights, mineRights)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(mineRights) ^
+      runtimeType.hashCode;
+}
+
+extension $ProjectInfoExtension on ProjectInfo {
+  ProjectInfo copyWith({String? id, String? name, List<String>? mineRights}) {
+    return ProjectInfo(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        mineRights: mineRights ?? this.mineRights);
+  }
+
+  ProjectInfo copyWithWrapped(
+      {Wrapped<String>? id,
+      Wrapped<String>? name,
+      Wrapped<List<String>>? mineRights}) {
+    return ProjectInfo(
+        id: (id != null ? id.value : this.id),
+        name: (name != null ? name.value : this.name),
+        mineRights: (mineRights != null ? mineRights.value : this.mineRights));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ProjectUserSummary {
+  const ProjectUserSummary({
+    required this.userName,
+    required this.projectRights,
+  });
+
+  factory ProjectUserSummary.fromJson(Map<String, dynamic> json) =>
+      _$ProjectUserSummaryFromJson(json);
+
+  static const toJsonFactory = _$ProjectUserSummaryToJson;
+  Map<String, dynamic> toJson() => _$ProjectUserSummaryToJson(this);
+
+  @JsonKey(name: 'userName')
+  final String userName;
+  @JsonKey(name: 'projectRights', defaultValue: <String>[])
+  final List<String> projectRights;
+  static const fromJsonFactory = _$ProjectUserSummaryFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ProjectUserSummary &&
+            (identical(other.userName, userName) ||
+                const DeepCollectionEquality()
+                    .equals(other.userName, userName)) &&
+            (identical(other.projectRights, projectRights) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectRights, projectRights)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(userName) ^
+      const DeepCollectionEquality().hash(projectRights) ^
+      runtimeType.hashCode;
+}
+
+extension $ProjectUserSummaryExtension on ProjectUserSummary {
+  ProjectUserSummary copyWith({String? userName, List<String>? projectRights}) {
+    return ProjectUserSummary(
+        userName: userName ?? this.userName,
+        projectRights: projectRights ?? this.projectRights);
+  }
+
+  ProjectUserSummary copyWithWrapped(
+      {Wrapped<String>? userName, Wrapped<List<String>>? projectRights}) {
+    return ProjectUserSummary(
+        userName: (userName != null ? userName.value : this.userName),
+        projectRights:
+            (projectRights != null ? projectRights.value : this.projectRights));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetProjectUsersRequest {
+  const GetProjectUsersRequest({
+    this.projectID,
+  });
+
+  factory GetProjectUsersRequest.fromJson(Map<String, dynamic> json) =>
+      _$GetProjectUsersRequestFromJson(json);
+
+  static const toJsonFactory = _$GetProjectUsersRequestToJson;
+  Map<String, dynamic> toJson() => _$GetProjectUsersRequestToJson(this);
+
+  @JsonKey(name: 'projectID')
+  final String? projectID;
+  static const fromJsonFactory = _$GetProjectUsersRequestFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is GetProjectUsersRequest &&
+            (identical(other.projectID, projectID) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectID, projectID)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(projectID) ^ runtimeType.hashCode;
+}
+
+extension $GetProjectUsersRequestExtension on GetProjectUsersRequest {
+  GetProjectUsersRequest copyWith({String? projectID}) {
+    return GetProjectUsersRequest(projectID: projectID ?? this.projectID);
+  }
+
+  GetProjectUsersRequest copyWithWrapped({Wrapped<String?>? projectID}) {
+    return GetProjectUsersRequest(
+        projectID: (projectID != null ? projectID.value : this.projectID));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class DeviceInfo {
   const DeviceInfo({
     required this.code,
+    required this.parameters,
   });
 
   factory DeviceInfo.fromJson(Map<String, dynamic> json) =>
@@ -115,6 +590,8 @@ class DeviceInfo {
 
   @JsonKey(name: 'code')
   final String code;
+  @JsonKey(name: 'parameters')
+  final Map<String, dynamic> parameters;
   static const fromJsonFactory = _$DeviceInfoFromJson;
 
   @override
@@ -122,7 +599,10 @@ class DeviceInfo {
     return identical(this, other) ||
         (other is DeviceInfo &&
             (identical(other.code, code) ||
-                const DeepCollectionEquality().equals(other.code, code)));
+                const DeepCollectionEquality().equals(other.code, code)) &&
+            (identical(other.parameters, parameters) ||
+                const DeepCollectionEquality()
+                    .equals(other.parameters, parameters)));
   }
 
   @override
@@ -130,16 +610,66 @@ class DeviceInfo {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(code) ^ runtimeType.hashCode;
+      const DeepCollectionEquality().hash(code) ^
+      const DeepCollectionEquality().hash(parameters) ^
+      runtimeType.hashCode;
 }
 
 extension $DeviceInfoExtension on DeviceInfo {
-  DeviceInfo copyWith({String? code}) {
-    return DeviceInfo(code: code ?? this.code);
+  DeviceInfo copyWith({String? code, Map<String, dynamic>? parameters}) {
+    return DeviceInfo(
+        code: code ?? this.code, parameters: parameters ?? this.parameters);
   }
 
-  DeviceInfo copyWithWrapped({Wrapped<String>? code}) {
-    return DeviceInfo(code: (code != null ? code.value : this.code));
+  DeviceInfo copyWithWrapped(
+      {Wrapped<String>? code, Wrapped<Map<String, dynamic>>? parameters}) {
+    return DeviceInfo(
+        code: (code != null ? code.value : this.code),
+        parameters: (parameters != null ? parameters.value : this.parameters));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class LiveDevicesListRequest {
+  const LiveDevicesListRequest({
+    required this.projectID,
+  });
+
+  factory LiveDevicesListRequest.fromJson(Map<String, dynamic> json) =>
+      _$LiveDevicesListRequestFromJson(json);
+
+  static const toJsonFactory = _$LiveDevicesListRequestToJson;
+  Map<String, dynamic> toJson() => _$LiveDevicesListRequestToJson(this);
+
+  @JsonKey(name: 'projectID')
+  final String projectID;
+  static const fromJsonFactory = _$LiveDevicesListRequestFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is LiveDevicesListRequest &&
+            (identical(other.projectID, projectID) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectID, projectID)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(projectID) ^ runtimeType.hashCode;
+}
+
+extension $LiveDevicesListRequestExtension on LiveDevicesListRequest {
+  LiveDevicesListRequest copyWith({String? projectID}) {
+    return LiveDevicesListRequest(projectID: projectID ?? this.projectID);
+  }
+
+  LiveDevicesListRequest copyWithWrapped({Wrapped<String>? projectID}) {
+    return LiveDevicesListRequest(
+        projectID: (projectID != null ? projectID.value : this.projectID));
   }
 }
 
@@ -147,9 +677,10 @@ extension $DeviceInfoExtension on DeviceInfo {
 class EventsBatch {
   const EventsBatch({
     required this.isLive,
+    required this.deviceInfo,
     required this.identification,
     required this.events,
-    required this.projectKey,
+    required this.projectID,
   });
 
   factory EventsBatch.fromJson(Map<String, dynamic> json) =>
@@ -160,12 +691,14 @@ class EventsBatch {
 
   @JsonKey(name: 'isLive')
   final bool isLive;
+  @JsonKey(name: 'deviceInfo')
+  final Map<String, dynamic> deviceInfo;
   @JsonKey(name: 'identification')
   final Identification? identification;
   @JsonKey(name: 'events', defaultValue: <RegisteredEvent>[])
   final List<RegisteredEvent> events;
-  @JsonKey(name: 'projectKey')
-  final String projectKey;
+  @JsonKey(name: 'projectID')
+  final String projectID;
   static const fromJsonFactory = _$EventsBatchFromJson;
 
   @override
@@ -174,14 +707,17 @@ class EventsBatch {
         (other is EventsBatch &&
             (identical(other.isLive, isLive) ||
                 const DeepCollectionEquality().equals(other.isLive, isLive)) &&
+            (identical(other.deviceInfo, deviceInfo) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceInfo, deviceInfo)) &&
             (identical(other.identification, identification) ||
                 const DeepCollectionEquality()
                     .equals(other.identification, identification)) &&
             (identical(other.events, events) ||
                 const DeepCollectionEquality().equals(other.events, events)) &&
-            (identical(other.projectKey, projectKey) ||
+            (identical(other.projectID, projectID) ||
                 const DeepCollectionEquality()
-                    .equals(other.projectKey, projectKey)));
+                    .equals(other.projectID, projectID)));
   }
 
   @override
@@ -190,37 +726,42 @@ class EventsBatch {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(isLive) ^
+      const DeepCollectionEquality().hash(deviceInfo) ^
       const DeepCollectionEquality().hash(identification) ^
       const DeepCollectionEquality().hash(events) ^
-      const DeepCollectionEquality().hash(projectKey) ^
+      const DeepCollectionEquality().hash(projectID) ^
       runtimeType.hashCode;
 }
 
 extension $EventsBatchExtension on EventsBatch {
   EventsBatch copyWith(
       {bool? isLive,
+      Map<String, dynamic>? deviceInfo,
       Identification? identification,
       List<RegisteredEvent>? events,
-      String? projectKey}) {
+      String? projectID}) {
     return EventsBatch(
         isLive: isLive ?? this.isLive,
+        deviceInfo: deviceInfo ?? this.deviceInfo,
         identification: identification ?? this.identification,
         events: events ?? this.events,
-        projectKey: projectKey ?? this.projectKey);
+        projectID: projectID ?? this.projectID);
   }
 
   EventsBatch copyWithWrapped(
       {Wrapped<bool>? isLive,
+      Wrapped<Map<String, dynamic>>? deviceInfo,
       Wrapped<Identification?>? identification,
       Wrapped<List<RegisteredEvent>>? events,
-      Wrapped<String>? projectKey}) {
+      Wrapped<String>? projectID}) {
     return EventsBatch(
         isLive: (isLive != null ? isLive.value : this.isLive),
+        deviceInfo: (deviceInfo != null ? deviceInfo.value : this.deviceInfo),
         identification: (identification != null
             ? identification.value
             : this.identification),
         events: (events != null ? events.value : this.events),
-        projectKey: (projectKey != null ? projectKey.value : this.projectKey));
+        projectID: (projectID != null ? projectID.value : this.projectID));
   }
 }
 
@@ -939,6 +1480,73 @@ extension $TapEventExtension on TapEvent {
     return TapEvent(
         x: (x != null ? x.value : this.x), y: (y != null ? y.value : this.y));
   }
+}
+
+int? deviceInfoEntryKindNullableToJson(
+    enums.DeviceInfoEntryKind? deviceInfoEntryKind) {
+  return deviceInfoEntryKind?.value;
+}
+
+int? deviceInfoEntryKindToJson(enums.DeviceInfoEntryKind deviceInfoEntryKind) {
+  return deviceInfoEntryKind.value;
+}
+
+enums.DeviceInfoEntryKind deviceInfoEntryKindFromJson(
+  Object? deviceInfoEntryKind, [
+  enums.DeviceInfoEntryKind? defaultValue,
+]) {
+  return enums.DeviceInfoEntryKind.values.firstWhereOrNull((e) =>
+          e.value.toString().toLowerCase() ==
+          deviceInfoEntryKind?.toString().toLowerCase()) ??
+      defaultValue ??
+      enums.DeviceInfoEntryKind.swaggerGeneratedUnknown;
+}
+
+enums.DeviceInfoEntryKind? deviceInfoEntryKindNullableFromJson(
+  Object? deviceInfoEntryKind, [
+  enums.DeviceInfoEntryKind? defaultValue,
+]) {
+  if (deviceInfoEntryKind == null) {
+    return null;
+  }
+  return enums.DeviceInfoEntryKind.values
+          .firstWhereOrNull((e) => e.value == deviceInfoEntryKind) ??
+      defaultValue;
+}
+
+List<int> deviceInfoEntryKindListToJson(
+    List<enums.DeviceInfoEntryKind>? deviceInfoEntryKind) {
+  if (deviceInfoEntryKind == null) {
+    return [];
+  }
+
+  return deviceInfoEntryKind.map((e) => e.value!).toList();
+}
+
+List<enums.DeviceInfoEntryKind> deviceInfoEntryKindListFromJson(
+  List? deviceInfoEntryKind, [
+  List<enums.DeviceInfoEntryKind>? defaultValue,
+]) {
+  if (deviceInfoEntryKind == null) {
+    return defaultValue ?? [];
+  }
+
+  return deviceInfoEntryKind
+      .map((e) => deviceInfoEntryKindFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.DeviceInfoEntryKind>? deviceInfoEntryKindNullableListFromJson(
+  List? deviceInfoEntryKind, [
+  List<enums.DeviceInfoEntryKind>? defaultValue,
+]) {
+  if (deviceInfoEntryKind == null) {
+    return defaultValue;
+  }
+
+  return deviceInfoEntryKind
+      .map((e) => deviceInfoEntryKindFromJson(e.toString()))
+      .toList();
 }
 
 int? eventKindNullableToJson(enums.EventKind? eventKind) {

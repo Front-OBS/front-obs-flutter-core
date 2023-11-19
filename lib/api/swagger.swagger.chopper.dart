@@ -17,6 +17,72 @@ class _$Swagger extends Swagger {
   final definitionType = Swagger;
 
   @override
+  Future<Response<SuccessAuthResponse>> _apiAuthAuthenticatePost(
+      {required AuthenticateRequest? body}) {
+    final Uri $url = Uri.parse('/api/auth/authenticate');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<SuccessAuthResponse, SuccessAuthResponse>($request);
+  }
+
+  @override
+  Future<Response<bool>> _apiAuthRegisterPost(
+      {required RegisterRequest? body}) {
+    final Uri $url = Uri.parse('/api/auth/register');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<bool, bool>($request);
+  }
+
+  @override
+  Future<Response<List<ProjectInfo>>> _apiProjectListGet() {
+    final Uri $url = Uri.parse('/api/project/list');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<List<ProjectInfo>, ProjectInfo>($request);
+  }
+
+  @override
+  Future<Response<List<ProjectUserSummary>>> _apiProjectUsersPost(
+      {required GetProjectUsersRequest? body}) {
+    final Uri $url = Uri.parse('/api/project/users');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<List<ProjectUserSummary>, ProjectUserSummary>($request);
+  }
+
+  @override
+  Future<Response<ProjectInfo>> _apiProjectCreatePost({required String? body}) {
+    final Uri $url = Uri.parse('/api/project/create');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<ProjectInfo, ProjectInfo>($request);
+  }
+
+  @override
   Future<Response<String>> _get() {
     final Uri $url = Uri.parse('/');
     final Request $request = Request(
@@ -39,20 +105,29 @@ class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<List<DeviceInfo>>> _apiTerminalLivedevicesListGet() {
-    final Uri $url = Uri.parse('/api/terminal/livedevices/list');
+  Future<Response<List<DeviceInfo>>> _apiLiveListGet(
+      {required LiveDevicesListRequest? body}) {
+    final Uri $url = Uri.parse('/api/live/list');
+    final $body = body;
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      body: $body,
     );
     return client.send<List<DeviceInfo>, DeviceInfo>($request);
   }
 
   @override
-  Future<Response<dynamic>> _apiTerminalDeviceEventsGet({String? code}) {
-    final Uri $url = Uri.parse('/api/terminal/deviceEvents');
-    final Map<String, dynamic> $params = <String, dynamic>{'code': code};
+  Future<Response<dynamic>> _apiLiveEventsGet({
+    String? deviceID,
+    String? projectID,
+  }) {
+    final Uri $url = Uri.parse('/api/live/events');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'deviceID': deviceID,
+      'projectID': projectID,
+    };
     final Request $request = Request(
       'GET',
       $url,

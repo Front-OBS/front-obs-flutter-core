@@ -11,6 +11,175 @@
     }
   ],
   "paths": {
+    "/api/auth/authenticate": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "Auth_Authenticate",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticateRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessAuthResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "Auth_Register",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/project/list": {
+      "get": {
+        "tags": [
+          "ProjectsService"
+        ],
+        "operationId": "ProjectsService_GetProjectsListAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectInfo"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/project/users": {
+      "post": {
+        "tags": [
+          "ProjectsService"
+        ],
+        "operationId": "ProjectsService_GetProjectUsers",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetProjectUsersRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectUserSummary"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/project/create": {
+      "post": {
+        "tags": [
+          "ProjectsService"
+        ],
+        "operationId": "ProjectsService_GetProjectsList",
+        "requestBody": {
+          "x-name": "name",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/": {
       "get": {
         "tags": [
@@ -52,12 +221,24 @@
         }
       }
     },
-    "/api/terminal/livedevices/list": {
+    "/api/live/list": {
       "get": {
         "tags": [
-          "TerminalService"
+          "LiveService"
         ],
-        "operationId": "TerminalService_getLiveDevices",
+        "operationId": "LiveService_getLiveDevices",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LiveDevicesListRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -71,24 +252,35 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": ""
           }
         }
       }
     },
-    "/api/terminal/deviceEvents": {
+    "/api/live/events": {
       "get": {
         "tags": [
-          "TerminalService"
+          "LiveService"
         ],
-        "operationId": "TerminalService_subscribeOnDevice",
+        "operationId": "LiveService_subscribeOnDevice",
         "parameters": [
           {
-            "name": "code",
+            "name": "deviceID",
             "in": "query",
             "schema": {
               "type": "string"
             },
             "x-position": 1
+          },
+          {
+            "name": "projectID",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
           }
         ],
         "responses": {
@@ -126,6 +318,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
           }
         }
       }
@@ -133,15 +335,230 @@
   },
   "components": {
     "schemas": {
+      "SuccessAuthResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "jwt",
+          "profileSummary"
+        ],
+        "properties": {
+          "jwt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "profileSummary": {
+            "$ref": "#/components/schemas/ProfileSummary"
+          }
+        }
+      },
+      "ProfileSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userName"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "AuthenticateRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "login",
+          "password"
+        ],
+        "properties": {
+          "login": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "login",
+          "password",
+          "userName"
+        ],
+        "properties": {
+          "login": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1
+          },
+          "userName": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "ProjectInfo": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "mineRights"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mineRights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ProjectUserSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userName",
+          "projectRights"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "projectRights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GetProjectUsersRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectID": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
       "DeviceInfo": {
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "code"
+          "code",
+          "parameters"
         ],
         "properties": {
           "code": {
             "type": "string",
+            "minLength": 1
+          },
+          "parameters": {
+            "type": "object",
+            "x-dictionaryKey": {
+              "$ref": "#/components/schemas/DeviceInfoEntryKind"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DeviceInfoEntryKind": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "ID",
+          "Host",
+          "Board",
+          "BootLoader",
+          "Brand",
+          "Device",
+          "Display",
+          "DisplayMetrics",
+          "Fingerprint",
+          "Hardware",
+          "isPhysical",
+          "OSType",
+          "Manifacturer",
+          "Model",
+          "LocalizedModel",
+          "Product",
+          "SerialNumber",
+          "Supported32BitAbis",
+          "Supported64BitAbis",
+          "SupportedAbis",
+          "SystemFeatures",
+          "Tabs",
+          "Type",
+          "AndroidVersion",
+          "IosVersion",
+          "SystemName",
+          "SystemVersion",
+          "UTSName"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27
+        ]
+      },
+      "LiveDevicesListRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "projectID"
+        ],
+        "properties": {
+          "projectID": {
+            "type": "string",
+            "format": "guid",
             "minLength": 1
           }
         }
@@ -151,13 +568,23 @@
         "additionalProperties": false,
         "required": [
           "isLive",
+          "deviceInfo",
           "identification",
           "events",
-          "projectKey"
+          "projectID"
         ],
         "properties": {
           "isLive": {
             "type": "boolean"
+          },
+          "deviceInfo": {
+            "type": "object",
+            "x-dictionaryKey": {
+              "$ref": "#/components/schemas/DeviceInfoEntryKind"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
           },
           "identification": {
             "$ref": "#/components/schemas/Identification"
@@ -168,8 +595,9 @@
               "$ref": "#/components/schemas/RegisteredEvent"
             }
           },
-          "projectKey": {
+          "projectID": {
             "type": "string",
+            "format": "guid",
             "minLength": 1
           }
         }
@@ -442,6 +870,19 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "Basic": {
+        "type": "apiKey",
+        "description": "Add JWT TOKEN",
+        "name": "Authorization",
+        "in": "header"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Basic": []
+    }
+  ]
 }

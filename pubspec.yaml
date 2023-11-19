@@ -13,7 +13,7 @@ dependencies:
   dio:
   uuid: ^3.0.7
   freezed_annotation: ^2.2.0
-  device_info_plus:
+  device_info_plus: ^9.1.0
   emojis: ^0.9.9
   super_clipboard: ^0.7.0-dev.5
   stack_trace:
@@ -24,6 +24,7 @@ dependencies:
   crypto: ^3.0.3
   chopper: ^6.1.1
   json_annotation: ^4.8.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

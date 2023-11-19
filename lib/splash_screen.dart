@@ -7,6 +7,7 @@ import 'package:device_uuid/device_uuid.dart';
 import 'package:emojis/emoji.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 import 'package:uuid/uuid.dart';
 
@@ -47,10 +48,11 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
     });
   }
 
+  bool showEnvChangeConfirmation = false;
+
   @override
   void initState() {
     loadDeviceInfo();
-    LogVault.initVault(true);
     super.initState();
   }
 
@@ -72,7 +74,14 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                       child: FractionallySizedBox(
                         heightFactor: 0.3 + Random().nextDouble() * 0.4,
                         child: Container(
-                          color: Colors.white.withOpacity(0.05),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                Colors.blue.withOpacity(0.3),
+                                Colors.orange.withOpacity(0.3),
+                              ])),
                         ),
                       ),
                     ),
@@ -157,36 +166,84 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
                           color: Colors.white, fontWeight: FontWeight.w700),
                     ),
                     SizedBox(height: 10),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
+                    if (showEnvChangeConfirmation)
+                      Card(
+                          child: Padding(
+                        padding: const EdgeInsets.all(12),
                         child: Column(
                           children: [
-                            for (final env in widget.options.environments) ...[
-                              GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () async {
-                                  startEnv(env);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Spacer(),
-                                      Text(env.envTitle),
-                                      Spacer(),
-                                    ],
+                            Text(
+                              "Последний раз вы использовали другую среду для запуска."
+                              " Для успешной смены среды без переустановки следует очистить данные приложения",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: Colors.white),
+                            ),
+                            Row(
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      showEnvChangeConfirmation = false;
+                                    });
+                                  },
+                                  child: Text("Не сбрасывать"),
+                                ),
+                                Spacer(),
+                                TextButton(
+                                  onPressed: () async {
+                                    setState(() {
+                                      showEnvChangeConfirmation = false;
+                                    });
+                                    var prefs =
+                                        await SharedPreferences.getInstance();
+
+                                    var lastEnvId =
+                                        prefs.getString("_oberon_last_env");
+                                    await prefs.clear();
+                                    await prefs.setString(
+                                        "_oberon_last_env", lastEnvId!);
+                                  },
+                                  child: Text("Сбросить"),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ))
+                    else
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              for (final env
+                                  in widget.options.environments) ...[
+                                GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: () async {
+                                    startEnv(env);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Spacer(),
+                                        Text(env.envTitle),
+                                        Spacer(),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Divider(
-                                height: 10,
-                              )
-                            ]
-                          ]..removeLast(),
+                                Divider(
+                                  height: 10,
+                                )
+                              ]
+                            ]..removeLast(),
+                          ),
                         ),
-                      ),
-                    )
+                      )
                   ],
                 ),
               ),
@@ -198,37 +255,23 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   }
 
   Future<void> startEnv(TEnv env) async {
-    /*setState(() {
-      isLaunching = true;
-    });*/
-/*
-    if (widget.onRestart != null) {
-      await widget.onRestart!();
-    }*/
-/*
-    GetIt.I.get<SessionVault>().appRestarted;*/
-/*
-    final newKey = GlobalKey();*/
-/*
-    final builder = ({
-      required Widget child,
-    }) {
-      return QaToolsLayer<TEnv>(
-        key: newKey,
-        options: widget.options,
-        launcher: widget.launcher,
-        onRestart: widget.onRestart,
-        child: child,
-      );
-    };*/
-/*
+    LogVault.initVault(true, env.projectKey);
 
-    QaToolsLayer.visibility.value = false;
-*/
     FlutterError.onError = (details) {
       LogVault.addException(details.exception, details.stack);
-      //  GetIt.I.get<LogVault>().addException(details.exception, details.stack!);
     };
+
+    var prefs = await SharedPreferences.getInstance();
+
+    var lastEnvId = prefs.getString("_oberon_last_env");
+    if (lastEnvId == null || lastEnvId != env.envTitle) {
+      setState(() {
+        showEnvChangeConfirmation = true;
+      });
+
+      await prefs.setString("_oberon_last_env", env.envTitle);
+      return;
+    }
 
     try {
       await widget.launcher(
@@ -238,15 +281,5 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
     } catch (ex, stack) {
       LogVault.addException(ex, stack);
     }
-
-    /* Zone.current.fork().run(
-          () async => await widget.launcher(
-            env,
-            ({required Widget child}) => child,
-          )!,
-        );*/
-    /* setState(() {
-      isLaunching = false;
-    });*/
   }
 }

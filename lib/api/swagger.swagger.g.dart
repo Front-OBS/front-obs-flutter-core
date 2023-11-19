@@ -6,17 +6,128 @@ part of 'swagger.swagger.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+SuccessAuthResponse _$SuccessAuthResponseFromJson(Map<String, dynamic> json) =>
+    SuccessAuthResponse(
+      jwt: json['jwt'] as String,
+      profileSummary: json['profileSummary'] == null
+          ? null
+          : ProfileSummary.fromJson(
+              json['profileSummary'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$SuccessAuthResponseToJson(
+        SuccessAuthResponse instance) =>
+    <String, dynamic>{
+      'jwt': instance.jwt,
+      'profileSummary': instance.profileSummary?.toJson(),
+    };
+
+ProfileSummary _$ProfileSummaryFromJson(Map<String, dynamic> json) =>
+    ProfileSummary(
+      userName: json['userName'] as String,
+    );
+
+Map<String, dynamic> _$ProfileSummaryToJson(ProfileSummary instance) =>
+    <String, dynamic>{
+      'userName': instance.userName,
+    };
+
+AuthenticateRequest _$AuthenticateRequestFromJson(Map<String, dynamic> json) =>
+    AuthenticateRequest(
+      login: json['login'] as String,
+      password: json['password'] as String,
+    );
+
+Map<String, dynamic> _$AuthenticateRequestToJson(
+        AuthenticateRequest instance) =>
+    <String, dynamic>{
+      'login': instance.login,
+      'password': instance.password,
+    };
+
+RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
+    RegisterRequest(
+      login: json['login'] as String,
+      password: json['password'] as String,
+      userName: json['userName'] as String,
+    );
+
+Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
+    <String, dynamic>{
+      'login': instance.login,
+      'password': instance.password,
+      'userName': instance.userName,
+    };
+
+ProjectInfo _$ProjectInfoFromJson(Map<String, dynamic> json) => ProjectInfo(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      mineRights: (json['mineRights'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$ProjectInfoToJson(ProjectInfo instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'mineRights': instance.mineRights,
+    };
+
+ProjectUserSummary _$ProjectUserSummaryFromJson(Map<String, dynamic> json) =>
+    ProjectUserSummary(
+      userName: json['userName'] as String,
+      projectRights: (json['projectRights'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$ProjectUserSummaryToJson(ProjectUserSummary instance) =>
+    <String, dynamic>{
+      'userName': instance.userName,
+      'projectRights': instance.projectRights,
+    };
+
+GetProjectUsersRequest _$GetProjectUsersRequestFromJson(
+        Map<String, dynamic> json) =>
+    GetProjectUsersRequest(
+      projectID: json['projectID'] as String?,
+    );
+
+Map<String, dynamic> _$GetProjectUsersRequestToJson(
+        GetProjectUsersRequest instance) =>
+    <String, dynamic>{
+      'projectID': instance.projectID,
+    };
+
 DeviceInfo _$DeviceInfoFromJson(Map<String, dynamic> json) => DeviceInfo(
       code: json['code'] as String,
+      parameters: json['parameters'] as Map<String, dynamic>,
     );
 
 Map<String, dynamic> _$DeviceInfoToJson(DeviceInfo instance) =>
     <String, dynamic>{
       'code': instance.code,
+      'parameters': instance.parameters,
+    };
+
+LiveDevicesListRequest _$LiveDevicesListRequestFromJson(
+        Map<String, dynamic> json) =>
+    LiveDevicesListRequest(
+      projectID: json['projectID'] as String,
+    );
+
+Map<String, dynamic> _$LiveDevicesListRequestToJson(
+        LiveDevicesListRequest instance) =>
+    <String, dynamic>{
+      'projectID': instance.projectID,
     };
 
 EventsBatch _$EventsBatchFromJson(Map<String, dynamic> json) => EventsBatch(
       isLive: json['isLive'] as bool,
+      deviceInfo: json['deviceInfo'] as Map<String, dynamic>,
       identification: json['identification'] == null
           ? null
           : Identification.fromJson(
@@ -25,15 +136,16 @@ EventsBatch _$EventsBatchFromJson(Map<String, dynamic> json) => EventsBatch(
               ?.map((e) => RegisteredEvent.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      projectKey: json['projectKey'] as String,
+      projectID: json['projectID'] as String,
     );
 
 Map<String, dynamic> _$EventsBatchToJson(EventsBatch instance) =>
     <String, dynamic>{
       'isLive': instance.isLive,
+      'deviceInfo': instance.deviceInfo,
       'identification': instance.identification?.toJson(),
       'events': instance.events.map((e) => e.toJson()).toList(),
-      'projectKey': instance.projectKey,
+      'projectID': instance.projectID,
     };
 
 Identification _$IdentificationFromJson(Map<String, dynamic> json) =>
