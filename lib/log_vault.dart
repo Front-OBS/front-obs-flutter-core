@@ -56,7 +56,7 @@ class LogVault extends ChangeNotifier {
     debouncingTime =
     liveStreams ? Duration(milliseconds: 50) : Duration(seconds: 5);
     doLiveStreams = liveStreams;
-    client = Swagger.create(baseUrl: Uri.parse("http://localhost:8080"));
+    client = Swagger.create(baseUrl: Uri.parse("https://oberon-lab.ru"));
     deviceCode = await getDeviceCode();
 
     if (Platform.isIOS) {
