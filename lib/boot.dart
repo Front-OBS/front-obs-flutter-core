@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:oberon_connector/log.dart';
 import 'package:oberon_connector/log_vault.dart';
 import 'package:oberon_connector/splash_screen.dart';
 
@@ -22,6 +23,10 @@ QAToolsGuardMain<TEnv extends IApplicationEnvironment>(
   final options = ApplicationOptions<TEnv>(envs);
   WidgetsFlutterBinding.ensureInitialized();
 
+  FlutterError.onError = (details) {
+    LogVault.addException(details.exception, details.stack);
+  };
+
   launchViaOberon<TEnv>(options, launcher, onRestart);
 }
 
@@ -29,22 +34,34 @@ launchWithoutOberon<TEnv extends IApplicationEnvironment>(
     TEnv env, Launcher<TEnv> launcher) async {
   WidgetsFlutterBinding.ensureInitialized();
   await LogVault.initVault(false, env.projectKey);
+
+  FlutterError.onError = (details) {
+    LogVault.addException(details.exception, details.stack);
+  };
   //initServices();
-  launcher(
-      env,
-      ({
-        required Widget child,
-      }) =>
-          child);
+  runZonedGuarded(
+      () => launcher(
+          env,
+          ({
+            required Widget child,
+          }) =>
+              child), (error, stack) {
+    exceptionLog(error, stack);
+  });
 }
 
 launchViaOberon<TEnv extends IApplicationEnvironment>(
     ApplicationOptions<TEnv> options,
     Launcher<TEnv> launcher,
     OnReloadCallback? onRestart) async {
-  runApp(OberonSplashScreen<TEnv>(
-    options: options,
-    launcher: launcher,
-    onRestart: onRestart,
-  ));
+  runZonedGuarded(
+    () => OberonSplashScreen<TEnv>(
+      options: options,
+      launcher: launcher,
+      onRestart: onRestart,
+    ),
+    (error, stack) {
+      exceptionLog(error, stack);
+    },
+  );
 }
