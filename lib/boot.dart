@@ -43,7 +43,7 @@ Future launchDebug<TEnv extends IApplicationEnvironment>({
   required Launcher<TEnv> launcher,
   required OnReloadCallback? onRestart,
 }) async {
-  try{
+  try {
     WidgetsFlutterBinding.ensureInitialized();
 
     FlutterError.onError = (details) {
@@ -52,16 +52,18 @@ Future launchDebug<TEnv extends IApplicationEnvironment>({
 
     await LogVault.initVault(true, projectKey);
     runZonedGuarded(
-          () => OberonSplashScreen<TEnv>(
-        options: options,
-        launcher: launcher,
-        onRestart: onRestart,
+      () => runApp(
+        OberonSplashScreen<TEnv>(
+          options: options,
+          launcher: launcher,
+          onRestart: onRestart,
+        ),
       ),
-          (error, stack) {
+      (error, stack) {
         exceptionLog(error, stack);
       },
     );
-  }catch(ex){
+  } catch (ex) {
     print(ex);
   }
 }
