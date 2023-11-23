@@ -37,7 +37,7 @@ launchRelease<TEnv extends IApplicationEnvironment>(
   });
 }
 
-launchDebug<TEnv extends IApplicationEnvironment>({
+Future launchDebug<TEnv extends IApplicationEnvironment>({
   required String projectKey,
   required ApplicationOptions<TEnv> options,
   required Launcher<TEnv> launcher,
@@ -49,7 +49,7 @@ launchDebug<TEnv extends IApplicationEnvironment>({
     LogVault.addException(details.exception, details.stack);
   };
 
-  LogVault.initVault(true, projectKey);
+  await LogVault.initVault(true, projectKey);
   runZonedGuarded(
     () => OberonSplashScreen<TEnv>(
       options: options,
