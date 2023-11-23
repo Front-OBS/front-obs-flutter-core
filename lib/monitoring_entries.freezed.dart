@@ -894,7 +894,7 @@ mixin _$MonitoringEntry {
         tapEvent,
     required TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -942,7 +942,7 @@ mixin _$MonitoringEntry {
         tapEvent,
     TResult? Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -990,7 +990,7 @@ mixin _$MonitoringEntry {
         tapEvent,
     TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -1308,7 +1308,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
         tapEvent,
     required TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -1360,7 +1360,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
         tapEvent,
     TResult? Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -1423,7 +1423,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
         tapEvent,
     TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -1706,7 +1706,7 @@ class _$MonitoringEntryStarageOperationImpl
         tapEvent,
     required TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -1758,7 +1758,7 @@ class _$MonitoringEntryStarageOperationImpl
         tapEvent,
     TResult? Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -1810,7 +1810,7 @@ class _$MonitoringEntryStarageOperationImpl
         tapEvent,
     TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2039,7 +2039,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
         tapEvent,
     required TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2090,7 +2090,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
         tapEvent,
     TResult? Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2141,7 +2141,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
         tapEvent,
     TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2369,7 +2369,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
         tapEvent,
     required TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2420,7 +2420,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
         tapEvent,
     TResult? Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2471,7 +2471,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
         tapEvent,
     TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2705,7 +2705,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
         tapEvent,
     required TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2756,7 +2756,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
         tapEvent,
     TResult? Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -2807,7 +2807,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
         tapEvent,
     TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -3043,7 +3043,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
         tapEvent,
     required TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -3094,7 +3094,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
         tapEvent,
     TResult? Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -3145,7 +3145,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
         tapEvent,
     TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -3257,7 +3257,7 @@ abstract class _$$MonitoringEntryNavigationEventLogImplCopyWith<$Res>
   @useResult
   $Res call(
       {EventSeverity severity,
-      String kind,
+      String type,
       String routeName,
       String? previousRouteName,
       String? arguments,
@@ -3280,7 +3280,7 @@ class __$$MonitoringEntryNavigationEventLogImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? severity = null,
-    Object? kind = null,
+    Object? type = null,
     Object? routeName = null,
     Object? previousRouteName = freezed,
     Object? arguments = freezed,
@@ -3293,9 +3293,9 @@ class __$$MonitoringEntryNavigationEventLogImplCopyWithImpl<$Res>
           ? _value.severity
           : severity // ignore: cast_nullable_to_non_nullable
               as EventSeverity,
-      kind: null == kind
-          ? _value.kind
-          : kind // ignore: cast_nullable_to_non_nullable
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
               as String,
       routeName: null == routeName
           ? _value.routeName
@@ -3331,7 +3331,7 @@ class _$MonitoringEntryNavigationEventLogImpl
     extends MonitoringEntryNavigationEventLog {
   _$MonitoringEntryNavigationEventLogImpl(
       {required this.severity,
-      required this.kind,
+      required this.type,
       required this.routeName,
       required this.previousRouteName,
       required this.arguments,
@@ -3349,7 +3349,7 @@ class _$MonitoringEntryNavigationEventLogImpl
   @override
   EventSeverity severity;
   @override
-  String kind;
+  String type;
   @override
   String routeName;
   @override
@@ -3369,7 +3369,7 @@ class _$MonitoringEntryNavigationEventLogImpl
 
   @override
   String toString() {
-    return 'MonitoringEntry.navigationEvent(severity: $severity, kind: $kind, routeName: $routeName, previousRouteName: $previousRouteName, arguments: $arguments, previousArguments: $previousArguments, popResult: $popResult, logTimestamp: $logTimestamp)';
+    return 'MonitoringEntry.navigationEvent(severity: $severity, type: $type, routeName: $routeName, previousRouteName: $previousRouteName, arguments: $arguments, previousArguments: $previousArguments, popResult: $popResult, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -3419,7 +3419,7 @@ class _$MonitoringEntryNavigationEventLogImpl
         tapEvent,
     required TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -3428,7 +3428,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)
         navigationEvent,
   }) {
-    return navigationEvent(severity, kind, routeName, previousRouteName,
+    return navigationEvent(severity, type, routeName, previousRouteName,
         arguments, previousArguments, popResult, logTimestamp);
   }
 
@@ -3471,7 +3471,7 @@ class _$MonitoringEntryNavigationEventLogImpl
         tapEvent,
     TResult? Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -3480,7 +3480,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         navigationEvent,
   }) {
-    return navigationEvent?.call(severity, kind, routeName, previousRouteName,
+    return navigationEvent?.call(severity, type, routeName, previousRouteName,
         arguments, previousArguments, popResult, logTimestamp);
   }
 
@@ -3523,7 +3523,7 @@ class _$MonitoringEntryNavigationEventLogImpl
         tapEvent,
     TResult Function(
             EventSeverity severity,
-            String kind,
+            String type,
             String routeName,
             String? previousRouteName,
             String? arguments,
@@ -3534,7 +3534,7 @@ class _$MonitoringEntryNavigationEventLogImpl
     required TResult orElse(),
   }) {
     if (navigationEvent != null) {
-      return navigationEvent(severity, kind, routeName, previousRouteName,
+      return navigationEvent(severity, type, routeName, previousRouteName,
           arguments, previousArguments, popResult, logTimestamp);
     }
     return orElse();
@@ -3599,7 +3599,7 @@ class _$MonitoringEntryNavigationEventLogImpl
 abstract class MonitoringEntryNavigationEventLog extends MonitoringEntry {
   factory MonitoringEntryNavigationEventLog(
           {required EventSeverity severity,
-          required String kind,
+          required String type,
           required String routeName,
           required String? previousRouteName,
           required String? arguments,
@@ -3616,8 +3616,8 @@ abstract class MonitoringEntryNavigationEventLog extends MonitoringEntry {
   @override
   EventSeverity get severity;
   set severity(EventSeverity value);
-  String get kind;
-  set kind(String value);
+  String get type;
+  set type(String value);
   String get routeName;
   set routeName(String value);
   String? get previousRouteName;

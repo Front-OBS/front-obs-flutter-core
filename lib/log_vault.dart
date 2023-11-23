@@ -211,7 +211,7 @@ class LogVault extends ChangeNotifier {
           timestamp: ts,
           kind: EventKind.navigation,
           navigationEvent: NavigationEvent(
-            kind: value.kind,
+            kind: value.type,
             routeName: value.routeName,
             previousRouteName: value.previousRouteName,
             arguments: value.arguments,

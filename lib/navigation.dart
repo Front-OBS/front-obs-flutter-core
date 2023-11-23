@@ -14,7 +14,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
       severity: EventSeverity.info,
-      kind: "didPush",
+      type: "didPush",
       routeName: routeName,
       previousRouteName: previousRouteName,
       arguments: arguments,
@@ -34,7 +34,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
       severity: EventSeverity.info,
-      kind: "didPop",
+      type: "didPop",
       routeName: routeName,
       previousRouteName: previousRouteName,
       arguments: arguments,
@@ -54,7 +54,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
       severity: EventSeverity.info,
-      kind: "didRemove",
+      type: "didRemove",
       routeName: routeName,
       previousRouteName: previousRouteName,
       arguments: arguments,
@@ -74,7 +74,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = newRoute?.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
       severity: EventSeverity.info,
-      kind: "didReplace",
+      type: "didReplace",
       routeName: routeName,
       previousRouteName: previousRouteName,
       arguments: arguments,
@@ -95,7 +95,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
       severity: EventSeverity.info,
-      kind: "didStartUserGesture",
+      type: "didStartUserGesture",
       routeName: routeName,
       previousRouteName: previousRouteName,
       arguments: arguments,
@@ -110,7 +110,7 @@ class OberonNavigationObserver extends NavigatorObserver {
 
     LogVault.addEntry(MonitoringEntry.navigationEvent(
       severity: EventSeverity.info,
-      kind: "didStopUserGesture",
+      type: "didStopUserGesture",
       routeName: "Не предоставляется",
       previousRouteName: null,
       arguments: null,

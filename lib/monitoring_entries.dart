@@ -131,7 +131,7 @@ class MonitoringEntry with _$MonitoringEntry {
 
   factory MonitoringEntry.navigationEvent({
     required EventSeverity severity,
-    required String kind,
+    required String type,
     required String routeName,
     required String? previousRouteName,
     required String? arguments,

@@ -235,7 +235,7 @@ _$MonitoringEntryNavigationEventLogImpl
             Map<String, dynamic> json) =>
         _$MonitoringEntryNavigationEventLogImpl(
           severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
-          kind: json['kind'] as String,
+          type: json['type'] as String,
           routeName: json['routeName'] as String,
           previousRouteName: json['previousRouteName'] as String?,
           arguments: json['arguments'] as String?,
@@ -250,7 +250,7 @@ Map<String, dynamic> _$$MonitoringEntryNavigationEventLogImplToJson(
         _$MonitoringEntryNavigationEventLogImpl instance) =>
     <String, dynamic>{
       'severity': _$EventSeverityEnumMap[instance.severity]!,
-      'kind': instance.kind,
+      'type': instance.type,
       'routeName': instance.routeName,
       'previousRouteName': instance.previousRouteName,
       'arguments': instance.arguments,
