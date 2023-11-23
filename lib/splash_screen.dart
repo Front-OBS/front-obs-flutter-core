@@ -255,12 +255,6 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
   }
 
   Future<void> startEnv(TEnv env) async {
-    LogVault.initVault(true, env.projectKey);
-
-    FlutterError.onError = (details) {
-      LogVault.addException(details.exception, details.stack);
-    };
-
     var prefs = await SharedPreferences.getInstance();
 
     var lastEnvId = prefs.getString("_oberon_last_env");
@@ -273,13 +267,9 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
       return;
     }
 
-    try {
-      await widget.launcher(
-        env,
-        ({required Widget child}) => child,
-      )!;
-    } catch (ex, stack) {
-      LogVault.addException(ex, stack);
-    }
+    await widget.launcher(
+      env,
+      ({required Widget child}) => child,
+    )!;
   }
 }

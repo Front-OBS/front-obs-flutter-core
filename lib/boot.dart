@@ -16,28 +16,12 @@ typedef DevToolsLayerBuilder = Widget Function({
 typedef Launcher<TEnv extends IApplicationEnvironment> = FutureOr Function(
     TEnv env, DevToolsLayerBuilder qaToolsLayer);
 
-QAToolsGuardMain<TEnv extends IApplicationEnvironment>(
-    List<TEnv> envs, Launcher<TEnv> launcher,
-    [OnReloadCallback? onRestart]) async {
-  //initServices();
-  final options = ApplicationOptions<TEnv>(envs);
-  WidgetsFlutterBinding.ensureInitialized();
-
-  FlutterError.onError = (details) {
-    LogVault.addException(details.exception, details.stack);
-  };
-
-  launchViaOberon<TEnv>(options, launcher, onRestart);
-}
-
 launchWithoutOberon<TEnv extends IApplicationEnvironment>(
+    String projectKey,
     TEnv env, Launcher<TEnv> launcher) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await LogVault.initVault(false, env.projectKey);
+  await LogVault.initVault(false, projectKey);
 
-  FlutterError.onError = (details) {
-    LogVault.addException(details.exception, details.stack);
-  };
   //initServices();
   runZonedGuarded(
       () => launcher(
@@ -51,9 +35,17 @@ launchWithoutOberon<TEnv extends IApplicationEnvironment>(
 }
 
 launchViaOberon<TEnv extends IApplicationEnvironment>(
+    String projectKey,
     ApplicationOptions<TEnv> options,
     Launcher<TEnv> launcher,
     OnReloadCallback? onRestart) async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  FlutterError.onError = (details) {
+    LogVault.addException(details.exception, details.stack);
+  };
+
+  LogVault.initVault(true, projectKey);
   runZonedGuarded(
     () => OberonSplashScreen<TEnv>(
       options: options,
