@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:oberon_connector/log_vault.dart';
 import 'package:uuid/uuid.dart';
 
-import 'monitoring_entries.dart';
+import '../monitoring_entries.dart';
 
 class OberonDioInterceptor extends Interceptor {
   final Map<String, MonitoringEntryNetworkCall> monitoring = Map();

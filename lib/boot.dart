@@ -7,6 +7,8 @@ import 'package:oberon_connector/splash_screen.dart';
 
 import 'environments.dart';
 
+export "environments.dart";
+
 typedef OnReloadCallback = FutureOr Function();
 
 typedef DevToolsLayerBuilder = Widget Function({
@@ -16,9 +18,10 @@ typedef DevToolsLayerBuilder = Widget Function({
 typedef Launcher<TEnv extends IApplicationEnvironment> = FutureOr Function(
     TEnv env, DevToolsLayerBuilder qaToolsLayer);
 
-launchWithoutOberon<TEnv extends IApplicationEnvironment>(
-    String projectKey,
-    TEnv env, Launcher<TEnv> launcher) async {
+launchRelease<TEnv extends IApplicationEnvironment>(
+    {required String projectKey,
+    required TEnv env,
+    required Launcher<TEnv> launcher}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await LogVault.initVault(false, projectKey);
 
@@ -34,11 +37,12 @@ launchWithoutOberon<TEnv extends IApplicationEnvironment>(
   });
 }
 
-launchViaOberon<TEnv extends IApplicationEnvironment>(
-    String projectKey,
-    ApplicationOptions<TEnv> options,
-    Launcher<TEnv> launcher,
-    OnReloadCallback? onRestart) async {
+launchDebug<TEnv extends IApplicationEnvironment>({
+  required String projectKey,
+  required ApplicationOptions<TEnv> options,
+  required Launcher<TEnv> launcher,
+  required OnReloadCallback? onRestart,
+}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   FlutterError.onError = (details) {
