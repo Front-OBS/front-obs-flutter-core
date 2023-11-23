@@ -17,6 +17,7 @@ void textLog(String ext) {
 
 
 void exceptionLog(Object ext, StackTrace trace) {
+  print(ext);
   LogVault.addException(ext, trace);
 }
 
