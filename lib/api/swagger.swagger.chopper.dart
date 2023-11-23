@@ -45,6 +45,21 @@ class _$Swagger extends Swagger {
   }
 
   @override
+  Future<Response<PageListOfDeviceSummary>> _apiDeviceListFilteredPost(
+      {required DevicesFilter? body}) {
+    final Uri $url = Uri.parse('/api/device/list/filtered');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client
+        .send<PageListOfDeviceSummary, PageListOfDeviceSummary>($request);
+  }
+
+  @override
   Future<Response<List<ProjectInfo>>> _apiProjectListGet() {
     final Uri $url = Uri.parse('/api/project/list');
     final Request $request = Request(
@@ -53,6 +68,20 @@ class _$Swagger extends Swagger {
       client.baseUrl,
     );
     return client.send<List<ProjectInfo>, ProjectInfo>($request);
+  }
+
+  @override
+  Future<Response<bool>> _apiProjectInvitePost(
+      {required UserInviteRequest? body}) {
+    final Uri $url = Uri.parse('/api/project/invite');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<bool, bool>($request);
   }
 
   @override
@@ -83,6 +112,21 @@ class _$Swagger extends Swagger {
   }
 
   @override
+  Future<Response<PageListOfSessionSummary>> _apiSessionListFilteredPost(
+      {required SessionFilter? body}) {
+    final Uri $url = Uri.parse('/api/session/list/filtered');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client
+        .send<PageListOfSessionSummary, PageListOfSessionSummary>($request);
+  }
+
+  @override
   Future<Response<String>> _get() {
     final Uri $url = Uri.parse('/');
     final Request $request = Request(
@@ -105,12 +149,12 @@ class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<List<DeviceInfo>>> _apiLiveListGet(
+  Future<Response<List<DeviceInfo>>> _apiLiveListPost(
       {required LiveDevicesListRequest? body}) {
     final Uri $url = Uri.parse('/api/live/list');
     final $body = body;
     final Request $request = Request(
-      'GET',
+      'POST',
       $url,
       client.baseUrl,
       body: $body,

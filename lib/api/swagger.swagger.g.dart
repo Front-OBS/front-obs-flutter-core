@@ -59,6 +59,63 @@ Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
       'userName': instance.userName,
     };
 
+PageListOfDeviceSummary _$PageListOfDeviceSummaryFromJson(
+        Map<String, dynamic> json) =>
+    PageListOfDeviceSummary(
+      items: (json['items'] as List<dynamic>?)
+              ?.map((e) => DeviceSummary.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      totalPages: json['totalPages'] as int,
+      totalItems: json['totalItems'] as int,
+      page: json['page'] as int,
+    );
+
+Map<String, dynamic> _$PageListOfDeviceSummaryToJson(
+        PageListOfDeviceSummary instance) =>
+    <String, dynamic>{
+      'items': instance.items.map((e) => e.toJson()).toList(),
+      'totalPages': instance.totalPages,
+      'totalItems': instance.totalItems,
+      'page': instance.page,
+    };
+
+DeviceSummary _$DeviceSummaryFromJson(Map<String, dynamic> json) =>
+    DeviceSummary(
+      deviceCode: json['deviceCode'] as String,
+      sessionsCount: json['sessionsCount'] as int,
+      associatedAccountsCount: json['associatedAccountsCount'] as int,
+      exceptionsCount: json['exceptionsCount'] as int,
+    );
+
+Map<String, dynamic> _$DeviceSummaryToJson(DeviceSummary instance) =>
+    <String, dynamic>{
+      'deviceCode': instance.deviceCode,
+      'sessionsCount': instance.sessionsCount,
+      'associatedAccountsCount': instance.associatedAccountsCount,
+      'exceptionsCount': instance.exceptionsCount,
+    };
+
+DevicesFilter _$DevicesFilterFromJson(Map<String, dynamic> json) =>
+    DevicesFilter(
+      projectID: json['projectID'] as String?,
+      page: json['page'] as int?,
+      pageSize: json['pageSize'] as int?,
+      deviceId: json['deviceId'] as String?,
+      associatedAccountPhone: json['associatedAccountPhone'] as String?,
+      associatedAccountEmail: json['associatedAccountEmail'] as String?,
+    );
+
+Map<String, dynamic> _$DevicesFilterToJson(DevicesFilter instance) =>
+    <String, dynamic>{
+      'projectID': instance.projectID,
+      'page': instance.page,
+      'pageSize': instance.pageSize,
+      'deviceId': instance.deviceId,
+      'associatedAccountPhone': instance.associatedAccountPhone,
+      'associatedAccountEmail': instance.associatedAccountEmail,
+    };
+
 ProjectInfo _$ProjectInfoFromJson(Map<String, dynamic> json) => ProjectInfo(
       id: json['id'] as String,
       name: json['name'] as String,
@@ -73,6 +130,18 @@ Map<String, dynamic> _$ProjectInfoToJson(ProjectInfo instance) =>
       'id': instance.id,
       'name': instance.name,
       'mineRights': instance.mineRights,
+    };
+
+UserInviteRequest _$UserInviteRequestFromJson(Map<String, dynamic> json) =>
+    UserInviteRequest(
+      projectID: json['projectID'] as String?,
+      userEmail: json['userEmail'] as String?,
+    );
+
+Map<String, dynamic> _$UserInviteRequestToJson(UserInviteRequest instance) =>
+    <String, dynamic>{
+      'projectID': instance.projectID,
+      'userEmail': instance.userEmail,
     };
 
 ProjectUserSummary _$ProjectUserSummaryFromJson(Map<String, dynamic> json) =>
@@ -100,6 +169,72 @@ Map<String, dynamic> _$GetProjectUsersRequestToJson(
         GetProjectUsersRequest instance) =>
     <String, dynamic>{
       'projectID': instance.projectID,
+    };
+
+PageListOfSessionSummary _$PageListOfSessionSummaryFromJson(
+        Map<String, dynamic> json) =>
+    PageListOfSessionSummary(
+      items: (json['items'] as List<dynamic>?)
+              ?.map((e) => SessionSummary.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      totalPages: json['totalPages'] as int,
+      totalItems: json['totalItems'] as int,
+      page: json['page'] as int,
+    );
+
+Map<String, dynamic> _$PageListOfSessionSummaryToJson(
+        PageListOfSessionSummary instance) =>
+    <String, dynamic>{
+      'items': instance.items.map((e) => e.toJson()).toList(),
+      'totalPages': instance.totalPages,
+      'totalItems': instance.totalItems,
+      'page': instance.page,
+    };
+
+SessionSummary _$SessionSummaryFromJson(Map<String, dynamic> json) =>
+    SessionSummary(
+      id: json['id'] as String,
+      projectID: json['projectID'] as String,
+      deviceCode: json['deviceCode'] as String,
+      lastUpdateTime: DateTime.parse(json['lastUpdateTime'] as String),
+      totalEventsCount: json['totalEventsCount'] as int?,
+      totalErrorsCount: json['totalErrorsCount'] as int?,
+    );
+
+Map<String, dynamic> _$SessionSummaryToJson(SessionSummary instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'projectID': instance.projectID,
+      'deviceCode': instance.deviceCode,
+      'lastUpdateTime': instance.lastUpdateTime.toIso8601String(),
+      'totalEventsCount': instance.totalEventsCount,
+      'totalErrorsCount': instance.totalErrorsCount,
+    };
+
+SessionFilter _$SessionFilterFromJson(Map<String, dynamic> json) =>
+    SessionFilter(
+      projectID: json['projectID'] as String?,
+      page: json['page'] as int?,
+      pageSize: json['pageSize'] as int?,
+      deviceID: json['deviceID'] as String?,
+      sessionID: json['sessionID'] as String?,
+      fromTS: json['fromTS'] == null
+          ? null
+          : DateTime.parse(json['fromTS'] as String),
+      toTS:
+          json['toTS'] == null ? null : DateTime.parse(json['toTS'] as String),
+    );
+
+Map<String, dynamic> _$SessionFilterToJson(SessionFilter instance) =>
+    <String, dynamic>{
+      'projectID': instance.projectID,
+      'page': instance.page,
+      'pageSize': instance.pageSize,
+      'deviceID': instance.deviceID,
+      'sessionID': instance.sessionID,
+      'fromTS': instance.fromTS?.toIso8601String(),
+      'toTS': instance.toTS?.toIso8601String(),
     };
 
 DeviceInfo _$DeviceInfoFromJson(Map<String, dynamic> json) => DeviceInfo(
@@ -184,6 +319,10 @@ RegisteredEvent _$RegisteredEventFromJson(Map<String, dynamic> json) =>
       tapEvent: json['tapEvent'] == null
           ? null
           : TapEvent.fromJson(json['tapEvent'] as Map<String, dynamic>),
+      navigationEvent: json['navigationEvent'] == null
+          ? null
+          : NavigationEvent.fromJson(
+              json['navigationEvent'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RegisteredEventToJson(RegisteredEvent instance) =>
@@ -197,6 +336,7 @@ Map<String, dynamic> _$RegisteredEventToJson(RegisteredEvent instance) =>
       'networkEvent': instance.networkEvent?.toJson(),
       'storageEvent': instance.storageEvent?.toJson(),
       'tapEvent': instance.tapEvent?.toJson(),
+      'navigationEvent': instance.navigationEvent?.toJson(),
     };
 
 TextEvent _$TextEventFromJson(Map<String, dynamic> json) => TextEvent(
@@ -308,4 +448,24 @@ TapEvent _$TapEventFromJson(Map<String, dynamic> json) => TapEvent(
 Map<String, dynamic> _$TapEventToJson(TapEvent instance) => <String, dynamic>{
       'x': instance.x,
       'y': instance.y,
+    };
+
+NavigationEvent _$NavigationEventFromJson(Map<String, dynamic> json) =>
+    NavigationEvent(
+      kind: json['kind'] as String,
+      routeName: json['routeName'] as String,
+      previousRouteName: json['previousRouteName'] as String?,
+      arguments: json['arguments'] as String?,
+      previousArguments: json['previousArguments'] as String?,
+      popResult: json['popResult'] as String?,
+    );
+
+Map<String, dynamic> _$NavigationEventToJson(NavigationEvent instance) =>
+    <String, dynamic>{
+      'kind': instance.kind,
+      'routeName': instance.routeName,
+      'previousRouteName': instance.previousRouteName,
+      'arguments': instance.arguments,
+      'previousArguments': instance.previousArguments,
+      'popResult': instance.popResult,
     };

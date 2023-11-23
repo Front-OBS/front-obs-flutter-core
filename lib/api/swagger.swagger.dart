@@ -77,6 +77,23 @@ abstract class Swagger extends ChopperService {
       {@Body() required RegisterRequest? body});
 
   ///
+  Future<chopper.Response<PageListOfDeviceSummary?>> apiDeviceListFilteredPost(
+      {required DevicesFilter? body}) {
+    generatedMapping.putIfAbsent(
+        PageListOfDeviceSummary, () => PageListOfDeviceSummary.fromJsonFactory);
+
+    return _apiDeviceListFilteredPost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/api/device/list/filtered',
+    optionalBody: true,
+  )
+  Future<chopper.Response<PageListOfDeviceSummary?>> _apiDeviceListFilteredPost(
+      {@Body() required DevicesFilter? body});
+
+  ///
   Future<chopper.Response<List<ProjectInfo>>> apiProjectListGet() {
     generatedMapping.putIfAbsent(
         ProjectInfo, () => ProjectInfo.fromJsonFactory);
@@ -87,6 +104,20 @@ abstract class Swagger extends ChopperService {
   ///
   @Get(path: '/api/project/list')
   Future<chopper.Response<List<ProjectInfo>>> _apiProjectListGet();
+
+  ///
+  Future<chopper.Response<bool>> apiProjectInvitePost(
+      {required UserInviteRequest? body}) {
+    return _apiProjectInvitePost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/api/project/invite',
+    optionalBody: true,
+  )
+  Future<chopper.Response<bool>> _apiProjectInvitePost(
+      {@Body() required UserInviteRequest? body});
 
   ///
   Future<chopper.Response<List<ProjectUserSummary>>> apiProjectUsersPost(
@@ -123,6 +154,23 @@ abstract class Swagger extends ChopperService {
       {@Body() required String? body});
 
   ///
+  Future<chopper.Response<PageListOfSessionSummary?>>
+      apiSessionListFilteredPost({required SessionFilter? body}) {
+    generatedMapping.putIfAbsent(PageListOfSessionSummary,
+        () => PageListOfSessionSummary.fromJsonFactory);
+
+    return _apiSessionListFilteredPost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/api/session/list/filtered',
+    optionalBody: true,
+  )
+  Future<chopper.Response<PageListOfSessionSummary?>>
+      _apiSessionListFilteredPost({@Body() required SessionFilter? body});
+
+  ///
   Future<chopper.Response<String>> get() {
     return _get();
   }
@@ -141,16 +189,19 @@ abstract class Swagger extends ChopperService {
   Future<chopper.Response<String>> _apiHealthcheckGet();
 
   ///
-  Future<chopper.Response<List<DeviceInfo>>> apiLiveListGet(
+  Future<chopper.Response<List<DeviceInfo>>> apiLiveListPost(
       {required LiveDevicesListRequest? body}) {
     generatedMapping.putIfAbsent(DeviceInfo, () => DeviceInfo.fromJsonFactory);
 
-    return _apiLiveListGet(body: body);
+    return _apiLiveListPost(body: body);
   }
 
   ///
-  @Get(path: '/api/live/list')
-  Future<chopper.Response<List<DeviceInfo>>> _apiLiveListGet(
+  @Post(
+    path: '/api/live/list',
+    optionalBody: true,
+  )
+  Future<chopper.Response<List<DeviceInfo>>> _apiLiveListPost(
       {@Body() required LiveDevicesListRequest? body});
 
   ///
@@ -410,6 +461,281 @@ extension $RegisterRequestExtension on RegisterRequest {
 }
 
 @JsonSerializable(explicitToJson: true)
+class PageListOfDeviceSummary {
+  const PageListOfDeviceSummary({
+    required this.items,
+    required this.totalPages,
+    required this.totalItems,
+    required this.page,
+  });
+
+  factory PageListOfDeviceSummary.fromJson(Map<String, dynamic> json) =>
+      _$PageListOfDeviceSummaryFromJson(json);
+
+  static const toJsonFactory = _$PageListOfDeviceSummaryToJson;
+  Map<String, dynamic> toJson() => _$PageListOfDeviceSummaryToJson(this);
+
+  @JsonKey(name: 'items', defaultValue: <DeviceSummary>[])
+  final List<DeviceSummary> items;
+  @JsonKey(name: 'totalPages')
+  final int totalPages;
+  @JsonKey(name: 'totalItems')
+  final int totalItems;
+  @JsonKey(name: 'page')
+  final int page;
+  static const fromJsonFactory = _$PageListOfDeviceSummaryFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is PageListOfDeviceSummary &&
+            (identical(other.items, items) ||
+                const DeepCollectionEquality().equals(other.items, items)) &&
+            (identical(other.totalPages, totalPages) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalPages, totalPages)) &&
+            (identical(other.totalItems, totalItems) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalItems, totalItems)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(items) ^
+      const DeepCollectionEquality().hash(totalPages) ^
+      const DeepCollectionEquality().hash(totalItems) ^
+      const DeepCollectionEquality().hash(page) ^
+      runtimeType.hashCode;
+}
+
+extension $PageListOfDeviceSummaryExtension on PageListOfDeviceSummary {
+  PageListOfDeviceSummary copyWith(
+      {List<DeviceSummary>? items,
+      int? totalPages,
+      int? totalItems,
+      int? page}) {
+    return PageListOfDeviceSummary(
+        items: items ?? this.items,
+        totalPages: totalPages ?? this.totalPages,
+        totalItems: totalItems ?? this.totalItems,
+        page: page ?? this.page);
+  }
+
+  PageListOfDeviceSummary copyWithWrapped(
+      {Wrapped<List<DeviceSummary>>? items,
+      Wrapped<int>? totalPages,
+      Wrapped<int>? totalItems,
+      Wrapped<int>? page}) {
+    return PageListOfDeviceSummary(
+        items: (items != null ? items.value : this.items),
+        totalPages: (totalPages != null ? totalPages.value : this.totalPages),
+        totalItems: (totalItems != null ? totalItems.value : this.totalItems),
+        page: (page != null ? page.value : this.page));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class DeviceSummary {
+  const DeviceSummary({
+    required this.deviceCode,
+    required this.sessionsCount,
+    required this.associatedAccountsCount,
+    required this.exceptionsCount,
+  });
+
+  factory DeviceSummary.fromJson(Map<String, dynamic> json) =>
+      _$DeviceSummaryFromJson(json);
+
+  static const toJsonFactory = _$DeviceSummaryToJson;
+  Map<String, dynamic> toJson() => _$DeviceSummaryToJson(this);
+
+  @JsonKey(name: 'deviceCode')
+  final String deviceCode;
+  @JsonKey(name: 'sessionsCount')
+  final int sessionsCount;
+  @JsonKey(name: 'associatedAccountsCount')
+  final int associatedAccountsCount;
+  @JsonKey(name: 'exceptionsCount')
+  final int exceptionsCount;
+  static const fromJsonFactory = _$DeviceSummaryFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is DeviceSummary &&
+            (identical(other.deviceCode, deviceCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceCode, deviceCode)) &&
+            (identical(other.sessionsCount, sessionsCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.sessionsCount, sessionsCount)) &&
+            (identical(
+                    other.associatedAccountsCount, associatedAccountsCount) ||
+                const DeepCollectionEquality().equals(
+                    other.associatedAccountsCount, associatedAccountsCount)) &&
+            (identical(other.exceptionsCount, exceptionsCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.exceptionsCount, exceptionsCount)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(deviceCode) ^
+      const DeepCollectionEquality().hash(sessionsCount) ^
+      const DeepCollectionEquality().hash(associatedAccountsCount) ^
+      const DeepCollectionEquality().hash(exceptionsCount) ^
+      runtimeType.hashCode;
+}
+
+extension $DeviceSummaryExtension on DeviceSummary {
+  DeviceSummary copyWith(
+      {String? deviceCode,
+      int? sessionsCount,
+      int? associatedAccountsCount,
+      int? exceptionsCount}) {
+    return DeviceSummary(
+        deviceCode: deviceCode ?? this.deviceCode,
+        sessionsCount: sessionsCount ?? this.sessionsCount,
+        associatedAccountsCount:
+            associatedAccountsCount ?? this.associatedAccountsCount,
+        exceptionsCount: exceptionsCount ?? this.exceptionsCount);
+  }
+
+  DeviceSummary copyWithWrapped(
+      {Wrapped<String>? deviceCode,
+      Wrapped<int>? sessionsCount,
+      Wrapped<int>? associatedAccountsCount,
+      Wrapped<int>? exceptionsCount}) {
+    return DeviceSummary(
+        deviceCode: (deviceCode != null ? deviceCode.value : this.deviceCode),
+        sessionsCount:
+            (sessionsCount != null ? sessionsCount.value : this.sessionsCount),
+        associatedAccountsCount: (associatedAccountsCount != null
+            ? associatedAccountsCount.value
+            : this.associatedAccountsCount),
+        exceptionsCount: (exceptionsCount != null
+            ? exceptionsCount.value
+            : this.exceptionsCount));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class DevicesFilter {
+  const DevicesFilter({
+    this.projectID,
+    this.page,
+    this.pageSize,
+    this.deviceId,
+    this.associatedAccountPhone,
+    this.associatedAccountEmail,
+  });
+
+  factory DevicesFilter.fromJson(Map<String, dynamic> json) =>
+      _$DevicesFilterFromJson(json);
+
+  static const toJsonFactory = _$DevicesFilterToJson;
+  Map<String, dynamic> toJson() => _$DevicesFilterToJson(this);
+
+  @JsonKey(name: 'projectID')
+  final String? projectID;
+  @JsonKey(name: 'page')
+  final int? page;
+  @JsonKey(name: 'pageSize')
+  final int? pageSize;
+  @JsonKey(name: 'deviceId')
+  final String? deviceId;
+  @JsonKey(name: 'associatedAccountPhone')
+  final String? associatedAccountPhone;
+  @JsonKey(name: 'associatedAccountEmail')
+  final String? associatedAccountEmail;
+  static const fromJsonFactory = _$DevicesFilterFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is DevicesFilter &&
+            (identical(other.projectID, projectID) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectID, projectID)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)) &&
+            (identical(other.pageSize, pageSize) ||
+                const DeepCollectionEquality()
+                    .equals(other.pageSize, pageSize)) &&
+            (identical(other.deviceId, deviceId) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceId, deviceId)) &&
+            (identical(other.associatedAccountPhone, associatedAccountPhone) ||
+                const DeepCollectionEquality().equals(
+                    other.associatedAccountPhone, associatedAccountPhone)) &&
+            (identical(other.associatedAccountEmail, associatedAccountEmail) ||
+                const DeepCollectionEquality().equals(
+                    other.associatedAccountEmail, associatedAccountEmail)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(projectID) ^
+      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(pageSize) ^
+      const DeepCollectionEquality().hash(deviceId) ^
+      const DeepCollectionEquality().hash(associatedAccountPhone) ^
+      const DeepCollectionEquality().hash(associatedAccountEmail) ^
+      runtimeType.hashCode;
+}
+
+extension $DevicesFilterExtension on DevicesFilter {
+  DevicesFilter copyWith(
+      {String? projectID,
+      int? page,
+      int? pageSize,
+      String? deviceId,
+      String? associatedAccountPhone,
+      String? associatedAccountEmail}) {
+    return DevicesFilter(
+        projectID: projectID ?? this.projectID,
+        page: page ?? this.page,
+        pageSize: pageSize ?? this.pageSize,
+        deviceId: deviceId ?? this.deviceId,
+        associatedAccountPhone:
+            associatedAccountPhone ?? this.associatedAccountPhone,
+        associatedAccountEmail:
+            associatedAccountEmail ?? this.associatedAccountEmail);
+  }
+
+  DevicesFilter copyWithWrapped(
+      {Wrapped<String?>? projectID,
+      Wrapped<int?>? page,
+      Wrapped<int?>? pageSize,
+      Wrapped<String?>? deviceId,
+      Wrapped<String?>? associatedAccountPhone,
+      Wrapped<String?>? associatedAccountEmail}) {
+    return DevicesFilter(
+        projectID: (projectID != null ? projectID.value : this.projectID),
+        page: (page != null ? page.value : this.page),
+        pageSize: (pageSize != null ? pageSize.value : this.pageSize),
+        deviceId: (deviceId != null ? deviceId.value : this.deviceId),
+        associatedAccountPhone: (associatedAccountPhone != null
+            ? associatedAccountPhone.value
+            : this.associatedAccountPhone),
+        associatedAccountEmail: (associatedAccountEmail != null
+            ? associatedAccountEmail.value
+            : this.associatedAccountEmail));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class ProjectInfo {
   const ProjectInfo({
     required this.id,
@@ -471,6 +797,62 @@ extension $ProjectInfoExtension on ProjectInfo {
         id: (id != null ? id.value : this.id),
         name: (name != null ? name.value : this.name),
         mineRights: (mineRights != null ? mineRights.value : this.mineRights));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class UserInviteRequest {
+  const UserInviteRequest({
+    this.projectID,
+    this.userEmail,
+  });
+
+  factory UserInviteRequest.fromJson(Map<String, dynamic> json) =>
+      _$UserInviteRequestFromJson(json);
+
+  static const toJsonFactory = _$UserInviteRequestToJson;
+  Map<String, dynamic> toJson() => _$UserInviteRequestToJson(this);
+
+  @JsonKey(name: 'projectID')
+  final String? projectID;
+  @JsonKey(name: 'userEmail')
+  final String? userEmail;
+  static const fromJsonFactory = _$UserInviteRequestFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is UserInviteRequest &&
+            (identical(other.projectID, projectID) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectID, projectID)) &&
+            (identical(other.userEmail, userEmail) ||
+                const DeepCollectionEquality()
+                    .equals(other.userEmail, userEmail)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(projectID) ^
+      const DeepCollectionEquality().hash(userEmail) ^
+      runtimeType.hashCode;
+}
+
+extension $UserInviteRequestExtension on UserInviteRequest {
+  UserInviteRequest copyWith({String? projectID, String? userEmail}) {
+    return UserInviteRequest(
+        projectID: projectID ?? this.projectID,
+        userEmail: userEmail ?? this.userEmail);
+  }
+
+  UserInviteRequest copyWithWrapped(
+      {Wrapped<String?>? projectID, Wrapped<String?>? userEmail}) {
+    return UserInviteRequest(
+        projectID: (projectID != null ? projectID.value : this.projectID),
+        userEmail: (userEmail != null ? userEmail.value : this.userEmail));
   }
 }
 
@@ -572,6 +954,304 @@ extension $GetProjectUsersRequestExtension on GetProjectUsersRequest {
   GetProjectUsersRequest copyWithWrapped({Wrapped<String?>? projectID}) {
     return GetProjectUsersRequest(
         projectID: (projectID != null ? projectID.value : this.projectID));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PageListOfSessionSummary {
+  const PageListOfSessionSummary({
+    required this.items,
+    required this.totalPages,
+    required this.totalItems,
+    required this.page,
+  });
+
+  factory PageListOfSessionSummary.fromJson(Map<String, dynamic> json) =>
+      _$PageListOfSessionSummaryFromJson(json);
+
+  static const toJsonFactory = _$PageListOfSessionSummaryToJson;
+  Map<String, dynamic> toJson() => _$PageListOfSessionSummaryToJson(this);
+
+  @JsonKey(name: 'items', defaultValue: <SessionSummary>[])
+  final List<SessionSummary> items;
+  @JsonKey(name: 'totalPages')
+  final int totalPages;
+  @JsonKey(name: 'totalItems')
+  final int totalItems;
+  @JsonKey(name: 'page')
+  final int page;
+  static const fromJsonFactory = _$PageListOfSessionSummaryFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is PageListOfSessionSummary &&
+            (identical(other.items, items) ||
+                const DeepCollectionEquality().equals(other.items, items)) &&
+            (identical(other.totalPages, totalPages) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalPages, totalPages)) &&
+            (identical(other.totalItems, totalItems) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalItems, totalItems)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(items) ^
+      const DeepCollectionEquality().hash(totalPages) ^
+      const DeepCollectionEquality().hash(totalItems) ^
+      const DeepCollectionEquality().hash(page) ^
+      runtimeType.hashCode;
+}
+
+extension $PageListOfSessionSummaryExtension on PageListOfSessionSummary {
+  PageListOfSessionSummary copyWith(
+      {List<SessionSummary>? items,
+      int? totalPages,
+      int? totalItems,
+      int? page}) {
+    return PageListOfSessionSummary(
+        items: items ?? this.items,
+        totalPages: totalPages ?? this.totalPages,
+        totalItems: totalItems ?? this.totalItems,
+        page: page ?? this.page);
+  }
+
+  PageListOfSessionSummary copyWithWrapped(
+      {Wrapped<List<SessionSummary>>? items,
+      Wrapped<int>? totalPages,
+      Wrapped<int>? totalItems,
+      Wrapped<int>? page}) {
+    return PageListOfSessionSummary(
+        items: (items != null ? items.value : this.items),
+        totalPages: (totalPages != null ? totalPages.value : this.totalPages),
+        totalItems: (totalItems != null ? totalItems.value : this.totalItems),
+        page: (page != null ? page.value : this.page));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class SessionSummary {
+  const SessionSummary({
+    required this.id,
+    required this.projectID,
+    required this.deviceCode,
+    required this.lastUpdateTime,
+    this.totalEventsCount,
+    this.totalErrorsCount,
+  });
+
+  factory SessionSummary.fromJson(Map<String, dynamic> json) =>
+      _$SessionSummaryFromJson(json);
+
+  static const toJsonFactory = _$SessionSummaryToJson;
+  Map<String, dynamic> toJson() => _$SessionSummaryToJson(this);
+
+  @JsonKey(name: 'id')
+  final String id;
+  @JsonKey(name: 'projectID')
+  final String projectID;
+  @JsonKey(name: 'deviceCode')
+  final String deviceCode;
+  @JsonKey(name: 'lastUpdateTime')
+  final DateTime lastUpdateTime;
+  @JsonKey(name: 'totalEventsCount')
+  final int? totalEventsCount;
+  @JsonKey(name: 'totalErrorsCount')
+  final int? totalErrorsCount;
+  static const fromJsonFactory = _$SessionSummaryFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is SessionSummary &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.projectID, projectID) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectID, projectID)) &&
+            (identical(other.deviceCode, deviceCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceCode, deviceCode)) &&
+            (identical(other.lastUpdateTime, lastUpdateTime) ||
+                const DeepCollectionEquality()
+                    .equals(other.lastUpdateTime, lastUpdateTime)) &&
+            (identical(other.totalEventsCount, totalEventsCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalEventsCount, totalEventsCount)) &&
+            (identical(other.totalErrorsCount, totalErrorsCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalErrorsCount, totalErrorsCount)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(projectID) ^
+      const DeepCollectionEquality().hash(deviceCode) ^
+      const DeepCollectionEquality().hash(lastUpdateTime) ^
+      const DeepCollectionEquality().hash(totalEventsCount) ^
+      const DeepCollectionEquality().hash(totalErrorsCount) ^
+      runtimeType.hashCode;
+}
+
+extension $SessionSummaryExtension on SessionSummary {
+  SessionSummary copyWith(
+      {String? id,
+      String? projectID,
+      String? deviceCode,
+      DateTime? lastUpdateTime,
+      int? totalEventsCount,
+      int? totalErrorsCount}) {
+    return SessionSummary(
+        id: id ?? this.id,
+        projectID: projectID ?? this.projectID,
+        deviceCode: deviceCode ?? this.deviceCode,
+        lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
+        totalEventsCount: totalEventsCount ?? this.totalEventsCount,
+        totalErrorsCount: totalErrorsCount ?? this.totalErrorsCount);
+  }
+
+  SessionSummary copyWithWrapped(
+      {Wrapped<String>? id,
+      Wrapped<String>? projectID,
+      Wrapped<String>? deviceCode,
+      Wrapped<DateTime>? lastUpdateTime,
+      Wrapped<int?>? totalEventsCount,
+      Wrapped<int?>? totalErrorsCount}) {
+    return SessionSummary(
+        id: (id != null ? id.value : this.id),
+        projectID: (projectID != null ? projectID.value : this.projectID),
+        deviceCode: (deviceCode != null ? deviceCode.value : this.deviceCode),
+        lastUpdateTime: (lastUpdateTime != null
+            ? lastUpdateTime.value
+            : this.lastUpdateTime),
+        totalEventsCount: (totalEventsCount != null
+            ? totalEventsCount.value
+            : this.totalEventsCount),
+        totalErrorsCount: (totalErrorsCount != null
+            ? totalErrorsCount.value
+            : this.totalErrorsCount));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class SessionFilter {
+  const SessionFilter({
+    this.projectID,
+    this.page,
+    this.pageSize,
+    this.deviceID,
+    this.sessionID,
+    this.fromTS,
+    this.toTS,
+  });
+
+  factory SessionFilter.fromJson(Map<String, dynamic> json) =>
+      _$SessionFilterFromJson(json);
+
+  static const toJsonFactory = _$SessionFilterToJson;
+  Map<String, dynamic> toJson() => _$SessionFilterToJson(this);
+
+  @JsonKey(name: 'projectID')
+  final String? projectID;
+  @JsonKey(name: 'page')
+  final int? page;
+  @JsonKey(name: 'pageSize')
+  final int? pageSize;
+  @JsonKey(name: 'deviceID')
+  final String? deviceID;
+  @JsonKey(name: 'sessionID')
+  final String? sessionID;
+  @JsonKey(name: 'fromTS')
+  final DateTime? fromTS;
+  @JsonKey(name: 'toTS')
+  final DateTime? toTS;
+  static const fromJsonFactory = _$SessionFilterFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is SessionFilter &&
+            (identical(other.projectID, projectID) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectID, projectID)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)) &&
+            (identical(other.pageSize, pageSize) ||
+                const DeepCollectionEquality()
+                    .equals(other.pageSize, pageSize)) &&
+            (identical(other.deviceID, deviceID) ||
+                const DeepCollectionEquality()
+                    .equals(other.deviceID, deviceID)) &&
+            (identical(other.sessionID, sessionID) ||
+                const DeepCollectionEquality()
+                    .equals(other.sessionID, sessionID)) &&
+            (identical(other.fromTS, fromTS) ||
+                const DeepCollectionEquality().equals(other.fromTS, fromTS)) &&
+            (identical(other.toTS, toTS) ||
+                const DeepCollectionEquality().equals(other.toTS, toTS)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(projectID) ^
+      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(pageSize) ^
+      const DeepCollectionEquality().hash(deviceID) ^
+      const DeepCollectionEquality().hash(sessionID) ^
+      const DeepCollectionEquality().hash(fromTS) ^
+      const DeepCollectionEquality().hash(toTS) ^
+      runtimeType.hashCode;
+}
+
+extension $SessionFilterExtension on SessionFilter {
+  SessionFilter copyWith(
+      {String? projectID,
+      int? page,
+      int? pageSize,
+      String? deviceID,
+      String? sessionID,
+      DateTime? fromTS,
+      DateTime? toTS}) {
+    return SessionFilter(
+        projectID: projectID ?? this.projectID,
+        page: page ?? this.page,
+        pageSize: pageSize ?? this.pageSize,
+        deviceID: deviceID ?? this.deviceID,
+        sessionID: sessionID ?? this.sessionID,
+        fromTS: fromTS ?? this.fromTS,
+        toTS: toTS ?? this.toTS);
+  }
+
+  SessionFilter copyWithWrapped(
+      {Wrapped<String?>? projectID,
+      Wrapped<int?>? page,
+      Wrapped<int?>? pageSize,
+      Wrapped<String?>? deviceID,
+      Wrapped<String?>? sessionID,
+      Wrapped<DateTime?>? fromTS,
+      Wrapped<DateTime?>? toTS}) {
+    return SessionFilter(
+        projectID: (projectID != null ? projectID.value : this.projectID),
+        page: (page != null ? page.value : this.page),
+        pageSize: (pageSize != null ? pageSize.value : this.pageSize),
+        deviceID: (deviceID != null ? deviceID.value : this.deviceID),
+        sessionID: (sessionID != null ? sessionID.value : this.sessionID),
+        fromTS: (fromTS != null ? fromTS.value : this.fromTS),
+        toTS: (toTS != null ? toTS.value : this.toTS));
   }
 }
 
@@ -834,6 +1514,7 @@ class RegisteredEvent {
     this.networkEvent,
     this.storageEvent,
     this.tapEvent,
+    this.navigationEvent,
   });
 
   factory RegisteredEvent.fromJson(Map<String, dynamic> json) =>
@@ -864,6 +1545,8 @@ class RegisteredEvent {
   final StorageEvent? storageEvent;
   @JsonKey(name: 'tapEvent')
   final TapEvent? tapEvent;
+  @JsonKey(name: 'navigationEvent')
+  final NavigationEvent? navigationEvent;
   static const fromJsonFactory = _$RegisteredEventFromJson;
 
   @override
@@ -894,7 +1577,10 @@ class RegisteredEvent {
                     .equals(other.storageEvent, storageEvent)) &&
             (identical(other.tapEvent, tapEvent) ||
                 const DeepCollectionEquality()
-                    .equals(other.tapEvent, tapEvent)));
+                    .equals(other.tapEvent, tapEvent)) &&
+            (identical(other.navigationEvent, navigationEvent) ||
+                const DeepCollectionEquality()
+                    .equals(other.navigationEvent, navigationEvent)));
   }
 
   @override
@@ -911,6 +1597,7 @@ class RegisteredEvent {
       const DeepCollectionEquality().hash(networkEvent) ^
       const DeepCollectionEquality().hash(storageEvent) ^
       const DeepCollectionEquality().hash(tapEvent) ^
+      const DeepCollectionEquality().hash(navigationEvent) ^
       runtimeType.hashCode;
 }
 
@@ -924,7 +1611,8 @@ extension $RegisteredEventExtension on RegisteredEvent {
       ExceptionEvent? exceptionEvent,
       NetworkEvent? networkEvent,
       StorageEvent? storageEvent,
-      TapEvent? tapEvent}) {
+      TapEvent? tapEvent,
+      NavigationEvent? navigationEvent}) {
     return RegisteredEvent(
         id: id ?? this.id,
         timestamp: timestamp ?? this.timestamp,
@@ -934,7 +1622,8 @@ extension $RegisteredEventExtension on RegisteredEvent {
         exceptionEvent: exceptionEvent ?? this.exceptionEvent,
         networkEvent: networkEvent ?? this.networkEvent,
         storageEvent: storageEvent ?? this.storageEvent,
-        tapEvent: tapEvent ?? this.tapEvent);
+        tapEvent: tapEvent ?? this.tapEvent,
+        navigationEvent: navigationEvent ?? this.navigationEvent);
   }
 
   RegisteredEvent copyWithWrapped(
@@ -946,7 +1635,8 @@ extension $RegisteredEventExtension on RegisteredEvent {
       Wrapped<ExceptionEvent?>? exceptionEvent,
       Wrapped<NetworkEvent?>? networkEvent,
       Wrapped<StorageEvent?>? storageEvent,
-      Wrapped<TapEvent?>? tapEvent}) {
+      Wrapped<TapEvent?>? tapEvent,
+      Wrapped<NavigationEvent?>? navigationEvent}) {
     return RegisteredEvent(
         id: (id != null ? id.value : this.id),
         timestamp: (timestamp != null ? timestamp.value : this.timestamp),
@@ -960,7 +1650,10 @@ extension $RegisteredEventExtension on RegisteredEvent {
             (networkEvent != null ? networkEvent.value : this.networkEvent),
         storageEvent:
             (storageEvent != null ? storageEvent.value : this.storageEvent),
-        tapEvent: (tapEvent != null ? tapEvent.value : this.tapEvent));
+        tapEvent: (tapEvent != null ? tapEvent.value : this.tapEvent),
+        navigationEvent: (navigationEvent != null
+            ? navigationEvent.value
+            : this.navigationEvent));
   }
 }
 
@@ -1479,6 +2172,112 @@ extension $TapEventExtension on TapEvent {
   TapEvent copyWithWrapped({Wrapped<double>? x, Wrapped<double>? y}) {
     return TapEvent(
         x: (x != null ? x.value : this.x), y: (y != null ? y.value : this.y));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class NavigationEvent {
+  const NavigationEvent({
+    required this.kind,
+    required this.routeName,
+    this.previousRouteName,
+    this.arguments,
+    this.previousArguments,
+    this.popResult,
+  });
+
+  factory NavigationEvent.fromJson(Map<String, dynamic> json) =>
+      _$NavigationEventFromJson(json);
+
+  static const toJsonFactory = _$NavigationEventToJson;
+  Map<String, dynamic> toJson() => _$NavigationEventToJson(this);
+
+  @JsonKey(name: 'kind')
+  final String kind;
+  @JsonKey(name: 'routeName')
+  final String routeName;
+  @JsonKey(name: 'previousRouteName')
+  final String? previousRouteName;
+  @JsonKey(name: 'arguments')
+  final String? arguments;
+  @JsonKey(name: 'previousArguments')
+  final String? previousArguments;
+  @JsonKey(name: 'popResult')
+  final String? popResult;
+  static const fromJsonFactory = _$NavigationEventFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is NavigationEvent &&
+            (identical(other.kind, kind) ||
+                const DeepCollectionEquality().equals(other.kind, kind)) &&
+            (identical(other.routeName, routeName) ||
+                const DeepCollectionEquality()
+                    .equals(other.routeName, routeName)) &&
+            (identical(other.previousRouteName, previousRouteName) ||
+                const DeepCollectionEquality()
+                    .equals(other.previousRouteName, previousRouteName)) &&
+            (identical(other.arguments, arguments) ||
+                const DeepCollectionEquality()
+                    .equals(other.arguments, arguments)) &&
+            (identical(other.previousArguments, previousArguments) ||
+                const DeepCollectionEquality()
+                    .equals(other.previousArguments, previousArguments)) &&
+            (identical(other.popResult, popResult) ||
+                const DeepCollectionEquality()
+                    .equals(other.popResult, popResult)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(kind) ^
+      const DeepCollectionEquality().hash(routeName) ^
+      const DeepCollectionEquality().hash(previousRouteName) ^
+      const DeepCollectionEquality().hash(arguments) ^
+      const DeepCollectionEquality().hash(previousArguments) ^
+      const DeepCollectionEquality().hash(popResult) ^
+      runtimeType.hashCode;
+}
+
+extension $NavigationEventExtension on NavigationEvent {
+  NavigationEvent copyWith(
+      {String? kind,
+      String? routeName,
+      String? previousRouteName,
+      String? arguments,
+      String? previousArguments,
+      String? popResult}) {
+    return NavigationEvent(
+        kind: kind ?? this.kind,
+        routeName: routeName ?? this.routeName,
+        previousRouteName: previousRouteName ?? this.previousRouteName,
+        arguments: arguments ?? this.arguments,
+        previousArguments: previousArguments ?? this.previousArguments,
+        popResult: popResult ?? this.popResult);
+  }
+
+  NavigationEvent copyWithWrapped(
+      {Wrapped<String>? kind,
+      Wrapped<String>? routeName,
+      Wrapped<String?>? previousRouteName,
+      Wrapped<String?>? arguments,
+      Wrapped<String?>? previousArguments,
+      Wrapped<String?>? popResult}) {
+    return NavigationEvent(
+        kind: (kind != null ? kind.value : this.kind),
+        routeName: (routeName != null ? routeName.value : this.routeName),
+        previousRouteName: (previousRouteName != null
+            ? previousRouteName.value
+            : this.previousRouteName),
+        arguments: (arguments != null ? arguments.value : this.arguments),
+        previousArguments: (previousArguments != null
+            ? previousArguments.value
+            : this.previousArguments),
+        popResult: (popResult != null ? popResult.value : this.popResult));
   }
 }
 

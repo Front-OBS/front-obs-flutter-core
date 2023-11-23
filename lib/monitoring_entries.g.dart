@@ -213,8 +213,8 @@ _$MonitoringEntryTapEventLogImpl _$$MonitoringEntryTapEventLogImplFromJson(
         Map<String, dynamic> json) =>
     _$MonitoringEntryTapEventLogImpl(
       severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
-      x: (json['x'] as num).toDouble(),
-      y: (json['y'] as num).toDouble(),
+      fieldName: json['fieldName'] as String,
+      fieldData: json['fieldData'] as String,
       logTimestamp:
           const DateTimeConverter().fromJson(json['logTimestamp'] as String),
       $type: json['runtimeType'] as String?,
@@ -224,8 +224,38 @@ Map<String, dynamic> _$$MonitoringEntryTapEventLogImplToJson(
         _$MonitoringEntryTapEventLogImpl instance) =>
     <String, dynamic>{
       'severity': _$EventSeverityEnumMap[instance.severity]!,
-      'x': instance.x,
-      'y': instance.y,
+      'fieldName': instance.fieldName,
+      'fieldData': instance.fieldData,
+      'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
+      'runtimeType': instance.$type,
+    };
+
+_$MonitoringEntryNavigationEventLogImpl
+    _$$MonitoringEntryNavigationEventLogImplFromJson(
+            Map<String, dynamic> json) =>
+        _$MonitoringEntryNavigationEventLogImpl(
+          severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
+          kind: json['kind'] as String,
+          routeName: json['routeName'] as String,
+          previousRouteName: json['previousRouteName'] as String?,
+          arguments: json['arguments'] as String?,
+          previousArguments: json['previousArguments'] as String?,
+          popResult: json['popResult'] as String?,
+          logTimestamp: const DateTimeConverter()
+              .fromJson(json['logTimestamp'] as String),
+          $type: json['runtimeType'] as String?,
+        );
+
+Map<String, dynamic> _$$MonitoringEntryNavigationEventLogImplToJson(
+        _$MonitoringEntryNavigationEventLogImpl instance) =>
+    <String, dynamic>{
+      'severity': _$EventSeverityEnumMap[instance.severity]!,
+      'kind': instance.kind,
+      'routeName': instance.routeName,
+      'previousRouteName': instance.previousRouteName,
+      'arguments': instance.arguments,
+      'previousArguments': instance.previousArguments,
+      'popResult': instance.popResult,
       'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
       'runtimeType': instance.$type,
     };

@@ -15,7 +15,7 @@ enum StarageOperationType {
   read,
 }
 
-enum MonitorEventKind { state, network, log, storage, exception, tap }
+enum MonitorEventKind { state, network, log, storage, exception, tap, navigation }
 
 enum EventSeverity {
   critical,
@@ -100,7 +100,6 @@ class MonitoringEntry with _$MonitoringEntry {
     required String key,
     required String value,
     @DateTimeConverter() required DateTime logTimestamp,
-
   }) = MonitoringEntryStarageOperation;
 
   factory MonitoringEntry.exception({
@@ -114,7 +113,6 @@ class MonitoringEntry with _$MonitoringEntry {
     required String text,
     required String id,
     @DateTimeConverter() required DateTime logTimestamp,
-
   }) = MonitoringEntryTextLog;
 
   factory MonitoringEntry.stateChange({
@@ -122,15 +120,25 @@ class MonitoringEntry with _$MonitoringEntry {
     required String text,
     required String id,
     @DateTimeConverter() required DateTime logTimestamp,
-
   }) = MonitoringEntryStateLog;
 
   factory MonitoringEntry.tapEvent({
     required EventSeverity severity,
-    required double x,
-    required double y,
+    required String fieldName,
+    required String fieldData,
     @DateTimeConverter() required DateTime logTimestamp,
   }) = MonitoringEntryTapEventLog;
+
+  factory MonitoringEntry.navigationEvent({
+    required EventSeverity severity,
+    required String kind,
+    required String routeName,
+    required String? previousRouteName,
+    required String? arguments,
+    required String? previousArguments,
+    required String? popResult,
+    @DateTimeConverter() required DateTime logTimestamp,
+  }) = MonitoringEntryNavigationEventLog;
 
 /*
   factory MonitoringEntry.blocEvent({
@@ -141,6 +149,7 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringBlocEventLog;*/
 
   MonitorEventKind get kind => this.map(
+    navigationEvent: (value) => MonitorEventKind.navigation,
         exception: (value) => MonitorEventKind.exception,
         storageOperation: (value) => MonitorEventKind.storage,
         networkCall: (value) => MonitorEventKind.network,

@@ -81,12 +81,47 @@
         }
       }
     },
+    "/api/device/list/filtered": {
+      "post": {
+        "tags": [
+          "DevicesService"
+        ],
+        "operationId": "DevicesService_GetDevicesByFilter",
+        "requestBody": {
+          "x-name": "filter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DevicesFilter"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageListOfDeviceSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/project/list": {
       "get": {
         "tags": [
           "ProjectsService"
         ],
-        "operationId": "ProjectsService_GetProjectsListAll",
+        "operationId": "ProjectsService_GetProjectsList",
         "responses": {
           "200": {
             "description": "",
@@ -102,6 +137,47 @@
             }
           },
           "401": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/project/invite": {
+      "post": {
+        "tags": [
+          "ProjectsService"
+        ],
+        "operationId": "ProjectsService_InviteUserToProject",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInviteRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "400": {
+            "description": ""
+          },
+          "404": {
             "description": ""
           }
         }
@@ -150,7 +226,7 @@
         "tags": [
           "ProjectsService"
         ],
-        "operationId": "ProjectsService_GetProjectsList",
+        "operationId": "ProjectsService_CreateProject",
         "requestBody": {
           "x-name": "name",
           "content": {
@@ -170,6 +246,41 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProjectInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/session/list/filtered": {
+      "post": {
+        "tags": [
+          "SessionsService"
+        ],
+        "operationId": "SessionsService_GetSessionsByFilter",
+        "requestBody": {
+          "x-name": "filter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionFilter"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageListOfSessionSummary"
                 }
               }
             }
@@ -222,7 +333,7 @@
       }
     },
     "/api/live/list": {
-      "get": {
+      "post": {
         "tags": [
           "LiveService"
         ],
@@ -406,6 +517,96 @@
           }
         }
       },
+      "PageListOfDeviceSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "totalPages",
+          "totalItems",
+          "page"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeviceSummary"
+            }
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DeviceSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "deviceCode",
+          "sessionsCount",
+          "associatedAccountsCount",
+          "exceptionsCount"
+        ],
+        "properties": {
+          "deviceCode": {
+            "type": "string",
+            "format": "guid",
+            "minLength": 1
+          },
+          "sessionsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "associatedAccountsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exceptionsCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DevicesFilter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectID": {
+            "type": "string",
+            "format": "guid"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deviceId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "associatedAccountPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "associatedAccountEmail": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "ProjectInfo": {
         "type": "object",
         "additionalProperties": false,
@@ -429,6 +630,20 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "UserInviteRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectID": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "userEmail": {
+            "type": "string"
           }
         }
       },
@@ -459,6 +674,114 @@
           "projectID": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "PageListOfSessionSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "totalPages",
+          "totalItems",
+          "page"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionSummary"
+            }
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SessionSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "projectID",
+          "deviceCode",
+          "lastUpdateTime"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid",
+            "minLength": 1
+          },
+          "projectID": {
+            "type": "string",
+            "format": "guid",
+            "minLength": 1
+          },
+          "deviceCode": {
+            "type": "string",
+            "format": "guid",
+            "minLength": 1
+          },
+          "lastUpdateTime": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          },
+          "totalEventsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalErrorsCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SessionFilter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectID": {
+            "type": "string",
+            "format": "guid"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deviceID": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "sessionID": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "fromTS": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "toTS": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },
@@ -656,6 +979,9 @@
           },
           "tapEvent": {
             "$ref": "#/components/schemas/TapEvent"
+          },
+          "navigationEvent": {
+            "$ref": "#/components/schemas/NavigationEvent"
           }
         }
       },
@@ -668,7 +994,8 @@
           "Network",
           "Storage",
           "Tap",
-          "Exception"
+          "Exception",
+          "Navigation"
         ],
         "enum": [
           0,
@@ -676,7 +1003,8 @@
           2,
           3,
           4,
-          5
+          5,
+          6
         ]
       },
       "TextEvent": {
@@ -867,6 +1195,38 @@
           "y": {
             "type": "number",
             "format": "double"
+          }
+        }
+      },
+      "NavigationEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "routeName"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "routeName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "previousRouteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "arguments": {
+            "type": "string"
+          },
+          "previousArguments": {
+            "type": "string"
+          },
+          "popResult": {
+            "type": "string",
+            "nullable": true
           }
         }
       }
