@@ -51,18 +51,17 @@ Future launchDebug<TEnv extends IApplicationEnvironment>({
     };
 
     await LogVault.initVault(true, projectKey);
-    runZonedGuarded(
-      () => runApp(
+    try {
+      runApp(
         OberonSplashScreen<TEnv>(
           options: options,
           launcher: launcher,
           onRestart: onRestart,
         ),
-      ),
-      (error, stack) {
-        exceptionLog(error, stack);
-      },
-    );
+      );
+    } catch (error, stack) {
+      exceptionLog(error, stack);
+    }
   } catch (ex) {
     print(ex);
   }
