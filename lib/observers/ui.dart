@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:oberon_connector/log_vault.dart';
 import 'package:oberon_connector/monitoring_entries.dart';
@@ -7,21 +8,61 @@ class ScrollDetector extends StatelessWidget {
   ScrollDetector({
     required this.child,
     this.identification,
+    this.payload,
+    this.scope = "Общий скрол",
   }) {
     if (identification == null) {
-      identification =
-          Trace.current(1).frames.first.member?.replaceAll(".build.<fn>", "");
+      identification = Trace.current(1)
+          .frames
+          .firstOrNull
+          ?.member
+          ?.replaceAll(".build.<fn>", "");
     }
   }
 
   final Widget child;
+  final String scope;
   String? identification;
+  final String? payload;
+
+  double startExtent = 0.0;
+  bool debouncing = false;
 
   @override
   Widget build(BuildContext context) {
     return NotificationListener(
         onNotification: (notification) {
           if (notification is ScrollNotification) {
+            if (!debouncing) {
+              startExtent = notification.metrics.extentBefore;
+              debouncing = true;
+            }
+            EasyDebounce.debounce(
+                '____scroll_debouncer',
+                // <-- An ID for this particular debouncer
+                Duration(seconds: 1), // <-- The debounce duration
+                () {
+              debouncing = false;
+              final offsetStart =
+                  startExtent / notification.metrics.extentTotal;
+              final offsetCurrent = notification.metrics.extentBefore /
+                  notification.metrics.extentTotal;
+              final viewport = notification.metrics.extentInside /
+                  notification.metrics.extentTotal;
+
+              LogVault.addEntry(MonitoringEntry.scrollEvent(
+                scope: scope,
+                identification: identification ?? "NO IDENTIF",
+                payload: payload,
+                offsetFrom: offsetStart,
+                offsetTo: offsetCurrent,
+                viewport: viewport,
+                logTimestamp: DateTime.now(),
+              ));
+
+              EasyDebounce.cancel("____scroll_debouncer");
+            } // <-- The target method
+                );
             print(
                 "SCROLL ${notification.metrics.extentBefore / notification.metrics.extentTotal}"
                 " ${notification.metrics.extentInside / notification.metrics.extentTotal}"
