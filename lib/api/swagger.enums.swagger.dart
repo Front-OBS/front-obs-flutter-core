@@ -82,9 +82,11 @@ enum EventKind {
   @JsonValue(4)
   tap(4),
   @JsonValue(5)
-  exception(5),
+  scroll(5),
   @JsonValue(6)
-  navigation(6);
+  exception(6),
+  @JsonValue(7)
+  navigation(7);
 
   final int? value;
 

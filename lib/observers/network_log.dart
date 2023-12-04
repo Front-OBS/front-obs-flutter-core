@@ -7,6 +7,10 @@ import 'package:uuid/uuid.dart';
 import '../monitoring_entries.dart';
 
 class OberonDioInterceptor extends Interceptor {
+  OberonDioInterceptor({this.scope = "Главный клиент"});
+
+  final String scope;
+
   final Map<String, MonitoringEntryNetworkCall> monitoring = Map();
 
   MonitoringNetworkCallPayload computePayload(dynamic data) {
@@ -27,7 +31,7 @@ class OberonDioInterceptor extends Interceptor {
   ) {
     final reqId = Uuid().v1();
     final entry = MonitoringEntry.networkCall(
-      severity: EventSeverity.info,
+      scope: scope,
       id: reqId,
       start: DateTime.now(),
       uri: options.uri.toString(),
@@ -85,11 +89,5 @@ class OberonDioInterceptor extends Interceptor {
       LogVault.addEntry(entry);
     }
     handler.next(err);
-  }
-}
-
-extension EagleNetworking on Dio {
-  addEagleMonitoring() {
-    this.interceptors.add(OberonDioInterceptor());
   }
 }

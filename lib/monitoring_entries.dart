@@ -15,7 +15,16 @@ enum StarageOperationType {
   read,
 }
 
-enum MonitorEventKind { state, network, log, storage, exception, tap, navigation }
+enum MonitorEventKind {
+  state,
+  network,
+  log,
+  storage,
+  exception,
+  tap,
+  navigation,
+  scroll
+}
 
 enum EventSeverity {
   critical,
@@ -79,7 +88,7 @@ class MonitoringEntry with _$MonitoringEntry {
   const MonitoringEntry._();
 
   factory MonitoringEntry.networkCall({
-    required EventSeverity severity,
+    required String scope,
     required String uri,
     required String id,
     @DateTimeConverter() required DateTime logTimestamp,
@@ -94,7 +103,7 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringEntryNetworkCall;
 
   factory MonitoringEntry.storageOperation({
-    required EventSeverity severity,
+    required String scope,
     required StarageOperationType storage,
     required String storageName,
     required String key,
@@ -103,34 +112,46 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringEntryStarageOperation;
 
   factory MonitoringEntry.exception({
-    required EventSeverity severity,
+    required String scope,
     required String text,
     required List<StackFrame> frames,
   }) = MonitoringEntryException;
 
-  factory MonitoringEntry.textLog({
-    required EventSeverity severity,
-    required String text,
-    required String id,
+  factory MonitoringEntry.event({
+    required String scope,
+    required String event,
+    required String? payload,
     @DateTimeConverter() required DateTime logTimestamp,
   }) = MonitoringEntryTextLog;
 
   factory MonitoringEntry.stateChange({
-    required EventSeverity severity,
-    required String text,
-    required String id,
+    required String scope,
+    required String payload,
+    required String key,
     @DateTimeConverter() required DateTime logTimestamp,
   }) = MonitoringEntryStateLog;
 
   factory MonitoringEntry.tapEvent({
-    required EventSeverity severity,
-    required String fieldName,
-    required String fieldData,
+    required String scope,
+    required String identification,
+    required String? payload,
+    required double coordX,
+    required double coordY,
     @DateTimeConverter() required DateTime logTimestamp,
   }) = MonitoringEntryTapEventLog;
 
+  factory MonitoringEntry.scrollEvent({
+    required String scope,
+    required String identification,
+    required String? payload,
+    required double offsetFrom,
+    required double offsetTo,
+    required double viewport,
+    @DateTimeConverter() required DateTime logTimestamp,
+  }) = MonitoringEntryScrollEventLog;
+
   factory MonitoringEntry.navigationEvent({
-    required EventSeverity severity,
+    required String scope,
     required String type,
     required String routeName,
     required String? previousRouteName,
@@ -149,11 +170,12 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringBlocEventLog;*/
 
   MonitorEventKind get kind => this.map(
-    navigationEvent: (value) => MonitorEventKind.navigation,
+        scrollEvent: (value) => MonitorEventKind.scroll,
+        navigationEvent: (value) => MonitorEventKind.navigation,
         exception: (value) => MonitorEventKind.exception,
         storageOperation: (value) => MonitorEventKind.storage,
         networkCall: (value) => MonitorEventKind.network,
-        textLog: (value) => MonitorEventKind.log,
+        event: (value) => MonitorEventKind.log,
         stateChange: (value) => MonitorEventKind.state,
         tapEvent: (value) => MonitorEventKind.tap,
       );

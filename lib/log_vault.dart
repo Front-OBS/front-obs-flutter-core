@@ -206,21 +206,43 @@ class LogVault extends ChangeNotifier {
     final ts = DateTime.now().millisecondsSinceEpoch;
     final id = Uuid().v1();
     return entry.map(
+      scrollEvent: (value) => RegisteredEvent(
+        id: id,
+        timestamp: ts,
+        scrollEvent: ScrollEvent(
+          scope: value.scope,
+          identification: value.identification,
+          payload: value.payload,
+          offsetEnd: value.offsetTo,
+          offsetStart: value.offsetFrom,
+          viewport: value.viewport,
+        ),
+        kind: EventKind.swaggerGeneratedUnknown,
+      ),
       navigationEvent: (value) => RegisteredEvent(
-          id: id,
-          timestamp: ts,
-          kind: EventKind.navigation,
-          navigationEvent: NavigationEvent(
-            kind: value.type,
-            routeName: value.routeName,
-            previousRouteName: value.previousRouteName,
-            arguments: value.arguments,
-            previousArguments: value.previousArguments,
-            popResult: value.popResult,
-          )),
+        id: id,
+        timestamp: ts,
+        kind: EventKind.navigation,
+        navigationEvent: NavigationEvent(
+          scope: value.scope,
+          kind: value.type,
+          routeName: value.routeName,
+          previousRouteName: value.previousRouteName,
+          arguments: value.arguments,
+          previousArguments: value.previousArguments,
+          popResult: value.popResult,
+        ),
+      ),
       tapEvent: (value) => RegisteredEvent(
         id: id,
         timestamp: ts,
+        tapEvent: TapEvent(
+          scope: value.scope,
+          x: value.coordX,
+          y: value.coordY,
+          identification: value.identification,
+          payload: value.payload,
+        ),
         kind: EventKind.swaggerGeneratedUnknown,
       ),
       networkCall: (value) => RegisteredEvent(
@@ -228,6 +250,7 @@ class LogVault extends ChangeNotifier {
         timestamp: ts,
         kind: EventKind.network,
         networkEvent: NetworkEvent(
+          scope: value.scope,
           requestHeaders: value.requestHeaders,
           responseHeaders: value.responseHeaders!,
           url: value.uri,
@@ -267,6 +290,7 @@ class LogVault extends ChangeNotifier {
         id: id,
         kind: EventKind.swaggerGeneratedUnknown,
         storageEvent: StorageEvent(
+          scope: value.scope,
           key: value.key,
           value: value.value,
         ),
@@ -276,6 +300,7 @@ class LogVault extends ChangeNotifier {
         timestamp: ts,
         kind: EventKind.exception,
         exceptionEvent: ExceptionEvent(
+          scope: value.scope,
           exception: value.text,
           traces: value.frames
               .map(
@@ -289,12 +314,14 @@ class LogVault extends ChangeNotifier {
               .toList(),
         ),
       ),
-      textLog: (value) => RegisteredEvent(
+      event: (value) => RegisteredEvent(
         id: id,
         timestamp: ts,
         kind: EventKind.text,
         textEvent: TextEvent(
-          text: value.text,
+          scope: value.scope,
+          text: value.event,
+          payload: value.payload,
         ),
       ),
       stateChange: (value) => RegisteredEvent(
@@ -302,8 +329,9 @@ class LogVault extends ChangeNotifier {
         timestamp: ts,
         kind: EventKind.state,
         stateEvent: StateEvent(
-          value: value.text,
-          stateName: value.id,
+          scope: value.scope,
+          value: value.payload,
+          stateName: value.key,
         ),
       ),
     );
@@ -334,12 +362,13 @@ class LogVault extends ChangeNotifier {
     ));
   }*/
 
-  static void addException(Object exception, StackTrace? trace) {
+  static void addException(Object exception, StackTrace? trace,
+      {String scope = "Общие ошибки"}) {
     print(exception.toString() + trace.toString());
     try {
       final t = trace != null ? Trace.from(trace) : null;
       addEntry(MonitoringEntry.exception(
-        severity: EventSeverity.info,
+        scope: scope,
         text: exception.toString(),
         frames: [
           if (t != null)

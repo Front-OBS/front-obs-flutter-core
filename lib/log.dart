@@ -1,32 +1,30 @@
-
 import 'package:oberon_connector/log_vault.dart';
 import 'package:oberon_connector/monitoring_entries.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:uuid/uuid.dart';
 
-void textLog(String ext) {
+void eventLog(String ext, {String scope = "Уведомления", String? payload = null}) {
   LogVault.addEntry(
-    MonitoringEntry.textLog(
-      severity: EventSeverity.info,
-      text: ext,
-      id: Uuid().v1(),
+    MonitoringEntry.event(
+      scope: scope,
+      event: ext,
+      payload: payload,
       logTimestamp: DateTime.now(),
     ),
   );
 }
-
 
 void exceptionLog(Object ext, StackTrace trace) {
   print(ext);
   LogVault.addException(ext, trace);
 }
 
-void stateLog(String key, String value) {
+void stateLog(String key, String value, {String scope = "Общее состояние"}) {
   LogVault.addEntry(
     MonitoringEntry.stateChange(
-      severity: EventSeverity.info,
-      text: value,
-      id: key,
+      scope: scope,
+      payload: value,
+      key: key,
       logTimestamp: DateTime.now(),
     ),
   );

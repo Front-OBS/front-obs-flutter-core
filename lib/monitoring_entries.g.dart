@@ -71,7 +71,7 @@ Map<String, dynamic> _$$StackFrameCtorImplToJson(
 _$MonitoringEntryNetworkCallImpl _$$MonitoringEntryNetworkCallImplFromJson(
         Map<String, dynamic> json) =>
     _$MonitoringEntryNetworkCallImpl(
-      severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
+      scope: json['scope'] as String,
       uri: json['uri'] as String,
       id: json['id'] as String,
       logTimestamp:
@@ -96,7 +96,7 @@ _$MonitoringEntryNetworkCallImpl _$$MonitoringEntryNetworkCallImplFromJson(
 Map<String, dynamic> _$$MonitoringEntryNetworkCallImplToJson(
         _$MonitoringEntryNetworkCallImpl instance) =>
     <String, dynamic>{
-      'severity': _$EventSeverityEnumMap[instance.severity]!,
+      'scope': instance.scope,
       'uri': instance.uri,
       'id': instance.id,
       'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
@@ -111,16 +111,10 @@ Map<String, dynamic> _$$MonitoringEntryNetworkCallImplToJson(
       'runtimeType': instance.$type,
     };
 
-const _$EventSeverityEnumMap = {
-  EventSeverity.critical: 'critical',
-  EventSeverity.info: 'info',
-  EventSeverity.trace: 'trace',
-};
-
 _$MonitoringEntryStarageOperationImpl
     _$$MonitoringEntryStarageOperationImplFromJson(Map<String, dynamic> json) =>
         _$MonitoringEntryStarageOperationImpl(
-          severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
+          scope: json['scope'] as String,
           storage: $enumDecode(_$StarageOperationTypeEnumMap, json['storage']),
           storageName: json['storageName'] as String,
           key: json['key'] as String,
@@ -133,7 +127,7 @@ _$MonitoringEntryStarageOperationImpl
 Map<String, dynamic> _$$MonitoringEntryStarageOperationImplToJson(
         _$MonitoringEntryStarageOperationImpl instance) =>
     <String, dynamic>{
-      'severity': _$EventSeverityEnumMap[instance.severity]!,
+      'scope': instance.scope,
       'storage': _$StarageOperationTypeEnumMap[instance.storage]!,
       'storageName': instance.storageName,
       'key': instance.key,
@@ -150,7 +144,7 @@ const _$StarageOperationTypeEnumMap = {
 _$MonitoringEntryExceptionImpl _$$MonitoringEntryExceptionImplFromJson(
         Map<String, dynamic> json) =>
     _$MonitoringEntryExceptionImpl(
-      severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
+      scope: json['scope'] as String,
       text: json['text'] as String,
       frames: (json['frames'] as List<dynamic>)
           .map((e) => StackFrame.fromJson(e as Map<String, dynamic>))
@@ -161,7 +155,7 @@ _$MonitoringEntryExceptionImpl _$$MonitoringEntryExceptionImplFromJson(
 Map<String, dynamic> _$$MonitoringEntryExceptionImplToJson(
         _$MonitoringEntryExceptionImpl instance) =>
     <String, dynamic>{
-      'severity': _$EventSeverityEnumMap[instance.severity]!,
+      'scope': instance.scope,
       'text': instance.text,
       'frames': instance.frames,
       'runtimeType': instance.$type,
@@ -170,9 +164,9 @@ Map<String, dynamic> _$$MonitoringEntryExceptionImplToJson(
 _$MonitoringEntryTextLogImpl _$$MonitoringEntryTextLogImplFromJson(
         Map<String, dynamic> json) =>
     _$MonitoringEntryTextLogImpl(
-      severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
-      text: json['text'] as String,
-      id: json['id'] as String,
+      scope: json['scope'] as String,
+      event: json['event'] as String,
+      payload: json['payload'] as String?,
       logTimestamp:
           const DateTimeConverter().fromJson(json['logTimestamp'] as String),
       $type: json['runtimeType'] as String?,
@@ -181,9 +175,9 @@ _$MonitoringEntryTextLogImpl _$$MonitoringEntryTextLogImplFromJson(
 Map<String, dynamic> _$$MonitoringEntryTextLogImplToJson(
         _$MonitoringEntryTextLogImpl instance) =>
     <String, dynamic>{
-      'severity': _$EventSeverityEnumMap[instance.severity]!,
-      'text': instance.text,
-      'id': instance.id,
+      'scope': instance.scope,
+      'event': instance.event,
+      'payload': instance.payload,
       'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
       'runtimeType': instance.$type,
     };
@@ -191,9 +185,9 @@ Map<String, dynamic> _$$MonitoringEntryTextLogImplToJson(
 _$MonitoringEntryStateLogImpl _$$MonitoringEntryStateLogImplFromJson(
         Map<String, dynamic> json) =>
     _$MonitoringEntryStateLogImpl(
-      severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
-      text: json['text'] as String,
-      id: json['id'] as String,
+      scope: json['scope'] as String,
+      payload: json['payload'] as String,
+      key: json['key'] as String,
       logTimestamp:
           const DateTimeConverter().fromJson(json['logTimestamp'] as String),
       $type: json['runtimeType'] as String?,
@@ -202,9 +196,9 @@ _$MonitoringEntryStateLogImpl _$$MonitoringEntryStateLogImplFromJson(
 Map<String, dynamic> _$$MonitoringEntryStateLogImplToJson(
         _$MonitoringEntryStateLogImpl instance) =>
     <String, dynamic>{
-      'severity': _$EventSeverityEnumMap[instance.severity]!,
-      'text': instance.text,
-      'id': instance.id,
+      'scope': instance.scope,
+      'payload': instance.payload,
+      'key': instance.key,
       'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
       'runtimeType': instance.$type,
     };
@@ -212,9 +206,11 @@ Map<String, dynamic> _$$MonitoringEntryStateLogImplToJson(
 _$MonitoringEntryTapEventLogImpl _$$MonitoringEntryTapEventLogImplFromJson(
         Map<String, dynamic> json) =>
     _$MonitoringEntryTapEventLogImpl(
-      severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
-      fieldName: json['fieldName'] as String,
-      fieldData: json['fieldData'] as String,
+      scope: json['scope'] as String,
+      identification: json['identification'] as String,
+      payload: json['payload'] as String?,
+      coordX: (json['coordX'] as num).toDouble(),
+      coordY: (json['coordY'] as num).toDouble(),
       logTimestamp:
           const DateTimeConverter().fromJson(json['logTimestamp'] as String),
       $type: json['runtimeType'] as String?,
@@ -223,9 +219,38 @@ _$MonitoringEntryTapEventLogImpl _$$MonitoringEntryTapEventLogImplFromJson(
 Map<String, dynamic> _$$MonitoringEntryTapEventLogImplToJson(
         _$MonitoringEntryTapEventLogImpl instance) =>
     <String, dynamic>{
-      'severity': _$EventSeverityEnumMap[instance.severity]!,
-      'fieldName': instance.fieldName,
-      'fieldData': instance.fieldData,
+      'scope': instance.scope,
+      'identification': instance.identification,
+      'payload': instance.payload,
+      'coordX': instance.coordX,
+      'coordY': instance.coordY,
+      'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
+      'runtimeType': instance.$type,
+    };
+
+_$MonitoringEntryScrollEventLogImpl
+    _$$MonitoringEntryScrollEventLogImplFromJson(Map<String, dynamic> json) =>
+        _$MonitoringEntryScrollEventLogImpl(
+          scope: json['scope'] as String,
+          identification: json['identification'] as String,
+          payload: json['payload'] as String?,
+          offsetFrom: (json['offsetFrom'] as num).toDouble(),
+          offsetTo: (json['offsetTo'] as num).toDouble(),
+          viewport: (json['viewport'] as num).toDouble(),
+          logTimestamp: const DateTimeConverter()
+              .fromJson(json['logTimestamp'] as String),
+          $type: json['runtimeType'] as String?,
+        );
+
+Map<String, dynamic> _$$MonitoringEntryScrollEventLogImplToJson(
+        _$MonitoringEntryScrollEventLogImpl instance) =>
+    <String, dynamic>{
+      'scope': instance.scope,
+      'identification': instance.identification,
+      'payload': instance.payload,
+      'offsetFrom': instance.offsetFrom,
+      'offsetTo': instance.offsetTo,
+      'viewport': instance.viewport,
       'logTimestamp': const DateTimeConverter().toJson(instance.logTimestamp),
       'runtimeType': instance.$type,
     };
@@ -234,7 +259,7 @@ _$MonitoringEntryNavigationEventLogImpl
     _$$MonitoringEntryNavigationEventLogImplFromJson(
             Map<String, dynamic> json) =>
         _$MonitoringEntryNavigationEventLogImpl(
-          severity: $enumDecode(_$EventSeverityEnumMap, json['severity']),
+          scope: json['scope'] as String,
           type: json['type'] as String,
           routeName: json['routeName'] as String,
           previousRouteName: json['previousRouteName'] as String?,
@@ -249,7 +274,7 @@ _$MonitoringEntryNavigationEventLogImpl
 Map<String, dynamic> _$$MonitoringEntryNavigationEventLogImplToJson(
         _$MonitoringEntryNavigationEventLogImpl instance) =>
     <String, dynamic>{
-      'severity': _$EventSeverityEnumMap[instance.severity]!,
+      'scope': instance.scope,
       'type': instance.type,
       'routeName': instance.routeName,
       'previousRouteName': instance.previousRouteName,

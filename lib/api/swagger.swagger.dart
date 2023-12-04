@@ -1358,7 +1358,7 @@ class EventsBatch {
   const EventsBatch({
     required this.isLive,
     required this.deviceInfo,
-    required this.identification,
+    this.identification,
     required this.events,
     required this.projectID,
   });
@@ -1514,6 +1514,7 @@ class RegisteredEvent {
     this.networkEvent,
     this.storageEvent,
     this.tapEvent,
+    this.scrollEvent,
     this.navigationEvent,
   });
 
@@ -1545,6 +1546,8 @@ class RegisteredEvent {
   final StorageEvent? storageEvent;
   @JsonKey(name: 'tapEvent')
   final TapEvent? tapEvent;
+  @JsonKey(name: 'scrollEvent')
+  final ScrollEvent? scrollEvent;
   @JsonKey(name: 'navigationEvent')
   final NavigationEvent? navigationEvent;
   static const fromJsonFactory = _$RegisteredEventFromJson;
@@ -1578,6 +1581,9 @@ class RegisteredEvent {
             (identical(other.tapEvent, tapEvent) ||
                 const DeepCollectionEquality()
                     .equals(other.tapEvent, tapEvent)) &&
+            (identical(other.scrollEvent, scrollEvent) ||
+                const DeepCollectionEquality()
+                    .equals(other.scrollEvent, scrollEvent)) &&
             (identical(other.navigationEvent, navigationEvent) ||
                 const DeepCollectionEquality()
                     .equals(other.navigationEvent, navigationEvent)));
@@ -1597,6 +1603,7 @@ class RegisteredEvent {
       const DeepCollectionEquality().hash(networkEvent) ^
       const DeepCollectionEquality().hash(storageEvent) ^
       const DeepCollectionEquality().hash(tapEvent) ^
+      const DeepCollectionEquality().hash(scrollEvent) ^
       const DeepCollectionEquality().hash(navigationEvent) ^
       runtimeType.hashCode;
 }
@@ -1612,6 +1619,7 @@ extension $RegisteredEventExtension on RegisteredEvent {
       NetworkEvent? networkEvent,
       StorageEvent? storageEvent,
       TapEvent? tapEvent,
+      ScrollEvent? scrollEvent,
       NavigationEvent? navigationEvent}) {
     return RegisteredEvent(
         id: id ?? this.id,
@@ -1623,6 +1631,7 @@ extension $RegisteredEventExtension on RegisteredEvent {
         networkEvent: networkEvent ?? this.networkEvent,
         storageEvent: storageEvent ?? this.storageEvent,
         tapEvent: tapEvent ?? this.tapEvent,
+        scrollEvent: scrollEvent ?? this.scrollEvent,
         navigationEvent: navigationEvent ?? this.navigationEvent);
   }
 
@@ -1636,6 +1645,7 @@ extension $RegisteredEventExtension on RegisteredEvent {
       Wrapped<NetworkEvent?>? networkEvent,
       Wrapped<StorageEvent?>? storageEvent,
       Wrapped<TapEvent?>? tapEvent,
+      Wrapped<ScrollEvent?>? scrollEvent,
       Wrapped<NavigationEvent?>? navigationEvent}) {
     return RegisteredEvent(
         id: (id != null ? id.value : this.id),
@@ -1651,6 +1661,8 @@ extension $RegisteredEventExtension on RegisteredEvent {
         storageEvent:
             (storageEvent != null ? storageEvent.value : this.storageEvent),
         tapEvent: (tapEvent != null ? tapEvent.value : this.tapEvent),
+        scrollEvent:
+            (scrollEvent != null ? scrollEvent.value : this.scrollEvent),
         navigationEvent: (navigationEvent != null
             ? navigationEvent.value
             : this.navigationEvent));
@@ -1660,7 +1672,9 @@ extension $RegisteredEventExtension on RegisteredEvent {
 @JsonSerializable(explicitToJson: true)
 class TextEvent {
   const TextEvent({
+    required this.scope,
     required this.text,
+    this.payload,
   });
 
   factory TextEvent.fromJson(Map<String, dynamic> json) =>
@@ -1669,16 +1683,24 @@ class TextEvent {
   static const toJsonFactory = _$TextEventToJson;
   Map<String, dynamic> toJson() => _$TextEventToJson(this);
 
+  @JsonKey(name: 'scope')
+  final String scope;
   @JsonKey(name: 'text')
   final String text;
+  @JsonKey(name: 'payload')
+  final String? payload;
   static const fromJsonFactory = _$TextEventFromJson;
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is TextEvent &&
+            (identical(other.scope, scope) ||
+                const DeepCollectionEquality().equals(other.scope, scope)) &&
             (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)));
+                const DeepCollectionEquality().equals(other.text, text)) &&
+            (identical(other.payload, payload) ||
+                const DeepCollectionEquality().equals(other.payload, payload)));
   }
 
   @override
@@ -1686,22 +1708,35 @@ class TextEvent {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(text) ^ runtimeType.hashCode;
+      const DeepCollectionEquality().hash(scope) ^
+      const DeepCollectionEquality().hash(text) ^
+      const DeepCollectionEquality().hash(payload) ^
+      runtimeType.hashCode;
 }
 
 extension $TextEventExtension on TextEvent {
-  TextEvent copyWith({String? text}) {
-    return TextEvent(text: text ?? this.text);
+  TextEvent copyWith({String? scope, String? text, String? payload}) {
+    return TextEvent(
+        scope: scope ?? this.scope,
+        text: text ?? this.text,
+        payload: payload ?? this.payload);
   }
 
-  TextEvent copyWithWrapped({Wrapped<String>? text}) {
-    return TextEvent(text: (text != null ? text.value : this.text));
+  TextEvent copyWithWrapped(
+      {Wrapped<String>? scope,
+      Wrapped<String>? text,
+      Wrapped<String?>? payload}) {
+    return TextEvent(
+        scope: (scope != null ? scope.value : this.scope),
+        text: (text != null ? text.value : this.text),
+        payload: (payload != null ? payload.value : this.payload));
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class StateEvent {
   const StateEvent({
+    required this.scope,
     required this.stateName,
     required this.value,
   });
@@ -1712,6 +1747,8 @@ class StateEvent {
   static const toJsonFactory = _$StateEventToJson;
   Map<String, dynamic> toJson() => _$StateEventToJson(this);
 
+  @JsonKey(name: 'scope')
+  final String scope;
   @JsonKey(name: 'stateName')
   final String stateName;
   @JsonKey(name: 'value')
@@ -1722,6 +1759,8 @@ class StateEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is StateEvent &&
+            (identical(other.scope, scope) ||
+                const DeepCollectionEquality().equals(other.scope, scope)) &&
             (identical(other.stateName, stateName) ||
                 const DeepCollectionEquality()
                     .equals(other.stateName, stateName)) &&
@@ -1734,20 +1773,26 @@ class StateEvent {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(scope) ^
       const DeepCollectionEquality().hash(stateName) ^
       const DeepCollectionEquality().hash(value) ^
       runtimeType.hashCode;
 }
 
 extension $StateEventExtension on StateEvent {
-  StateEvent copyWith({String? stateName, String? value}) {
+  StateEvent copyWith({String? scope, String? stateName, String? value}) {
     return StateEvent(
-        stateName: stateName ?? this.stateName, value: value ?? this.value);
+        scope: scope ?? this.scope,
+        stateName: stateName ?? this.stateName,
+        value: value ?? this.value);
   }
 
   StateEvent copyWithWrapped(
-      {Wrapped<String>? stateName, Wrapped<String>? value}) {
+      {Wrapped<String>? scope,
+      Wrapped<String>? stateName,
+      Wrapped<String>? value}) {
     return StateEvent(
+        scope: (scope != null ? scope.value : this.scope),
         stateName: (stateName != null ? stateName.value : this.stateName),
         value: (value != null ? value.value : this.value));
   }
@@ -1756,6 +1801,7 @@ extension $StateEventExtension on StateEvent {
 @JsonSerializable(explicitToJson: true)
 class ExceptionEvent {
   const ExceptionEvent({
+    required this.scope,
     required this.exception,
     required this.traces,
   });
@@ -1766,6 +1812,8 @@ class ExceptionEvent {
   static const toJsonFactory = _$ExceptionEventToJson;
   Map<String, dynamic> toJson() => _$ExceptionEventToJson(this);
 
+  @JsonKey(name: 'scope')
+  final String scope;
   @JsonKey(name: 'exception')
   final String exception;
   @JsonKey(name: 'traces', defaultValue: <TraceEntry>[])
@@ -1776,6 +1824,8 @@ class ExceptionEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is ExceptionEvent &&
+            (identical(other.scope, scope) ||
+                const DeepCollectionEquality().equals(other.scope, scope)) &&
             (identical(other.exception, exception) ||
                 const DeepCollectionEquality()
                     .equals(other.exception, exception)) &&
@@ -1788,20 +1838,27 @@ class ExceptionEvent {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(scope) ^
       const DeepCollectionEquality().hash(exception) ^
       const DeepCollectionEquality().hash(traces) ^
       runtimeType.hashCode;
 }
 
 extension $ExceptionEventExtension on ExceptionEvent {
-  ExceptionEvent copyWith({String? exception, List<TraceEntry>? traces}) {
+  ExceptionEvent copyWith(
+      {String? scope, String? exception, List<TraceEntry>? traces}) {
     return ExceptionEvent(
-        exception: exception ?? this.exception, traces: traces ?? this.traces);
+        scope: scope ?? this.scope,
+        exception: exception ?? this.exception,
+        traces: traces ?? this.traces);
   }
 
   ExceptionEvent copyWithWrapped(
-      {Wrapped<String>? exception, Wrapped<List<TraceEntry>>? traces}) {
+      {Wrapped<String>? scope,
+      Wrapped<String>? exception,
+      Wrapped<List<TraceEntry>>? traces}) {
     return ExceptionEvent(
+        scope: (scope != null ? scope.value : this.scope),
         exception: (exception != null ? exception.value : this.exception),
         traces: (traces != null ? traces.value : this.traces));
   }
@@ -1885,6 +1942,7 @@ extension $TraceEntryExtension on TraceEntry {
 @JsonSerializable(explicitToJson: true)
 class NetworkEvent {
   const NetworkEvent({
+    required this.scope,
     required this.url,
     required this.statusCode,
     required this.requestHeaders,
@@ -1899,6 +1957,8 @@ class NetworkEvent {
   static const toJsonFactory = _$NetworkEventToJson;
   Map<String, dynamic> toJson() => _$NetworkEventToJson(this);
 
+  @JsonKey(name: 'scope')
+  final String scope;
   @JsonKey(name: 'url')
   final String url;
   @JsonKey(name: 'statusCode')
@@ -1917,6 +1977,8 @@ class NetworkEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is NetworkEvent &&
+            (identical(other.scope, scope) ||
+                const DeepCollectionEquality().equals(other.scope, scope)) &&
             (identical(other.url, url) ||
                 const DeepCollectionEquality().equals(other.url, url)) &&
             (identical(other.statusCode, statusCode) ||
@@ -1941,6 +2003,7 @@ class NetworkEvent {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(scope) ^
       const DeepCollectionEquality().hash(url) ^
       const DeepCollectionEquality().hash(statusCode) ^
       const DeepCollectionEquality().hash(requestHeaders) ^
@@ -1952,13 +2015,15 @@ class NetworkEvent {
 
 extension $NetworkEventExtension on NetworkEvent {
   NetworkEvent copyWith(
-      {String? url,
+      {String? scope,
+      String? url,
       int? statusCode,
       Map<String, dynamic>? requestHeaders,
       Map<String, dynamic>? responseHeaders,
       NetworkPayload? requestPayload,
       NetworkPayload? responsePayload}) {
     return NetworkEvent(
+        scope: scope ?? this.scope,
         url: url ?? this.url,
         statusCode: statusCode ?? this.statusCode,
         requestHeaders: requestHeaders ?? this.requestHeaders,
@@ -1968,13 +2033,15 @@ extension $NetworkEventExtension on NetworkEvent {
   }
 
   NetworkEvent copyWithWrapped(
-      {Wrapped<String>? url,
+      {Wrapped<String>? scope,
+      Wrapped<String>? url,
       Wrapped<int>? statusCode,
       Wrapped<Map<String, dynamic>>? requestHeaders,
       Wrapped<Map<String, dynamic>>? responseHeaders,
       Wrapped<NetworkPayload?>? requestPayload,
       Wrapped<NetworkPayload?>? responsePayload}) {
     return NetworkEvent(
+        scope: (scope != null ? scope.value : this.scope),
         url: (url != null ? url.value : this.url),
         statusCode: (statusCode != null ? statusCode.value : this.statusCode),
         requestHeaders: (requestHeaders != null
@@ -2077,6 +2144,7 @@ extension $NetworkPayloadExtension on NetworkPayload {
 @JsonSerializable(explicitToJson: true)
 class StorageEvent {
   const StorageEvent({
+    required this.scope,
     required this.key,
     required this.value,
   });
@@ -2087,6 +2155,8 @@ class StorageEvent {
   static const toJsonFactory = _$StorageEventToJson;
   Map<String, dynamic> toJson() => _$StorageEventToJson(this);
 
+  @JsonKey(name: 'scope')
+  final String scope;
   @JsonKey(name: 'key')
   final String key;
   @JsonKey(name: 'value')
@@ -2097,6 +2167,8 @@ class StorageEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is StorageEvent &&
+            (identical(other.scope, scope) ||
+                const DeepCollectionEquality().equals(other.scope, scope)) &&
             (identical(other.key, key) ||
                 const DeepCollectionEquality().equals(other.key, key)) &&
             (identical(other.value, value) ||
@@ -2108,18 +2180,24 @@ class StorageEvent {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(scope) ^
       const DeepCollectionEquality().hash(key) ^
       const DeepCollectionEquality().hash(value) ^
       runtimeType.hashCode;
 }
 
 extension $StorageEventExtension on StorageEvent {
-  StorageEvent copyWith({String? key, String? value}) {
-    return StorageEvent(key: key ?? this.key, value: value ?? this.value);
+  StorageEvent copyWith({String? scope, String? key, String? value}) {
+    return StorageEvent(
+        scope: scope ?? this.scope,
+        key: key ?? this.key,
+        value: value ?? this.value);
   }
 
-  StorageEvent copyWithWrapped({Wrapped<String>? key, Wrapped<String>? value}) {
+  StorageEvent copyWithWrapped(
+      {Wrapped<String>? scope, Wrapped<String>? key, Wrapped<String>? value}) {
     return StorageEvent(
+        scope: (scope != null ? scope.value : this.scope),
         key: (key != null ? key.value : this.key),
         value: (value != null ? value.value : this.value));
   }
@@ -2128,8 +2206,11 @@ extension $StorageEventExtension on StorageEvent {
 @JsonSerializable(explicitToJson: true)
 class TapEvent {
   const TapEvent({
+    required this.scope,
     required this.x,
     required this.y,
+    this.identification,
+    this.payload,
   });
 
   factory TapEvent.fromJson(Map<String, dynamic> json) =>
@@ -2138,20 +2219,33 @@ class TapEvent {
   static const toJsonFactory = _$TapEventToJson;
   Map<String, dynamic> toJson() => _$TapEventToJson(this);
 
+  @JsonKey(name: 'scope')
+  final String scope;
   @JsonKey(name: 'x')
   final double x;
   @JsonKey(name: 'y')
   final double y;
+  @JsonKey(name: 'identification')
+  final String? identification;
+  @JsonKey(name: 'payload')
+  final String? payload;
   static const fromJsonFactory = _$TapEventFromJson;
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is TapEvent &&
+            (identical(other.scope, scope) ||
+                const DeepCollectionEquality().equals(other.scope, scope)) &&
             (identical(other.x, x) ||
                 const DeepCollectionEquality().equals(other.x, x)) &&
             (identical(other.y, y) ||
-                const DeepCollectionEquality().equals(other.y, y)));
+                const DeepCollectionEquality().equals(other.y, y)) &&
+            (identical(other.identification, identification) ||
+                const DeepCollectionEquality()
+                    .equals(other.identification, identification)) &&
+            (identical(other.payload, payload) ||
+                const DeepCollectionEquality().equals(other.payload, payload)));
   }
 
   @override
@@ -2159,25 +2253,155 @@ class TapEvent {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(scope) ^
       const DeepCollectionEquality().hash(x) ^
       const DeepCollectionEquality().hash(y) ^
+      const DeepCollectionEquality().hash(identification) ^
+      const DeepCollectionEquality().hash(payload) ^
       runtimeType.hashCode;
 }
 
 extension $TapEventExtension on TapEvent {
-  TapEvent copyWith({double? x, double? y}) {
-    return TapEvent(x: x ?? this.x, y: y ?? this.y);
+  TapEvent copyWith(
+      {String? scope,
+      double? x,
+      double? y,
+      String? identification,
+      String? payload}) {
+    return TapEvent(
+        scope: scope ?? this.scope,
+        x: x ?? this.x,
+        y: y ?? this.y,
+        identification: identification ?? this.identification,
+        payload: payload ?? this.payload);
   }
 
-  TapEvent copyWithWrapped({Wrapped<double>? x, Wrapped<double>? y}) {
+  TapEvent copyWithWrapped(
+      {Wrapped<String>? scope,
+      Wrapped<double>? x,
+      Wrapped<double>? y,
+      Wrapped<String?>? identification,
+      Wrapped<String?>? payload}) {
     return TapEvent(
-        x: (x != null ? x.value : this.x), y: (y != null ? y.value : this.y));
+        scope: (scope != null ? scope.value : this.scope),
+        x: (x != null ? x.value : this.x),
+        y: (y != null ? y.value : this.y),
+        identification: (identification != null
+            ? identification.value
+            : this.identification),
+        payload: (payload != null ? payload.value : this.payload));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ScrollEvent {
+  const ScrollEvent({
+    required this.scope,
+    required this.identification,
+    this.payload,
+    required this.offsetStart,
+    required this.offsetEnd,
+    required this.viewport,
+  });
+
+  factory ScrollEvent.fromJson(Map<String, dynamic> json) =>
+      _$ScrollEventFromJson(json);
+
+  static const toJsonFactory = _$ScrollEventToJson;
+  Map<String, dynamic> toJson() => _$ScrollEventToJson(this);
+
+  @JsonKey(name: 'scope')
+  final String scope;
+  @JsonKey(name: 'identification')
+  final String identification;
+  @JsonKey(name: 'payload')
+  final String? payload;
+  @JsonKey(name: 'offsetStart')
+  final double offsetStart;
+  @JsonKey(name: 'offsetEnd')
+  final double offsetEnd;
+  @JsonKey(name: 'viewport')
+  final double viewport;
+  static const fromJsonFactory = _$ScrollEventFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ScrollEvent &&
+            (identical(other.scope, scope) ||
+                const DeepCollectionEquality().equals(other.scope, scope)) &&
+            (identical(other.identification, identification) ||
+                const DeepCollectionEquality()
+                    .equals(other.identification, identification)) &&
+            (identical(other.payload, payload) ||
+                const DeepCollectionEquality()
+                    .equals(other.payload, payload)) &&
+            (identical(other.offsetStart, offsetStart) ||
+                const DeepCollectionEquality()
+                    .equals(other.offsetStart, offsetStart)) &&
+            (identical(other.offsetEnd, offsetEnd) ||
+                const DeepCollectionEquality()
+                    .equals(other.offsetEnd, offsetEnd)) &&
+            (identical(other.viewport, viewport) ||
+                const DeepCollectionEquality()
+                    .equals(other.viewport, viewport)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(scope) ^
+      const DeepCollectionEquality().hash(identification) ^
+      const DeepCollectionEquality().hash(payload) ^
+      const DeepCollectionEquality().hash(offsetStart) ^
+      const DeepCollectionEquality().hash(offsetEnd) ^
+      const DeepCollectionEquality().hash(viewport) ^
+      runtimeType.hashCode;
+}
+
+extension $ScrollEventExtension on ScrollEvent {
+  ScrollEvent copyWith(
+      {String? scope,
+      String? identification,
+      String? payload,
+      double? offsetStart,
+      double? offsetEnd,
+      double? viewport}) {
+    return ScrollEvent(
+        scope: scope ?? this.scope,
+        identification: identification ?? this.identification,
+        payload: payload ?? this.payload,
+        offsetStart: offsetStart ?? this.offsetStart,
+        offsetEnd: offsetEnd ?? this.offsetEnd,
+        viewport: viewport ?? this.viewport);
+  }
+
+  ScrollEvent copyWithWrapped(
+      {Wrapped<String>? scope,
+      Wrapped<String>? identification,
+      Wrapped<String?>? payload,
+      Wrapped<double>? offsetStart,
+      Wrapped<double>? offsetEnd,
+      Wrapped<double>? viewport}) {
+    return ScrollEvent(
+        scope: (scope != null ? scope.value : this.scope),
+        identification: (identification != null
+            ? identification.value
+            : this.identification),
+        payload: (payload != null ? payload.value : this.payload),
+        offsetStart:
+            (offsetStart != null ? offsetStart.value : this.offsetStart),
+        offsetEnd: (offsetEnd != null ? offsetEnd.value : this.offsetEnd),
+        viewport: (viewport != null ? viewport.value : this.viewport));
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class NavigationEvent {
   const NavigationEvent({
+    required this.scope,
     required this.kind,
     required this.routeName,
     this.previousRouteName,
@@ -2192,6 +2416,8 @@ class NavigationEvent {
   static const toJsonFactory = _$NavigationEventToJson;
   Map<String, dynamic> toJson() => _$NavigationEventToJson(this);
 
+  @JsonKey(name: 'scope')
+  final String scope;
   @JsonKey(name: 'kind')
   final String kind;
   @JsonKey(name: 'routeName')
@@ -2210,6 +2436,8 @@ class NavigationEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is NavigationEvent &&
+            (identical(other.scope, scope) ||
+                const DeepCollectionEquality().equals(other.scope, scope)) &&
             (identical(other.kind, kind) ||
                 const DeepCollectionEquality().equals(other.kind, kind)) &&
             (identical(other.routeName, routeName) ||
@@ -2234,6 +2462,7 @@ class NavigationEvent {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(scope) ^
       const DeepCollectionEquality().hash(kind) ^
       const DeepCollectionEquality().hash(routeName) ^
       const DeepCollectionEquality().hash(previousRouteName) ^
@@ -2245,13 +2474,15 @@ class NavigationEvent {
 
 extension $NavigationEventExtension on NavigationEvent {
   NavigationEvent copyWith(
-      {String? kind,
+      {String? scope,
+      String? kind,
       String? routeName,
       String? previousRouteName,
       String? arguments,
       String? previousArguments,
       String? popResult}) {
     return NavigationEvent(
+        scope: scope ?? this.scope,
         kind: kind ?? this.kind,
         routeName: routeName ?? this.routeName,
         previousRouteName: previousRouteName ?? this.previousRouteName,
@@ -2261,13 +2492,15 @@ extension $NavigationEventExtension on NavigationEvent {
   }
 
   NavigationEvent copyWithWrapped(
-      {Wrapped<String>? kind,
+      {Wrapped<String>? scope,
+      Wrapped<String>? kind,
       Wrapped<String>? routeName,
       Wrapped<String?>? previousRouteName,
       Wrapped<String?>? arguments,
       Wrapped<String?>? previousArguments,
       Wrapped<String?>? popResult}) {
     return NavigationEvent(
+        scope: (scope != null ? scope.value : this.scope),
         kind: (kind != null ? kind.value : this.kind),
         routeName: (routeName != null ? routeName.value : this.routeName),
         previousRouteName: (previousRouteName != null

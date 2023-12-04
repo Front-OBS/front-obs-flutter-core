@@ -4,6 +4,10 @@ import 'package:oberon_connector/log_vault.dart';
 import 'package:oberon_connector/monitoring_entries.dart';
 
 class OberonNavigationObserver extends NavigatorObserver {
+  OberonNavigationObserver({this.scope = "Главный роутер"});
+
+  final String scope;
+
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     var routeName = route.settings.name ?? "[Путь не определен]";
@@ -13,7 +17,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var previousArguments = previousRoute?.settings.arguments?.toString();
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
-      severity: EventSeverity.info,
+      scope: scope,
       type: "didPush",
       routeName: routeName,
       previousRouteName: previousRouteName,
@@ -33,7 +37,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var previousArguments = previousRoute?.settings.arguments?.toString();
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
-      severity: EventSeverity.info,
+      scope: scope,
       type: "didPop",
       routeName: routeName,
       previousRouteName: previousRouteName,
@@ -53,7 +57,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var previousArguments = previousRoute?.settings.arguments?.toString();
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
-      severity: EventSeverity.info,
+      scope: scope,
       type: "didRemove",
       routeName: routeName,
       previousRouteName: previousRouteName,
@@ -67,13 +71,12 @@ class OberonNavigationObserver extends NavigatorObserver {
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     var routeName = newRoute?.settings.name ?? "[Путь не определен]";
-    var previousRouteName =
-        oldRoute?.settings.name ?? "[Путь не определен]";
+    var previousRouteName = oldRoute?.settings.name ?? "[Путь не определен]";
     var arguments = newRoute?.settings.arguments?.toString();
     var previousArguments = oldRoute?.settings.arguments?.toString();
     var popResult = newRoute?.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
-      severity: EventSeverity.info,
+      scope: scope,
       type: "didReplace",
       routeName: routeName,
       previousRouteName: previousRouteName,
@@ -94,7 +97,7 @@ class OberonNavigationObserver extends NavigatorObserver {
     var previousArguments = previousRoute?.settings.arguments?.toString();
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry.navigationEvent(
-      severity: EventSeverity.info,
+      scope: scope,
       type: "didStartUserGesture",
       routeName: routeName,
       previousRouteName: previousRouteName,
@@ -107,11 +110,10 @@ class OberonNavigationObserver extends NavigatorObserver {
 
   @override
   void didStopUserGesture() {
-
     LogVault.addEntry(MonitoringEntry.navigationEvent(
-      severity: EventSeverity.info,
+      scope: scope,
       type: "didStopUserGesture",
-      routeName: "Не предоставляется",
+      routeName: "",
       previousRouteName: null,
       arguments: null,
       previousArguments: null,

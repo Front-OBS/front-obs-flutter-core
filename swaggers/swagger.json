@@ -892,7 +892,6 @@
         "required": [
           "isLive",
           "deviceInfo",
-          "identification",
           "events",
           "projectID"
         ],
@@ -980,6 +979,9 @@
           "tapEvent": {
             "$ref": "#/components/schemas/TapEvent"
           },
+          "scrollEvent": {
+            "$ref": "#/components/schemas/ScrollEvent"
+          },
           "navigationEvent": {
             "$ref": "#/components/schemas/NavigationEvent"
           }
@@ -994,6 +996,7 @@
           "Network",
           "Storage",
           "Tap",
+          "Scroll",
           "Exception",
           "Navigation"
         ],
@@ -1004,19 +1007,29 @@
           3,
           4,
           5,
-          6
+          6,
+          7
         ]
       },
       "TextEvent": {
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "scope",
           "text"
         ],
         "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
           "text": {
             "type": "string",
             "minLength": 1
+          },
+          "payload": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1024,10 +1037,15 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "scope",
           "stateName",
           "value"
         ],
         "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
           "stateName": {
             "type": "string",
             "minLength": 1
@@ -1042,10 +1060,15 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "scope",
           "exception",
           "traces"
         ],
         "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
           "exception": {
             "type": "string",
             "minLength": 1
@@ -1090,12 +1113,17 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "scope",
           "url",
           "statusCode",
           "requestHeaders",
           "responseHeaders"
         ],
         "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
           "url": {
             "type": "string",
             "minLength": 1
@@ -1166,10 +1194,15 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "scope",
           "key",
           "value"
         ],
         "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
           "key": {
             "type": "string",
             "minLength": 1
@@ -1184,15 +1217,65 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "scope",
           "x",
           "y"
         ],
         "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
           "x": {
             "type": "number",
             "format": "double"
           },
           "y": {
+            "type": "number",
+            "format": "double"
+          },
+          "identification": {
+            "type": "string",
+            "nullable": true
+          },
+          "payload": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ScrollEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "scope",
+          "identification",
+          "offsetStart",
+          "offsetEnd",
+          "viewport"
+        ],
+        "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identification": {
+            "type": "string",
+            "minLength": 1
+          },
+          "payload": {
+            "type": "string",
+            "nullable": true
+          },
+          "offsetStart": {
+            "type": "number",
+            "format": "double"
+          },
+          "offsetEnd": {
+            "type": "number",
+            "format": "double"
+          },
+          "viewport": {
             "type": "number",
             "format": "double"
           }
@@ -1202,10 +1285,15 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "scope",
           "kind",
           "routeName"
         ],
         "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
           "kind": {
             "type": "string",
             "minLength": 1
