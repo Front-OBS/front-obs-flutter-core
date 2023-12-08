@@ -1,8 +1,13 @@
+import 'dart:ui';
+
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:oberon_connector/log_vault.dart';
 import 'package:oberon_connector/monitoring_entries.dart';
 import 'package:stack_trace/stack_trace.dart';
+import 'package:image/image.dart' as img;
 
 class ScrollDetector extends StatelessWidget {
   ScrollDetector({
@@ -107,6 +112,47 @@ class TapDetector extends StatelessWidget {
         ));
       },
       child: child,
+    );
+  }
+}
+
+class ScreenRecorder extends StatefulWidget {
+  const ScreenRecorder({
+    super.key,
+    required this.child,
+    required this.controller,
+  });
+
+  final Widget child;
+  final ScreenRecorderController controller;
+
+  @override
+  State<ScreenRecorder> createState() => controller;
+}
+
+class ScreenRecorderController extends State<ScreenRecorder> {
+  final key = GlobalKey();
+
+  Future<Uint8List?> captureScreen() async {
+    if (key.currentContext == null) {
+      print("CONTEXT NULL");
+      return null;
+    }
+    final rObj =
+        key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    final imageRaw =
+        await rObj.toImage(pixelRatio: View.of(context).devicePixelRatio/6);
+    final bytes = await imageRaw.toByteData(format: ImageByteFormat.png);
+    return Uint8List.view(bytes!.buffer);
+    // return img.Image.fromBytes(
+    //     width: imageRaw.width, height: imageRaw.height, bytes: bytes!.buffer);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      key: key,
+      child: widget.child,
     );
   }
 }

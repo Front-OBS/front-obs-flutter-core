@@ -21,7 +21,13 @@ class OberonDioInterceptor extends Interceptor {
     } else if (data is Map<String, dynamic>) {
       return MonitoringNetworkCallPayload.json(json: jsonEncode(data));
     } else {
-      return MonitoringNetworkCallPayload.custom(content: data.toString());
+      try{
+        final json = data.toJson();
+        return MonitoringNetworkCallPayload.json(json: jsonEncode(data));
+      }catch(ex){
+        return MonitoringNetworkCallPayload.custom(content: data.toString());
+      }
+
     }
   }
 

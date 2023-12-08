@@ -1359,6 +1359,7 @@ class EventsBatch {
     required this.isLive,
     required this.deviceInfo,
     this.identification,
+    this.screenshotsBatch,
     required this.events,
     required this.projectID,
   });
@@ -1375,6 +1376,8 @@ class EventsBatch {
   final Map<String, dynamic> deviceInfo;
   @JsonKey(name: 'identification')
   final Identification? identification;
+  @JsonKey(name: 'screenshotsBatch')
+  final ScreenshotsBatch? screenshotsBatch;
   @JsonKey(name: 'events', defaultValue: <RegisteredEvent>[])
   final List<RegisteredEvent> events;
   @JsonKey(name: 'projectID')
@@ -1393,6 +1396,9 @@ class EventsBatch {
             (identical(other.identification, identification) ||
                 const DeepCollectionEquality()
                     .equals(other.identification, identification)) &&
+            (identical(other.screenshotsBatch, screenshotsBatch) ||
+                const DeepCollectionEquality()
+                    .equals(other.screenshotsBatch, screenshotsBatch)) &&
             (identical(other.events, events) ||
                 const DeepCollectionEquality().equals(other.events, events)) &&
             (identical(other.projectID, projectID) ||
@@ -1408,6 +1414,7 @@ class EventsBatch {
       const DeepCollectionEquality().hash(isLive) ^
       const DeepCollectionEquality().hash(deviceInfo) ^
       const DeepCollectionEquality().hash(identification) ^
+      const DeepCollectionEquality().hash(screenshotsBatch) ^
       const DeepCollectionEquality().hash(events) ^
       const DeepCollectionEquality().hash(projectID) ^
       runtimeType.hashCode;
@@ -1418,12 +1425,14 @@ extension $EventsBatchExtension on EventsBatch {
       {bool? isLive,
       Map<String, dynamic>? deviceInfo,
       Identification? identification,
+      ScreenshotsBatch? screenshotsBatch,
       List<RegisteredEvent>? events,
       String? projectID}) {
     return EventsBatch(
         isLive: isLive ?? this.isLive,
         deviceInfo: deviceInfo ?? this.deviceInfo,
         identification: identification ?? this.identification,
+        screenshotsBatch: screenshotsBatch ?? this.screenshotsBatch,
         events: events ?? this.events,
         projectID: projectID ?? this.projectID);
   }
@@ -1432,6 +1441,7 @@ extension $EventsBatchExtension on EventsBatch {
       {Wrapped<bool>? isLive,
       Wrapped<Map<String, dynamic>>? deviceInfo,
       Wrapped<Identification?>? identification,
+      Wrapped<ScreenshotsBatch?>? screenshotsBatch,
       Wrapped<List<RegisteredEvent>>? events,
       Wrapped<String>? projectID}) {
     return EventsBatch(
@@ -1440,6 +1450,9 @@ extension $EventsBatchExtension on EventsBatch {
         identification: (identification != null
             ? identification.value
             : this.identification),
+        screenshotsBatch: (screenshotsBatch != null
+            ? screenshotsBatch.value
+            : this.screenshotsBatch),
         events: (events != null ? events.value : this.events),
         projectID: (projectID != null ? projectID.value : this.projectID));
   }
@@ -1499,6 +1512,62 @@ extension $IdentificationExtension on Identification {
         userIdentification: (userIdentification != null
             ? userIdentification.value
             : this.userIdentification));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ScreenshotsBatch {
+  const ScreenshotsBatch({
+    this.frameIndexes,
+    this.data,
+  });
+
+  factory ScreenshotsBatch.fromJson(Map<String, dynamic> json) =>
+      _$ScreenshotsBatchFromJson(json);
+
+  static const toJsonFactory = _$ScreenshotsBatchToJson;
+  Map<String, dynamic> toJson() => _$ScreenshotsBatchToJson(this);
+
+  @JsonKey(name: 'frameIndexes', defaultValue: <int>[])
+  final List<int>? frameIndexes;
+  @JsonKey(name: 'data')
+  final String? data;
+  static const fromJsonFactory = _$ScreenshotsBatchFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ScreenshotsBatch &&
+            (identical(other.frameIndexes, frameIndexes) ||
+                const DeepCollectionEquality()
+                    .equals(other.frameIndexes, frameIndexes)) &&
+            (identical(other.data, data) ||
+                const DeepCollectionEquality().equals(other.data, data)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(frameIndexes) ^
+      const DeepCollectionEquality().hash(data) ^
+      runtimeType.hashCode;
+}
+
+extension $ScreenshotsBatchExtension on ScreenshotsBatch {
+  ScreenshotsBatch copyWith({List<int>? frameIndexes, String? data}) {
+    return ScreenshotsBatch(
+        frameIndexes: frameIndexes ?? this.frameIndexes,
+        data: data ?? this.data);
+  }
+
+  ScreenshotsBatch copyWithWrapped(
+      {Wrapped<List<int>?>? frameIndexes, Wrapped<String?>? data}) {
+    return ScreenshotsBatch(
+        frameIndexes:
+            (frameIndexes != null ? frameIndexes.value : this.frameIndexes),
+        data: (data != null ? data.value : this.data));
   }
 }
 

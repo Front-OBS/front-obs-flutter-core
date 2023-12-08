@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:uuid/uuid.dart';
+import 'package:image/image.dart' as img;
 
 part 'monitoring_entries.g.dart';
 
@@ -88,6 +91,7 @@ class MonitoringEntry with _$MonitoringEntry {
   const MonitoringEntry._();
 
   factory MonitoringEntry.networkCall({
+    Uint8List? screenshot,
     required String scope,
     required String uri,
     required String id,
@@ -103,6 +107,7 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringEntryNetworkCall;
 
   factory MonitoringEntry.storageOperation({
+    Uint8List? screenshot,
     required String scope,
     required StarageOperationType storage,
     required String storageName,
@@ -112,12 +117,14 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringEntryStarageOperation;
 
   factory MonitoringEntry.exception({
+    Uint8List? screenshot,
     required String scope,
     required String text,
     required List<StackFrame> frames,
   }) = MonitoringEntryException;
 
   factory MonitoringEntry.event({
+    Uint8List? screenshot,
     required String scope,
     required String event,
     required String? payload,
@@ -125,6 +132,7 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringEntryTextLog;
 
   factory MonitoringEntry.stateChange({
+    Uint8List? screenshot,
     required String scope,
     required String payload,
     required String key,
@@ -132,6 +140,7 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringEntryStateLog;
 
   factory MonitoringEntry.tapEvent({
+    Uint8List? screenshot,
     required String scope,
     required String identification,
     required String? payload,
@@ -141,6 +150,7 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringEntryTapEventLog;
 
   factory MonitoringEntry.scrollEvent({
+    Uint8List? screenshot,
     required String scope,
     required String identification,
     required String? payload,
@@ -151,6 +161,7 @@ class MonitoringEntry with _$MonitoringEntry {
   }) = MonitoringEntryScrollEventLog;
 
   factory MonitoringEntry.navigationEvent({
+    Uint8List? screenshot,
     required String scope,
     required String type,
     required String routeName,
@@ -179,7 +190,7 @@ class MonitoringEntry with _$MonitoringEntry {
         stateChange: (value) => MonitorEventKind.state,
         tapEvent: (value) => MonitorEventKind.tap,
       );
-
+/*
   factory MonitoringEntry.fromJson(Map<String, dynamic> json) =>
-      _$MonitoringEntryFromJson(json);
+      _$MonitoringEntryFromJson(json);*/
 }

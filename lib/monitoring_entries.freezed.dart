@@ -829,38 +829,16 @@ abstract class _StackFrameCtor extends StackFrame {
       throw _privateConstructorUsedError;
 }
 
-MonitoringEntry _$MonitoringEntryFromJson(Map<String, dynamic> json) {
-  switch (json['runtimeType']) {
-    case 'networkCall':
-      return MonitoringEntryNetworkCall.fromJson(json);
-    case 'storageOperation':
-      return MonitoringEntryStarageOperation.fromJson(json);
-    case 'exception':
-      return MonitoringEntryException.fromJson(json);
-    case 'event':
-      return MonitoringEntryTextLog.fromJson(json);
-    case 'stateChange':
-      return MonitoringEntryStateLog.fromJson(json);
-    case 'tapEvent':
-      return MonitoringEntryTapEventLog.fromJson(json);
-    case 'scrollEvent':
-      return MonitoringEntryScrollEventLog.fromJson(json);
-    case 'navigationEvent':
-      return MonitoringEntryNavigationEventLog.fromJson(json);
-
-    default:
-      throw CheckedFromJsonException(json, 'runtimeType', 'MonitoringEntry',
-          'Invalid union type "${json['runtimeType']}"!');
-  }
-}
-
 /// @nodoc
 mixin _$MonitoringEntry {
+  Uint8List? get screenshot => throw _privateConstructorUsedError;
+  set screenshot(Uint8List? value) => throw _privateConstructorUsedError;
   String get scope => throw _privateConstructorUsedError;
   set scope(String value) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -875,6 +853,7 @@ mixin _$MonitoringEntry {
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -882,16 +861,21 @@ mixin _$MonitoringEntry {
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -900,6 +884,7 @@ mixin _$MonitoringEntry {
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -909,6 +894,7 @@ mixin _$MonitoringEntry {
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -923,6 +909,7 @@ mixin _$MonitoringEntry {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -937,6 +924,7 @@ mixin _$MonitoringEntry {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -944,15 +932,17 @@ mixin _$MonitoringEntry {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -961,6 +951,7 @@ mixin _$MonitoringEntry {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -970,6 +961,7 @@ mixin _$MonitoringEntry {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -984,6 +976,7 @@ mixin _$MonitoringEntry {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -998,6 +991,7 @@ mixin _$MonitoringEntry {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -1005,15 +999,17 @@ mixin _$MonitoringEntry {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1022,6 +1018,7 @@ mixin _$MonitoringEntry {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1031,6 +1028,7 @@ mixin _$MonitoringEntry {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -1082,7 +1080,7 @@ mixin _$MonitoringEntry {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $MonitoringEntryCopyWith<MonitoringEntry> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1094,7 +1092,7 @@ abstract class $MonitoringEntryCopyWith<$Res> {
           MonitoringEntry value, $Res Function(MonitoringEntry) then) =
       _$MonitoringEntryCopyWithImpl<$Res, MonitoringEntry>;
   @useResult
-  $Res call({String scope});
+  $Res call({Uint8List? screenshot, String scope});
 }
 
 /// @nodoc
@@ -1110,9 +1108,14 @@ class _$MonitoringEntryCopyWithImpl<$Res, $Val extends MonitoringEntry>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
   }) {
     return _then(_value.copyWith(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -1131,7 +1134,8 @@ abstract class _$$MonitoringEntryNetworkCallImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String scope,
+      {Uint8List? screenshot,
+      String scope,
       String uri,
       String id,
       @DateTimeConverter() DateTime logTimestamp,
@@ -1161,6 +1165,7 @@ class __$$MonitoringEntryNetworkCallImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
     Object? uri = null,
     Object? id = null,
@@ -1175,6 +1180,10 @@ class __$$MonitoringEntryNetworkCallImplCopyWithImpl<$Res>
     Object? response = freezed,
   }) {
     return _then(_$MonitoringEntryNetworkCallImpl(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -1249,10 +1258,11 @@ class __$$MonitoringEntryNetworkCallImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
   _$MonitoringEntryNetworkCallImpl(
-      {required this.scope,
+      {this.screenshot,
+      required this.scope,
       required this.uri,
       required this.id,
       @DateTimeConverter() required this.logTimestamp,
@@ -1263,15 +1273,11 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
       this.end,
       required this.statusCode,
       this.responseHeaders,
-      required this.response,
-      final String? $type})
-      : $type = $type ?? 'networkCall',
-        super._();
+      required this.response})
+      : super._();
 
-  factory _$MonitoringEntryNetworkCallImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$MonitoringEntryNetworkCallImplFromJson(json);
-
+  @override
+  Uint8List? screenshot;
   @override
   String scope;
   @override
@@ -1299,12 +1305,9 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
   @override
   MonitoringNetworkCallPayload? response;
 
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
   @override
   String toString() {
-    return 'MonitoringEntry.networkCall(scope: $scope, uri: $uri, id: $id, logTimestamp: $logTimestamp, start: $start, requestQuery: $requestQuery, request: $request, requestHeaders: $requestHeaders, end: $end, statusCode: $statusCode, responseHeaders: $responseHeaders, response: $response)';
+    return 'MonitoringEntry.networkCall(screenshot: $screenshot, scope: $scope, uri: $uri, id: $id, logTimestamp: $logTimestamp, start: $start, requestQuery: $requestQuery, request: $request, requestHeaders: $requestHeaders, end: $end, statusCode: $statusCode, responseHeaders: $responseHeaders, response: $response)';
   }
 
   @JsonKey(ignore: true)
@@ -1318,6 +1321,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -1332,6 +1336,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -1339,16 +1344,21 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1357,6 +1367,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1366,6 +1377,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -1376,14 +1388,27 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp)
         navigationEvent,
   }) {
-    return networkCall(scope, uri, id, logTimestamp, start, requestQuery,
-        request, requestHeaders, end, statusCode, responseHeaders, response);
+    return networkCall(
+        screenshot,
+        scope,
+        uri,
+        id,
+        logTimestamp,
+        start,
+        requestQuery,
+        request,
+        requestHeaders,
+        end,
+        statusCode,
+        responseHeaders,
+        response);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -1398,6 +1423,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -1405,15 +1431,17 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1422,6 +1450,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1431,6 +1460,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -1441,14 +1471,27 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp)?
         navigationEvent,
   }) {
-    return networkCall?.call(scope, uri, id, logTimestamp, start, requestQuery,
-        request, requestHeaders, end, statusCode, responseHeaders, response);
+    return networkCall?.call(
+        screenshot,
+        scope,
+        uri,
+        id,
+        logTimestamp,
+        start,
+        requestQuery,
+        request,
+        requestHeaders,
+        end,
+        statusCode,
+        responseHeaders,
+        response);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -1463,6 +1506,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -1470,15 +1514,17 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1487,6 +1533,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1496,6 +1543,7 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -1508,8 +1556,20 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
     required TResult orElse(),
   }) {
     if (networkCall != null) {
-      return networkCall(scope, uri, id, logTimestamp, start, requestQuery,
-          request, requestHeaders, end, statusCode, responseHeaders, response);
+      return networkCall(
+          screenshot,
+          scope,
+          uri,
+          id,
+          logTimestamp,
+          start,
+          requestQuery,
+          request,
+          requestHeaders,
+          end,
+          statusCode,
+          responseHeaders,
+          response);
     }
     return orElse();
   }
@@ -1564,18 +1624,12 @@ class _$MonitoringEntryNetworkCallImpl extends MonitoringEntryNetworkCall {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MonitoringEntryNetworkCallImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class MonitoringEntryNetworkCall extends MonitoringEntry {
   factory MonitoringEntryNetworkCall(
-          {required String scope,
+          {Uint8List? screenshot,
+          required String scope,
           required String uri,
           required String id,
           @DateTimeConverter() required DateTime logTimestamp,
@@ -1590,9 +1644,9 @@ abstract class MonitoringEntryNetworkCall extends MonitoringEntry {
       _$MonitoringEntryNetworkCallImpl;
   MonitoringEntryNetworkCall._() : super._();
 
-  factory MonitoringEntryNetworkCall.fromJson(Map<String, dynamic> json) =
-      _$MonitoringEntryNetworkCallImpl.fromJson;
-
+  @override
+  Uint8List? get screenshot;
+  set screenshot(Uint8List? value);
   @override
   String get scope;
   set scope(String value);
@@ -1638,7 +1692,8 @@ abstract class _$$MonitoringEntryStarageOperationImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String scope,
+      {Uint8List? screenshot,
+      String scope,
       StarageOperationType storage,
       String storageName,
       String key,
@@ -1659,6 +1714,7 @@ class __$$MonitoringEntryStarageOperationImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
     Object? storage = null,
     Object? storageName = null,
@@ -1667,6 +1723,10 @@ class __$$MonitoringEntryStarageOperationImplCopyWithImpl<$Res>
     Object? logTimestamp = null,
   }) {
     return _then(_$MonitoringEntryStarageOperationImpl(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -1696,24 +1756,21 @@ class __$$MonitoringEntryStarageOperationImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MonitoringEntryStarageOperationImpl
     extends MonitoringEntryStarageOperation {
   _$MonitoringEntryStarageOperationImpl(
-      {required this.scope,
+      {this.screenshot,
+      required this.scope,
       required this.storage,
       required this.storageName,
       required this.key,
       required this.value,
-      @DateTimeConverter() required this.logTimestamp,
-      final String? $type})
-      : $type = $type ?? 'storageOperation',
-        super._();
+      @DateTimeConverter() required this.logTimestamp})
+      : super._();
 
-  factory _$MonitoringEntryStarageOperationImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$MonitoringEntryStarageOperationImplFromJson(json);
-
+  @override
+  Uint8List? screenshot;
   @override
   String scope;
   @override
@@ -1728,12 +1785,9 @@ class _$MonitoringEntryStarageOperationImpl
   @DateTimeConverter()
   DateTime logTimestamp;
 
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
   @override
   String toString() {
-    return 'MonitoringEntry.storageOperation(scope: $scope, storage: $storage, storageName: $storageName, key: $key, value: $value, logTimestamp: $logTimestamp)';
+    return 'MonitoringEntry.storageOperation(screenshot: $screenshot, scope: $scope, storage: $storage, storageName: $storageName, key: $key, value: $value, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -1748,6 +1802,7 @@ class _$MonitoringEntryStarageOperationImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -1762,6 +1817,7 @@ class _$MonitoringEntryStarageOperationImpl
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -1769,16 +1825,21 @@ class _$MonitoringEntryStarageOperationImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1787,6 +1848,7 @@ class _$MonitoringEntryStarageOperationImpl
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1796,6 +1858,7 @@ class _$MonitoringEntryStarageOperationImpl
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -1807,13 +1870,14 @@ class _$MonitoringEntryStarageOperationImpl
         navigationEvent,
   }) {
     return storageOperation(
-        scope, storage, storageName, key, value, logTimestamp);
+        screenshot, scope, storage, storageName, key, value, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -1828,6 +1892,7 @@ class _$MonitoringEntryStarageOperationImpl
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -1835,15 +1900,17 @@ class _$MonitoringEntryStarageOperationImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1852,6 +1919,7 @@ class _$MonitoringEntryStarageOperationImpl
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1861,6 +1929,7 @@ class _$MonitoringEntryStarageOperationImpl
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -1872,13 +1941,14 @@ class _$MonitoringEntryStarageOperationImpl
         navigationEvent,
   }) {
     return storageOperation?.call(
-        scope, storage, storageName, key, value, logTimestamp);
+        screenshot, scope, storage, storageName, key, value, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -1893,6 +1963,7 @@ class _$MonitoringEntryStarageOperationImpl
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -1900,15 +1971,17 @@ class _$MonitoringEntryStarageOperationImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1917,6 +1990,7 @@ class _$MonitoringEntryStarageOperationImpl
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -1926,6 +2000,7 @@ class _$MonitoringEntryStarageOperationImpl
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -1939,7 +2014,7 @@ class _$MonitoringEntryStarageOperationImpl
   }) {
     if (storageOperation != null) {
       return storageOperation(
-          scope, storage, storageName, key, value, logTimestamp);
+          screenshot, scope, storage, storageName, key, value, logTimestamp);
     }
     return orElse();
   }
@@ -1994,18 +2069,12 @@ class _$MonitoringEntryStarageOperationImpl
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MonitoringEntryStarageOperationImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class MonitoringEntryStarageOperation extends MonitoringEntry {
   factory MonitoringEntryStarageOperation(
-          {required String scope,
+          {Uint8List? screenshot,
+          required String scope,
           required StarageOperationType storage,
           required String storageName,
           required String key,
@@ -2014,9 +2083,9 @@ abstract class MonitoringEntryStarageOperation extends MonitoringEntry {
       _$MonitoringEntryStarageOperationImpl;
   MonitoringEntryStarageOperation._() : super._();
 
-  factory MonitoringEntryStarageOperation.fromJson(Map<String, dynamic> json) =
-      _$MonitoringEntryStarageOperationImpl.fromJson;
-
+  @override
+  Uint8List? get screenshot;
+  set screenshot(Uint8List? value);
   @override
   String get scope;
   set scope(String value);
@@ -2048,7 +2117,11 @@ abstract class _$$MonitoringEntryExceptionImplCopyWith<$Res>
       __$$MonitoringEntryExceptionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String scope, String text, List<StackFrame> frames});
+  $Res call(
+      {Uint8List? screenshot,
+      String scope,
+      String text,
+      List<StackFrame> frames});
 }
 
 /// @nodoc
@@ -2063,11 +2136,16 @@ class __$$MonitoringEntryExceptionImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
     Object? text = null,
     Object? frames = null,
   }) {
     return _then(_$MonitoringEntryExceptionImpl(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -2085,19 +2163,17 @@ class __$$MonitoringEntryExceptionImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
   _$MonitoringEntryExceptionImpl(
-      {required this.scope,
+      {this.screenshot,
+      required this.scope,
       required this.text,
-      required this.frames,
-      final String? $type})
-      : $type = $type ?? 'exception',
-        super._();
+      required this.frames})
+      : super._();
 
-  factory _$MonitoringEntryExceptionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MonitoringEntryExceptionImplFromJson(json);
-
+  @override
+  Uint8List? screenshot;
   @override
   String scope;
   @override
@@ -2105,12 +2181,9 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
   @override
   List<StackFrame> frames;
 
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
   @override
   String toString() {
-    return 'MonitoringEntry.exception(scope: $scope, text: $text, frames: $frames)';
+    return 'MonitoringEntry.exception(screenshot: $screenshot, scope: $scope, text: $text, frames: $frames)';
   }
 
   @JsonKey(ignore: true)
@@ -2124,6 +2197,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -2138,6 +2212,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -2145,16 +2220,21 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2163,6 +2243,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2172,6 +2253,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -2182,13 +2264,14 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp)
         navigationEvent,
   }) {
-    return exception(scope, text, frames);
+    return exception(screenshot, scope, text, frames);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -2203,6 +2286,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -2210,15 +2294,17 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2227,6 +2313,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2236,6 +2323,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -2246,13 +2334,14 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp)?
         navigationEvent,
   }) {
-    return exception?.call(scope, text, frames);
+    return exception?.call(screenshot, scope, text, frames);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -2267,6 +2356,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -2274,15 +2364,17 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2291,6 +2383,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2300,6 +2393,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -2312,7 +2406,7 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
     required TResult orElse(),
   }) {
     if (exception != null) {
-      return exception(scope, text, frames);
+      return exception(screenshot, scope, text, frames);
     }
     return orElse();
   }
@@ -2367,25 +2461,19 @@ class _$MonitoringEntryExceptionImpl extends MonitoringEntryException {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MonitoringEntryExceptionImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class MonitoringEntryException extends MonitoringEntry {
   factory MonitoringEntryException(
-      {required String scope,
+      {Uint8List? screenshot,
+      required String scope,
       required String text,
       required List<StackFrame> frames}) = _$MonitoringEntryExceptionImpl;
   MonitoringEntryException._() : super._();
 
-  factory MonitoringEntryException.fromJson(Map<String, dynamic> json) =
-      _$MonitoringEntryExceptionImpl.fromJson;
-
+  @override
+  Uint8List? get screenshot;
+  set screenshot(Uint8List? value);
   @override
   String get scope;
   set scope(String value);
@@ -2409,7 +2497,8 @@ abstract class _$$MonitoringEntryTextLogImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String scope,
+      {Uint8List? screenshot,
+      String scope,
       String event,
       String? payload,
       @DateTimeConverter() DateTime logTimestamp});
@@ -2427,12 +2516,17 @@ class __$$MonitoringEntryTextLogImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
     Object? event = null,
     Object? payload = freezed,
     Object? logTimestamp = null,
   }) {
     return _then(_$MonitoringEntryTextLogImpl(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -2454,20 +2548,18 @@ class __$$MonitoringEntryTextLogImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
   _$MonitoringEntryTextLogImpl(
-      {required this.scope,
+      {this.screenshot,
+      required this.scope,
       required this.event,
       required this.payload,
-      @DateTimeConverter() required this.logTimestamp,
-      final String? $type})
-      : $type = $type ?? 'event',
-        super._();
+      @DateTimeConverter() required this.logTimestamp})
+      : super._();
 
-  factory _$MonitoringEntryTextLogImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MonitoringEntryTextLogImplFromJson(json);
-
+  @override
+  Uint8List? screenshot;
   @override
   String scope;
   @override
@@ -2478,12 +2570,9 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
   @DateTimeConverter()
   DateTime logTimestamp;
 
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
   @override
   String toString() {
-    return 'MonitoringEntry.event(scope: $scope, event: $event, payload: $payload, logTimestamp: $logTimestamp)';
+    return 'MonitoringEntry.event(screenshot: $screenshot, scope: $scope, event: $event, payload: $payload, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -2497,6 +2586,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -2511,6 +2601,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -2518,16 +2609,21 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2536,6 +2632,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2545,6 +2642,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -2555,13 +2653,14 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp)
         navigationEvent,
   }) {
-    return event(scope, this.event, payload, logTimestamp);
+    return event(screenshot, scope, this.event, payload, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -2576,6 +2675,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -2583,15 +2683,17 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2600,6 +2702,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2609,6 +2712,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -2619,13 +2723,14 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp)?
         navigationEvent,
   }) {
-    return event?.call(scope, this.event, payload, logTimestamp);
+    return event?.call(screenshot, scope, this.event, payload, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -2640,6 +2745,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -2647,15 +2753,17 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2664,6 +2772,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2673,6 +2782,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -2685,7 +2795,7 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
     required TResult orElse(),
   }) {
     if (event != null) {
-      return event(scope, this.event, payload, logTimestamp);
+      return event(screenshot, scope, this.event, payload, logTimestamp);
     }
     return orElse();
   }
@@ -2740,27 +2850,21 @@ class _$MonitoringEntryTextLogImpl extends MonitoringEntryTextLog {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MonitoringEntryTextLogImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class MonitoringEntryTextLog extends MonitoringEntry {
   factory MonitoringEntryTextLog(
-          {required String scope,
+          {Uint8List? screenshot,
+          required String scope,
           required String event,
           required String? payload,
           @DateTimeConverter() required DateTime logTimestamp}) =
       _$MonitoringEntryTextLogImpl;
   MonitoringEntryTextLog._() : super._();
 
-  factory MonitoringEntryTextLog.fromJson(Map<String, dynamic> json) =
-      _$MonitoringEntryTextLogImpl.fromJson;
-
+  @override
+  Uint8List? get screenshot;
+  set screenshot(Uint8List? value);
   @override
   String get scope;
   set scope(String value);
@@ -2788,7 +2892,8 @@ abstract class _$$MonitoringEntryStateLogImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String scope,
+      {Uint8List? screenshot,
+      String scope,
       String payload,
       String key,
       @DateTimeConverter() DateTime logTimestamp});
@@ -2806,12 +2911,17 @@ class __$$MonitoringEntryStateLogImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
     Object? payload = null,
     Object? key = null,
     Object? logTimestamp = null,
   }) {
     return _then(_$MonitoringEntryStateLogImpl(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -2833,20 +2943,18 @@ class __$$MonitoringEntryStateLogImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
   _$MonitoringEntryStateLogImpl(
-      {required this.scope,
+      {this.screenshot,
+      required this.scope,
       required this.payload,
       required this.key,
-      @DateTimeConverter() required this.logTimestamp,
-      final String? $type})
-      : $type = $type ?? 'stateChange',
-        super._();
+      @DateTimeConverter() required this.logTimestamp})
+      : super._();
 
-  factory _$MonitoringEntryStateLogImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MonitoringEntryStateLogImplFromJson(json);
-
+  @override
+  Uint8List? screenshot;
   @override
   String scope;
   @override
@@ -2857,12 +2965,9 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
   @DateTimeConverter()
   DateTime logTimestamp;
 
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
   @override
   String toString() {
-    return 'MonitoringEntry.stateChange(scope: $scope, payload: $payload, key: $key, logTimestamp: $logTimestamp)';
+    return 'MonitoringEntry.stateChange(screenshot: $screenshot, scope: $scope, payload: $payload, key: $key, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -2876,6 +2981,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -2890,6 +2996,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -2897,16 +3004,21 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2915,6 +3027,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2924,6 +3037,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -2934,13 +3048,14 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp)
         navigationEvent,
   }) {
-    return stateChange(scope, payload, key, logTimestamp);
+    return stateChange(screenshot, scope, payload, key, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -2955,6 +3070,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -2962,15 +3078,17 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2979,6 +3097,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -2988,6 +3107,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -2998,13 +3118,14 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp)?
         navigationEvent,
   }) {
-    return stateChange?.call(scope, payload, key, logTimestamp);
+    return stateChange?.call(screenshot, scope, payload, key, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -3019,6 +3140,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -3026,15 +3148,17 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3043,6 +3167,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3052,6 +3177,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -3064,7 +3190,7 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
     required TResult orElse(),
   }) {
     if (stateChange != null) {
-      return stateChange(scope, payload, key, logTimestamp);
+      return stateChange(screenshot, scope, payload, key, logTimestamp);
     }
     return orElse();
   }
@@ -3119,27 +3245,21 @@ class _$MonitoringEntryStateLogImpl extends MonitoringEntryStateLog {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MonitoringEntryStateLogImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class MonitoringEntryStateLog extends MonitoringEntry {
   factory MonitoringEntryStateLog(
-          {required String scope,
+          {Uint8List? screenshot,
+          required String scope,
           required String payload,
           required String key,
           @DateTimeConverter() required DateTime logTimestamp}) =
       _$MonitoringEntryStateLogImpl;
   MonitoringEntryStateLog._() : super._();
 
-  factory MonitoringEntryStateLog.fromJson(Map<String, dynamic> json) =
-      _$MonitoringEntryStateLogImpl.fromJson;
-
+  @override
+  Uint8List? get screenshot;
+  set screenshot(Uint8List? value);
   @override
   String get scope;
   set scope(String value);
@@ -3167,7 +3287,8 @@ abstract class _$$MonitoringEntryTapEventLogImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String scope,
+      {Uint8List? screenshot,
+      String scope,
       String identification,
       String? payload,
       double coordX,
@@ -3188,6 +3309,7 @@ class __$$MonitoringEntryTapEventLogImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
     Object? identification = null,
     Object? payload = freezed,
@@ -3196,6 +3318,10 @@ class __$$MonitoringEntryTapEventLogImplCopyWithImpl<$Res>
     Object? logTimestamp = null,
   }) {
     return _then(_$MonitoringEntryTapEventLogImpl(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -3225,23 +3351,20 @@ class __$$MonitoringEntryTapEventLogImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
   _$MonitoringEntryTapEventLogImpl(
-      {required this.scope,
+      {this.screenshot,
+      required this.scope,
       required this.identification,
       required this.payload,
       required this.coordX,
       required this.coordY,
-      @DateTimeConverter() required this.logTimestamp,
-      final String? $type})
-      : $type = $type ?? 'tapEvent',
-        super._();
+      @DateTimeConverter() required this.logTimestamp})
+      : super._();
 
-  factory _$MonitoringEntryTapEventLogImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$MonitoringEntryTapEventLogImplFromJson(json);
-
+  @override
+  Uint8List? screenshot;
   @override
   String scope;
   @override
@@ -3256,12 +3379,9 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
   @DateTimeConverter()
   DateTime logTimestamp;
 
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
   @override
   String toString() {
-    return 'MonitoringEntry.tapEvent(scope: $scope, identification: $identification, payload: $payload, coordX: $coordX, coordY: $coordY, logTimestamp: $logTimestamp)';
+    return 'MonitoringEntry.tapEvent(screenshot: $screenshot, scope: $scope, identification: $identification, payload: $payload, coordX: $coordX, coordY: $coordY, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -3275,6 +3395,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -3289,6 +3410,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -3296,16 +3418,21 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3314,6 +3441,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3323,6 +3451,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -3333,14 +3462,15 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             @DateTimeConverter() DateTime logTimestamp)
         navigationEvent,
   }) {
-    return tapEvent(
-        scope, identification, payload, coordX, coordY, logTimestamp);
+    return tapEvent(screenshot, scope, identification, payload, coordX, coordY,
+        logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -3355,6 +3485,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -3362,15 +3493,17 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3379,6 +3512,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3388,6 +3522,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -3398,14 +3533,15 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             @DateTimeConverter() DateTime logTimestamp)?
         navigationEvent,
   }) {
-    return tapEvent?.call(
-        scope, identification, payload, coordX, coordY, logTimestamp);
+    return tapEvent?.call(screenshot, scope, identification, payload, coordX,
+        coordY, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -3420,6 +3556,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -3427,15 +3564,17 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3444,6 +3583,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3453,6 +3593,7 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -3465,8 +3606,8 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
     required TResult orElse(),
   }) {
     if (tapEvent != null) {
-      return tapEvent(
-          scope, identification, payload, coordX, coordY, logTimestamp);
+      return tapEvent(screenshot, scope, identification, payload, coordX,
+          coordY, logTimestamp);
     }
     return orElse();
   }
@@ -3521,18 +3662,12 @@ class _$MonitoringEntryTapEventLogImpl extends MonitoringEntryTapEventLog {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MonitoringEntryTapEventLogImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class MonitoringEntryTapEventLog extends MonitoringEntry {
   factory MonitoringEntryTapEventLog(
-          {required String scope,
+          {Uint8List? screenshot,
+          required String scope,
           required String identification,
           required String? payload,
           required double coordX,
@@ -3541,9 +3676,9 @@ abstract class MonitoringEntryTapEventLog extends MonitoringEntry {
       _$MonitoringEntryTapEventLogImpl;
   MonitoringEntryTapEventLog._() : super._();
 
-  factory MonitoringEntryTapEventLog.fromJson(Map<String, dynamic> json) =
-      _$MonitoringEntryTapEventLogImpl.fromJson;
-
+  @override
+  Uint8List? get screenshot;
+  set screenshot(Uint8List? value);
   @override
   String get scope;
   set scope(String value);
@@ -3575,7 +3710,8 @@ abstract class _$$MonitoringEntryScrollEventLogImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String scope,
+      {Uint8List? screenshot,
+      String scope,
       String identification,
       String? payload,
       double offsetFrom,
@@ -3597,6 +3733,7 @@ class __$$MonitoringEntryScrollEventLogImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
     Object? identification = null,
     Object? payload = freezed,
@@ -3606,6 +3743,10 @@ class __$$MonitoringEntryScrollEventLogImplCopyWithImpl<$Res>
     Object? logTimestamp = null,
   }) {
     return _then(_$MonitoringEntryScrollEventLogImpl(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -3639,25 +3780,22 @@ class __$$MonitoringEntryScrollEventLogImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MonitoringEntryScrollEventLogImpl
     extends MonitoringEntryScrollEventLog {
   _$MonitoringEntryScrollEventLogImpl(
-      {required this.scope,
+      {this.screenshot,
+      required this.scope,
       required this.identification,
       required this.payload,
       required this.offsetFrom,
       required this.offsetTo,
       required this.viewport,
-      @DateTimeConverter() required this.logTimestamp,
-      final String? $type})
-      : $type = $type ?? 'scrollEvent',
-        super._();
+      @DateTimeConverter() required this.logTimestamp})
+      : super._();
 
-  factory _$MonitoringEntryScrollEventLogImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$MonitoringEntryScrollEventLogImplFromJson(json);
-
+  @override
+  Uint8List? screenshot;
   @override
   String scope;
   @override
@@ -3674,12 +3812,9 @@ class _$MonitoringEntryScrollEventLogImpl
   @DateTimeConverter()
   DateTime logTimestamp;
 
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
   @override
   String toString() {
-    return 'MonitoringEntry.scrollEvent(scope: $scope, identification: $identification, payload: $payload, offsetFrom: $offsetFrom, offsetTo: $offsetTo, viewport: $viewport, logTimestamp: $logTimestamp)';
+    return 'MonitoringEntry.scrollEvent(screenshot: $screenshot, scope: $scope, identification: $identification, payload: $payload, offsetFrom: $offsetFrom, offsetTo: $offsetTo, viewport: $viewport, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -3694,6 +3829,7 @@ class _$MonitoringEntryScrollEventLogImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -3708,6 +3844,7 @@ class _$MonitoringEntryScrollEventLogImpl
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -3715,16 +3852,21 @@ class _$MonitoringEntryScrollEventLogImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3733,6 +3875,7 @@ class _$MonitoringEntryScrollEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3742,6 +3885,7 @@ class _$MonitoringEntryScrollEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -3752,14 +3896,15 @@ class _$MonitoringEntryScrollEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)
         navigationEvent,
   }) {
-    return scrollEvent(scope, identification, payload, offsetFrom, offsetTo,
-        viewport, logTimestamp);
+    return scrollEvent(screenshot, scope, identification, payload, offsetFrom,
+        offsetTo, viewport, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -3774,6 +3919,7 @@ class _$MonitoringEntryScrollEventLogImpl
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -3781,15 +3927,17 @@ class _$MonitoringEntryScrollEventLogImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3798,6 +3946,7 @@ class _$MonitoringEntryScrollEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3807,6 +3956,7 @@ class _$MonitoringEntryScrollEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -3817,14 +3967,15 @@ class _$MonitoringEntryScrollEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         navigationEvent,
   }) {
-    return scrollEvent?.call(scope, identification, payload, offsetFrom,
-        offsetTo, viewport, logTimestamp);
+    return scrollEvent?.call(screenshot, scope, identification, payload,
+        offsetFrom, offsetTo, viewport, logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -3839,6 +3990,7 @@ class _$MonitoringEntryScrollEventLogImpl
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -3846,15 +3998,17 @@ class _$MonitoringEntryScrollEventLogImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3863,6 +4017,7 @@ class _$MonitoringEntryScrollEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -3872,6 +4027,7 @@ class _$MonitoringEntryScrollEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -3884,8 +4040,8 @@ class _$MonitoringEntryScrollEventLogImpl
     required TResult orElse(),
   }) {
     if (scrollEvent != null) {
-      return scrollEvent(scope, identification, payload, offsetFrom, offsetTo,
-          viewport, logTimestamp);
+      return scrollEvent(screenshot, scope, identification, payload, offsetFrom,
+          offsetTo, viewport, logTimestamp);
     }
     return orElse();
   }
@@ -3940,18 +4096,12 @@ class _$MonitoringEntryScrollEventLogImpl
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MonitoringEntryScrollEventLogImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class MonitoringEntryScrollEventLog extends MonitoringEntry {
   factory MonitoringEntryScrollEventLog(
-          {required String scope,
+          {Uint8List? screenshot,
+          required String scope,
           required String identification,
           required String? payload,
           required double offsetFrom,
@@ -3961,9 +4111,9 @@ abstract class MonitoringEntryScrollEventLog extends MonitoringEntry {
       _$MonitoringEntryScrollEventLogImpl;
   MonitoringEntryScrollEventLog._() : super._();
 
-  factory MonitoringEntryScrollEventLog.fromJson(Map<String, dynamic> json) =
-      _$MonitoringEntryScrollEventLogImpl.fromJson;
-
+  @override
+  Uint8List? get screenshot;
+  set screenshot(Uint8List? value);
   @override
   String get scope;
   set scope(String value);
@@ -3998,7 +4148,8 @@ abstract class _$$MonitoringEntryNavigationEventLogImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String scope,
+      {Uint8List? screenshot,
+      String scope,
       String type,
       String routeName,
       String? previousRouteName,
@@ -4021,6 +4172,7 @@ class __$$MonitoringEntryNavigationEventLogImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? screenshot = freezed,
     Object? scope = null,
     Object? type = null,
     Object? routeName = null,
@@ -4031,6 +4183,10 @@ class __$$MonitoringEntryNavigationEventLogImplCopyWithImpl<$Res>
     Object? logTimestamp = null,
   }) {
     return _then(_$MonitoringEntryNavigationEventLogImpl(
+      screenshot: freezed == screenshot
+          ? _value.screenshot
+          : screenshot // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
       scope: null == scope
           ? _value.scope
           : scope // ignore: cast_nullable_to_non_nullable
@@ -4068,26 +4224,23 @@ class __$$MonitoringEntryNavigationEventLogImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MonitoringEntryNavigationEventLogImpl
     extends MonitoringEntryNavigationEventLog {
   _$MonitoringEntryNavigationEventLogImpl(
-      {required this.scope,
+      {this.screenshot,
+      required this.scope,
       required this.type,
       required this.routeName,
       required this.previousRouteName,
       required this.arguments,
       required this.previousArguments,
       required this.popResult,
-      @DateTimeConverter() required this.logTimestamp,
-      final String? $type})
-      : $type = $type ?? 'navigationEvent',
-        super._();
+      @DateTimeConverter() required this.logTimestamp})
+      : super._();
 
-  factory _$MonitoringEntryNavigationEventLogImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$MonitoringEntryNavigationEventLogImplFromJson(json);
-
+  @override
+  Uint8List? screenshot;
   @override
   String scope;
   @override
@@ -4106,12 +4259,9 @@ class _$MonitoringEntryNavigationEventLogImpl
   @DateTimeConverter()
   DateTime logTimestamp;
 
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
   @override
   String toString() {
-    return 'MonitoringEntry.navigationEvent(scope: $scope, type: $type, routeName: $routeName, previousRouteName: $previousRouteName, arguments: $arguments, previousArguments: $previousArguments, popResult: $popResult, logTimestamp: $logTimestamp)';
+    return 'MonitoringEntry.navigationEvent(screenshot: $screenshot, scope: $scope, type: $type, routeName: $routeName, previousRouteName: $previousRouteName, arguments: $arguments, previousArguments: $previousArguments, popResult: $popResult, logTimestamp: $logTimestamp)';
   }
 
   @JsonKey(ignore: true)
@@ -4126,6 +4276,7 @@ class _$MonitoringEntryNavigationEventLogImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -4140,6 +4291,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             MonitoringNetworkCallPayload? response)
         networkCall,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -4147,16 +4299,21 @@ class _$MonitoringEntryNavigationEventLogImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)
         storageOperation,
-    required TResult Function(
-            String scope, String text, List<StackFrame> frames)
+    required TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)
         exception,
-    required TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)
+    required TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)
         event,
-    required TResult Function(String scope, String payload, String key,
+    required TResult Function(
+            Uint8List? screenshot,
+            String scope,
+            String payload,
+            String key,
             @DateTimeConverter() DateTime logTimestamp)
         stateChange,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -4165,6 +4322,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)
         tapEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -4174,6 +4332,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)
         scrollEvent,
     required TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -4184,14 +4343,23 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)
         navigationEvent,
   }) {
-    return navigationEvent(scope, type, routeName, previousRouteName, arguments,
-        previousArguments, popResult, logTimestamp);
+    return navigationEvent(
+        screenshot,
+        scope,
+        type,
+        routeName,
+        previousRouteName,
+        arguments,
+        previousArguments,
+        popResult,
+        logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -4206,6 +4374,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -4213,15 +4382,17 @@ class _$MonitoringEntryNavigationEventLogImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult? Function(String scope, String text, List<StackFrame> frames)?
+    TResult? Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult? Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult? Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult? Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -4230,6 +4401,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -4239,6 +4411,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult? Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -4249,14 +4422,23 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         navigationEvent,
   }) {
-    return navigationEvent?.call(scope, type, routeName, previousRouteName,
-        arguments, previousArguments, popResult, logTimestamp);
+    return navigationEvent?.call(
+        screenshot,
+        scope,
+        type,
+        routeName,
+        previousRouteName,
+        arguments,
+        previousArguments,
+        popResult,
+        logTimestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String uri,
             String id,
@@ -4271,6 +4453,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             MonitoringNetworkCallPayload? response)?
         networkCall,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             StarageOperationType storage,
             String storageName,
@@ -4278,15 +4461,17 @@ class _$MonitoringEntryNavigationEventLogImpl
             String value,
             @DateTimeConverter() DateTime logTimestamp)?
         storageOperation,
-    TResult Function(String scope, String text, List<StackFrame> frames)?
+    TResult Function(Uint8List? screenshot, String scope, String text,
+            List<StackFrame> frames)?
         exception,
-    TResult Function(String scope, String event, String? payload,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String event,
+            String? payload, @DateTimeConverter() DateTime logTimestamp)?
         event,
-    TResult Function(String scope, String payload, String key,
-            @DateTimeConverter() DateTime logTimestamp)?
+    TResult Function(Uint8List? screenshot, String scope, String payload,
+            String key, @DateTimeConverter() DateTime logTimestamp)?
         stateChange,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -4295,6 +4480,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         tapEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String identification,
             String? payload,
@@ -4304,6 +4490,7 @@ class _$MonitoringEntryNavigationEventLogImpl
             @DateTimeConverter() DateTime logTimestamp)?
         scrollEvent,
     TResult Function(
+            Uint8List? screenshot,
             String scope,
             String type,
             String routeName,
@@ -4316,8 +4503,16 @@ class _$MonitoringEntryNavigationEventLogImpl
     required TResult orElse(),
   }) {
     if (navigationEvent != null) {
-      return navigationEvent(scope, type, routeName, previousRouteName,
-          arguments, previousArguments, popResult, logTimestamp);
+      return navigationEvent(
+          screenshot,
+          scope,
+          type,
+          routeName,
+          previousRouteName,
+          arguments,
+          previousArguments,
+          popResult,
+          logTimestamp);
     }
     return orElse();
   }
@@ -4372,18 +4567,12 @@ class _$MonitoringEntryNavigationEventLogImpl
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MonitoringEntryNavigationEventLogImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class MonitoringEntryNavigationEventLog extends MonitoringEntry {
   factory MonitoringEntryNavigationEventLog(
-          {required String scope,
+          {Uint8List? screenshot,
+          required String scope,
           required String type,
           required String routeName,
           required String? previousRouteName,
@@ -4394,10 +4583,9 @@ abstract class MonitoringEntryNavigationEventLog extends MonitoringEntry {
       _$MonitoringEntryNavigationEventLogImpl;
   MonitoringEntryNavigationEventLog._() : super._();
 
-  factory MonitoringEntryNavigationEventLog.fromJson(
-          Map<String, dynamic> json) =
-      _$MonitoringEntryNavigationEventLogImpl.fromJson;
-
+  @override
+  Uint8List? get screenshot;
+  set screenshot(Uint8List? value);
   @override
   String get scope;
   set scope(String value);

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:chopper/chopper.dart';
 import 'package:crypto/crypto.dart';
@@ -8,6 +9,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_uuid/device_uuid.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/foundation.dart' as fnd;
 import 'package:flutter/material.dart';
 import 'package:oberon_connector/environments.dart';
 import 'package:stack_trace/stack_trace.dart';
@@ -15,6 +17,8 @@ import 'package:uuid/uuid.dart';
 
 import 'api/swagger.swagger.dart';
 import 'monitoring_entries.dart';
+import 'observers/ui.dart';
+import 'package:image/image.dart' as img;
 
 Future<String> getDeviceCode() async {
   return Uuid.unparse(md5
@@ -49,12 +53,14 @@ class LogVault extends ChangeNotifier {
   static bool initialized = false;
   static late String _projectCode;
 
+  static late ScreenRecorderController recorderController;
+
   static late Map<DeviceInfoEntryKind, String> devicePrams;
 
   static Future initVault(bool liveStreams, String projectCode) async {
     _projectCode = projectCode;
     debouncingTime =
-        liveStreams ? Duration(milliseconds: 50) : Duration(seconds: 5);
+        liveStreams ? Duration(milliseconds: 200) : Duration(seconds: 3);
     doLiveStreams = liveStreams;
     client = Swagger.create(baseUrl: Uri.parse("https://oberon-lab.ru"));
     deviceCode = await getDeviceCode();
@@ -117,15 +123,11 @@ class LogVault extends ChangeNotifier {
           print("Sent batch");
         });
     initialized = true;
-
-    await openSendStream();
   }
 
   static final sendingQueue = StreamController<EventsBatch>();
 
   static void sendBatch(EventsBatch batch) async {
-    EasyDebounce.cancel("oberon_event");
-
     print(
         "Sending batch with ${batch.events.length} ewents. In queue ${inQueueCount}");
     try {
@@ -139,10 +141,52 @@ class LogVault extends ChangeNotifier {
   }
 
   static final List<RegisteredEvent> eventsBuffer = [];
+  static final Map<String, Uint8List?> screenshots = {};
 
-  static void scheduleSend() {
+  static String computeBatchOfScreenshots(dynamic message) {
+    final tsStart = DateTime.now();
+    final listS = message as List<Uint8List?>;
+    //final decoder = img.PngDecoder();
+    final encoder = img.GifEncoder();
+
+    final pngs =
+        listS.map((e) => e != null ? img.PngDecoder().decode(e)!.convert(numChannels: 3) : null);
+    print("Creating APNG for ${pngs}");
+    for (final p in pngs) {
+      if (p != null) encoder.addFrame(p);
+    }
+
+    final apng = encoder.finish()!;
+    final baseEncoded = base64Encode(apng.toList(growable: false));
+    print("APNG DELAY ${DateTime.now().difference(tsStart).inMilliseconds}");
+    return baseEncoded;
+  }
+
+  static void scheduleSend() async {
+    final events = eventsBuffer.toList();
+    final ss = Map.fromEntries(screenshots.entries);
+    screenshots.clear();
+    eventsBuffer.clear();
+    //EasyDebounce.cancel("oberon_event");
+
+    ScreenshotsBatch? sbatch;
+    if (ss.values.any((element) => element != null)) {
+      final batch =
+          await fnd.compute(computeBatchOfScreenshots, ss.values.toList());
+      final sIndexes = ss.values
+          .toList()
+          .asMap()
+          .entries
+          .map((kv) => kv.value != null ? kv.key : null)
+          .where((element) => element != null)
+          .cast<int>()
+          .toList();
+      sbatch = ScreenshotsBatch(data: batch, frameIndexes: sIndexes);
+    }
+    //print(batch.length / 1024 / 1024);
     sendingQueue.add(
       EventsBatch(
+        screenshotsBatch: sbatch,
         deviceInfo: devicePrams.map((key, value) => MapEntry(key.name, value)),
         projectID: _projectCode,
         isLive: doLiveStreams,
@@ -150,57 +194,22 @@ class LogVault extends ChangeNotifier {
           code: deviceCode,
           userIdentification: OberonAuth.id,
         ),
-        events: eventsBuffer.toList(),
+        events: events,
       ),
     );
-    eventsBuffer.clear();
   }
 
-  static void scheduleEvent(RegisteredEvent event) {
+  static void scheduleEvent(RegisteredEvent event, Uint8List? screenshot) {
     EasyDebounce.debounce(
       'oberon_event',
       debouncingTime,
       scheduleSend,
     );
+    screenshots[event.id] = screenshot;
     eventsBuffer.add(event);
   }
 
   static bool consuming = false;
-
-/*
-  static Future connectToConsumer() async {
-    try {
-      if (consuming) {
-        print("ALREDY OPENED CONNECTION");
-        return;
-      }
-      consuming = true;
-      final client = grpc.EventConsumerClient(channel);
-      final response = await client.consumeEvents();
-      consuming = false;
-    } catch (ex) {
-      Future.delayed(
-        Duration(seconds: 3),
-        () {
-          print("Reconnecting to Oberon consumer");
-          connectToConsumer();
-        },
-      );
-      print(ex);
-    } finally {
-      consuming = false;
-    }
-  }*/
-
-  static Future openSendStream() async {
-    /*  eventsRemoteController = StreamController.broadcast();
-    sendRequests = StreamController.broadcast();*/
-
-    /* eventsRemoteController.stream.listen(scheduleEvent);
-    sendRequests.stream.listen((event) {
-      print("SENDING EVENTS ${event.events?.length}");
-    });*/
-  }
 
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
     final ts = DateTime.now().millisecondsSinceEpoch;
@@ -261,7 +270,7 @@ class LogVault extends ChangeNotifier {
               json: value.json,
             ),
             custom: (value) => NetworkPayload(
-              kind: NetworkPayloadKind.json,
+              kind: NetworkPayloadKind.custom,
               custom: value.content,
             ),
             formdata: (value) => NetworkPayload(
@@ -275,7 +284,7 @@ class LogVault extends ChangeNotifier {
               json: value.json,
             ),
             custom: (value) => NetworkPayload(
-              kind: NetworkPayloadKind.json,
+              kind: NetworkPayloadKind.custom,
               custom: value.content,
             ),
             formdata: (value) => NetworkPayload(
@@ -340,7 +349,7 @@ class LogVault extends ChangeNotifier {
 /*
   void sendLog(MonitoringEntry entry) {}*/
 
-  static void addEntry(MonitoringEntry entry) {
+  static void addEntry(MonitoringEntry entry) async {
     if (!initialized) {
       print(entry);
       return;
@@ -348,7 +357,12 @@ class LogVault extends ChangeNotifier {
     // entries.add(entry);
     //logsStreamController.sink.add(entry);
     print("got entry ${entry.kind}");
-    scheduleEvent(mapEventToRemote(entry));
+    final currentScreenshot = await recorderController.captureScreen();
+    //print("Has screenshot ${currentScreenshot != null}");
+
+    scheduleEvent(
+        mapEventToRemote(entry.copyWith(screenshot: currentScreenshot)),
+        currentScreenshot);
     //notifyListeners();
   }
 

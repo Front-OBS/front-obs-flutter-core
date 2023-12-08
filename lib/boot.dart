@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:oberon_connector/log.dart';
 import 'package:oberon_connector/log_vault.dart';
+import 'package:oberon_connector/oberon_connector.dart';
 import 'package:oberon_connector/splash_screen.dart';
 
 import 'environments.dart';
@@ -25,6 +26,9 @@ launchRelease<TEnv extends IApplicationEnvironment>(
   WidgetsFlutterBinding.ensureInitialized();
   await LogVault.initVault(false, projectKey);
 
+  final recorderController = ScreenRecorderController();
+  LogVault.recorderController = recorderController;
+
   //initServices();
   runZonedGuarded(
       () => launcher(
@@ -32,7 +36,7 @@ launchRelease<TEnv extends IApplicationEnvironment>(
           ({
             required Widget child,
           }) =>
-              child), (error, stack) {
+              ScreenRecorder(child: child, controller: recorderController)), (error, stack) {
     exceptionLog(error, stack);
   });
 }
@@ -50,13 +54,19 @@ Future launchDebug<TEnv extends IApplicationEnvironment>({
       LogVault.addException(details.exception, details.stack);
     };
 
+    final recorderController = ScreenRecorderController();
+    LogVault.recorderController = recorderController;
+
     await LogVault.initVault(true, projectKey);
     try {
       runApp(
-        OberonSplashScreen<TEnv>(
-          options: options,
-          launcher: launcher,
-          onRestart: onRestart,
+        ScreenRecorder(
+          controller: recorderController,
+          child: OberonSplashScreen<TEnv>(
+            options: options,
+            launcher: launcher,
+            onRestart: onRestart,
+          ),
         ),
       );
     } catch (error, stack) {

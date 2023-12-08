@@ -6,6 +6,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_uuid/device_uuid.dart';
 import 'package:emojis/emoji.dart';
 import 'package:flutter/material.dart';
+import 'package:oberon_connector/oberon_connector.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:super_clipboard/super_clipboard.dart';
@@ -267,9 +268,13 @@ class _OberonSplashScreenState<TEnv extends IApplicationEnvironment>
       return;
     }
 
+    final recorderController = ScreenRecorderController();
+    LogVault.recorderController = recorderController;
+
     await widget.launcher(
       env,
-      ({required Widget child}) => child,
+      ({required Widget child}) =>
+          ScreenRecorder(child: child, controller: recorderController),
     )!;
   }
 }

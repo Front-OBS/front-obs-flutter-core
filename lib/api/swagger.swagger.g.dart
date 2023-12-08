@@ -267,6 +267,10 @@ EventsBatch _$EventsBatchFromJson(Map<String, dynamic> json) => EventsBatch(
           ? null
           : Identification.fromJson(
               json['identification'] as Map<String, dynamic>),
+      screenshotsBatch: json['screenshotsBatch'] == null
+          ? null
+          : ScreenshotsBatch.fromJson(
+              json['screenshotsBatch'] as Map<String, dynamic>),
       events: (json['events'] as List<dynamic>?)
               ?.map((e) => RegisteredEvent.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -279,6 +283,7 @@ Map<String, dynamic> _$EventsBatchToJson(EventsBatch instance) =>
       'isLive': instance.isLive,
       'deviceInfo': instance.deviceInfo,
       'identification': instance.identification?.toJson(),
+      'screenshotsBatch': instance.screenshotsBatch?.toJson(),
       'events': instance.events.map((e) => e.toJson()).toList(),
       'projectID': instance.projectID,
     };
@@ -293,6 +298,21 @@ Map<String, dynamic> _$IdentificationToJson(Identification instance) =>
     <String, dynamic>{
       'code': instance.code,
       'userIdentification': instance.userIdentification,
+    };
+
+ScreenshotsBatch _$ScreenshotsBatchFromJson(Map<String, dynamic> json) =>
+    ScreenshotsBatch(
+      frameIndexes: (json['frameIndexes'] as List<dynamic>?)
+              ?.map((e) => e as int)
+              .toList() ??
+          [],
+      data: json['data'] as String?,
+    );
+
+Map<String, dynamic> _$ScreenshotsBatchToJson(ScreenshotsBatch instance) =>
+    <String, dynamic>{
+      'frameIndexes': instance.frameIndexes,
+      'data': instance.data,
     };
 
 RegisteredEvent _$RegisteredEventFromJson(Map<String, dynamic> json) =>
