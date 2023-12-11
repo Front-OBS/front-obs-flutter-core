@@ -1495,6 +1495,13 @@
           "baseOS": {
             "type": "string"
           },
+          "previewSdkInt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "securityPatch": {
+            "type": "string"
+          },
           "codeName": {
             "type": "string",
             "minLength": 1
@@ -1503,10 +1510,6 @@
             "type": "string",
             "minLength": 1
           },
-          "previewSdkInt": {
-            "type": "integer",
-            "format": "int32"
-          },
           "release": {
             "type": "string",
             "minLength": 1
@@ -1514,9 +1517,6 @@
           "sdkInt": {
             "type": "integer",
             "format": "int32"
-          },
-          "securityPatch": {
-            "type": "string"
           }
         }
       },
@@ -1729,16 +1729,10 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "id",
           "timestamp",
           "kind"
         ],
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid",
-            "minLength": 1
-          },
           "timestamp": {
             "type": "integer",
             "format": "int64"

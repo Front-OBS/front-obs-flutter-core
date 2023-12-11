@@ -2436,12 +2436,12 @@ extension $AndroidInfoExtension on AndroidInfo {
 class AndroidVersion {
   const AndroidVersion({
     this.baseOS,
+    this.previewSdkInt,
+    this.securityPatch,
     required this.codeName,
     required this.incremental,
-    this.previewSdkInt,
     required this.release,
     required this.sdkInt,
-    this.securityPatch,
   });
 
   factory AndroidVersion.fromJson(Map<String, dynamic> json) =>
@@ -2452,18 +2452,18 @@ class AndroidVersion {
 
   @JsonKey(name: 'baseOS')
   final String? baseOS;
+  @JsonKey(name: 'previewSdkInt')
+  final int? previewSdkInt;
+  @JsonKey(name: 'securityPatch')
+  final String? securityPatch;
   @JsonKey(name: 'codeName')
   final String codeName;
   @JsonKey(name: 'incremental')
   final String incremental;
-  @JsonKey(name: 'previewSdkInt')
-  final int? previewSdkInt;
   @JsonKey(name: 'release')
   final String release;
   @JsonKey(name: 'sdkInt')
   final int sdkInt;
-  @JsonKey(name: 'securityPatch')
-  final String? securityPatch;
   static const fromJsonFactory = _$AndroidVersionFromJson;
 
   @override
@@ -2472,23 +2472,23 @@ class AndroidVersion {
         (other is AndroidVersion &&
             (identical(other.baseOS, baseOS) ||
                 const DeepCollectionEquality().equals(other.baseOS, baseOS)) &&
+            (identical(other.previewSdkInt, previewSdkInt) ||
+                const DeepCollectionEquality()
+                    .equals(other.previewSdkInt, previewSdkInt)) &&
+            (identical(other.securityPatch, securityPatch) ||
+                const DeepCollectionEquality()
+                    .equals(other.securityPatch, securityPatch)) &&
             (identical(other.codeName, codeName) ||
                 const DeepCollectionEquality()
                     .equals(other.codeName, codeName)) &&
             (identical(other.incremental, incremental) ||
                 const DeepCollectionEquality()
                     .equals(other.incremental, incremental)) &&
-            (identical(other.previewSdkInt, previewSdkInt) ||
-                const DeepCollectionEquality()
-                    .equals(other.previewSdkInt, previewSdkInt)) &&
             (identical(other.release, release) ||
                 const DeepCollectionEquality()
                     .equals(other.release, release)) &&
             (identical(other.sdkInt, sdkInt) ||
-                const DeepCollectionEquality().equals(other.sdkInt, sdkInt)) &&
-            (identical(other.securityPatch, securityPatch) ||
-                const DeepCollectionEquality()
-                    .equals(other.securityPatch, securityPatch)));
+                const DeepCollectionEquality().equals(other.sdkInt, sdkInt)));
   }
 
   @override
@@ -2497,53 +2497,53 @@ class AndroidVersion {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(baseOS) ^
+      const DeepCollectionEquality().hash(previewSdkInt) ^
+      const DeepCollectionEquality().hash(securityPatch) ^
       const DeepCollectionEquality().hash(codeName) ^
       const DeepCollectionEquality().hash(incremental) ^
-      const DeepCollectionEquality().hash(previewSdkInt) ^
       const DeepCollectionEquality().hash(release) ^
       const DeepCollectionEquality().hash(sdkInt) ^
-      const DeepCollectionEquality().hash(securityPatch) ^
       runtimeType.hashCode;
 }
 
 extension $AndroidVersionExtension on AndroidVersion {
   AndroidVersion copyWith(
       {String? baseOS,
+      int? previewSdkInt,
+      String? securityPatch,
       String? codeName,
       String? incremental,
-      int? previewSdkInt,
       String? release,
-      int? sdkInt,
-      String? securityPatch}) {
+      int? sdkInt}) {
     return AndroidVersion(
         baseOS: baseOS ?? this.baseOS,
+        previewSdkInt: previewSdkInt ?? this.previewSdkInt,
+        securityPatch: securityPatch ?? this.securityPatch,
         codeName: codeName ?? this.codeName,
         incremental: incremental ?? this.incremental,
-        previewSdkInt: previewSdkInt ?? this.previewSdkInt,
         release: release ?? this.release,
-        sdkInt: sdkInt ?? this.sdkInt,
-        securityPatch: securityPatch ?? this.securityPatch);
+        sdkInt: sdkInt ?? this.sdkInt);
   }
 
   AndroidVersion copyWithWrapped(
       {Wrapped<String?>? baseOS,
+      Wrapped<int?>? previewSdkInt,
+      Wrapped<String?>? securityPatch,
       Wrapped<String>? codeName,
       Wrapped<String>? incremental,
-      Wrapped<int?>? previewSdkInt,
       Wrapped<String>? release,
-      Wrapped<int>? sdkInt,
-      Wrapped<String?>? securityPatch}) {
+      Wrapped<int>? sdkInt}) {
     return AndroidVersion(
         baseOS: (baseOS != null ? baseOS.value : this.baseOS),
+        previewSdkInt:
+            (previewSdkInt != null ? previewSdkInt.value : this.previewSdkInt),
+        securityPatch:
+            (securityPatch != null ? securityPatch.value : this.securityPatch),
         codeName: (codeName != null ? codeName.value : this.codeName),
         incremental:
             (incremental != null ? incremental.value : this.incremental),
-        previewSdkInt:
-            (previewSdkInt != null ? previewSdkInt.value : this.previewSdkInt),
         release: (release != null ? release.value : this.release),
-        sdkInt: (sdkInt != null ? sdkInt.value : this.sdkInt),
-        securityPatch:
-            (securityPatch != null ? securityPatch.value : this.securityPatch));
+        sdkInt: (sdkInt != null ? sdkInt.value : this.sdkInt));
   }
 }
 
@@ -3184,7 +3184,6 @@ extension $ScreenshotsBatchExtension on ScreenshotsBatch {
 @JsonSerializable(explicitToJson: true)
 class RegisteredEvent {
   const RegisteredEvent({
-    required this.id,
     required this.timestamp,
     required this.kind,
     this.textEvent,
@@ -3203,8 +3202,6 @@ class RegisteredEvent {
   static const toJsonFactory = _$RegisteredEventToJson;
   Map<String, dynamic> toJson() => _$RegisteredEventToJson(this);
 
-  @JsonKey(name: 'id')
-  final String id;
   @JsonKey(name: 'timestamp')
   final int timestamp;
   @JsonKey(
@@ -3235,8 +3232,6 @@ class RegisteredEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is RegisteredEvent &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.timestamp, timestamp) ||
                 const DeepCollectionEquality()
                     .equals(other.timestamp, timestamp)) &&
@@ -3273,7 +3268,6 @@ class RegisteredEvent {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(timestamp) ^
       const DeepCollectionEquality().hash(kind) ^
       const DeepCollectionEquality().hash(textEvent) ^
@@ -3289,8 +3283,7 @@ class RegisteredEvent {
 
 extension $RegisteredEventExtension on RegisteredEvent {
   RegisteredEvent copyWith(
-      {String? id,
-      int? timestamp,
+      {int? timestamp,
       enums.EventKind? kind,
       TextEvent? textEvent,
       StateEvent? stateEvent,
@@ -3301,7 +3294,6 @@ extension $RegisteredEventExtension on RegisteredEvent {
       ScrollEvent? scrollEvent,
       NavigationEvent? navigationEvent}) {
     return RegisteredEvent(
-        id: id ?? this.id,
         timestamp: timestamp ?? this.timestamp,
         kind: kind ?? this.kind,
         textEvent: textEvent ?? this.textEvent,
@@ -3315,8 +3307,7 @@ extension $RegisteredEventExtension on RegisteredEvent {
   }
 
   RegisteredEvent copyWithWrapped(
-      {Wrapped<String>? id,
-      Wrapped<int>? timestamp,
+      {Wrapped<int>? timestamp,
       Wrapped<enums.EventKind?>? kind,
       Wrapped<TextEvent?>? textEvent,
       Wrapped<StateEvent?>? stateEvent,
@@ -3327,7 +3318,6 @@ extension $RegisteredEventExtension on RegisteredEvent {
       Wrapped<ScrollEvent?>? scrollEvent,
       Wrapped<NavigationEvent?>? navigationEvent}) {
     return RegisteredEvent(
-        id: (id != null ? id.value : this.id),
         timestamp: (timestamp != null ? timestamp.value : this.timestamp),
         kind: (kind != null ? kind.value : this.kind),
         textEvent: (textEvent != null ? textEvent.value : this.textEvent),

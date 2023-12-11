@@ -480,23 +480,23 @@ Map<String, dynamic> _$AndroidInfoToJson(AndroidInfo instance) =>
 AndroidVersion _$AndroidVersionFromJson(Map<String, dynamic> json) =>
     AndroidVersion(
       baseOS: json['baseOS'] as String?,
+      previewSdkInt: json['previewSdkInt'] as int?,
+      securityPatch: json['securityPatch'] as String?,
       codeName: json['codeName'] as String,
       incremental: json['incremental'] as String,
-      previewSdkInt: json['previewSdkInt'] as int?,
       release: json['release'] as String,
       sdkInt: json['sdkInt'] as int,
-      securityPatch: json['securityPatch'] as String?,
     );
 
 Map<String, dynamic> _$AndroidVersionToJson(AndroidVersion instance) =>
     <String, dynamic>{
       'baseOS': instance.baseOS,
+      'previewSdkInt': instance.previewSdkInt,
+      'securityPatch': instance.securityPatch,
       'codeName': instance.codeName,
       'incremental': instance.incremental,
-      'previewSdkInt': instance.previewSdkInt,
       'release': instance.release,
       'sdkInt': instance.sdkInt,
-      'securityPatch': instance.securityPatch,
     };
 
 DisplayMetrics _$DisplayMetricsFromJson(Map<String, dynamic> json) =>
@@ -648,7 +648,6 @@ Map<String, dynamic> _$ScreenshotsBatchToJson(ScreenshotsBatch instance) =>
 
 RegisteredEvent _$RegisteredEventFromJson(Map<String, dynamic> json) =>
     RegisteredEvent(
-      id: json['id'] as String,
       timestamp: json['timestamp'] as int,
       kind: eventKindNullableFromJson(json['kind']),
       textEvent: json['textEvent'] == null
@@ -681,7 +680,6 @@ RegisteredEvent _$RegisteredEventFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$RegisteredEventToJson(RegisteredEvent instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'timestamp': instance.timestamp,
       'kind': eventKindNullableToJson(instance.kind),
       'textEvent': instance.textEvent?.toJson(),

@@ -64,8 +64,8 @@ class LogVault extends ChangeNotifier {
   static BundleInfo bundle = BundleInfo();
 
   static final processBatchController = StreamController<
-      (List<RegisteredEvent>, Map<String, Uint8List?>)>.broadcast();
-  static late Stream<(List<RegisteredEvent>, Map<String, Uint8List?>)>
+      (List<RegisteredEvent>, Map<int, Uint8List?>)>.broadcast();
+  static late Stream<(List<RegisteredEvent>, Map<int, Uint8List?>)>
       sendsQueue = processBatchController.stream;
 
   static Future initVault(bool liveStreams, String projectCode) async {
@@ -199,7 +199,7 @@ class LogVault extends ChangeNotifier {
   }
 
   static final List<RegisteredEvent> eventsBuffer = [];
-  static final Map<String, Uint8List?> screenshots = {};
+  static final Map<int, Uint8List?> screenshots = {};
 
   static String computeBatchOfScreenshots(dynamic message) {
     final tsStart = DateTime.now();
@@ -237,7 +237,7 @@ class LogVault extends ChangeNotifier {
   }
 
   static void scheduleSend(
-      (List<RegisteredEvent>, Map<String, Uint8List?>) request) async {
+      (List<RegisteredEvent>, Map<int, Uint8List?>) request) async {
     //EasyDebounce.cancel("oberon_event");
     final (events, ss) = request;
 
@@ -261,7 +261,7 @@ class LogVault extends ChangeNotifier {
       final crcs = imagesByCrc.keys.toList();
       final indexes = events
           .map((e) =>
-              crcByEvent[e.id] != null ? crcs.indexOf(crcByEvent[e.id]) : -1)
+              crcByEvent[e.timestamp] != null ? crcs.indexOf(crcByEvent[e.timestamp]) : -1)
           .toList();
 
       /*final batch =
@@ -304,7 +304,7 @@ class LogVault extends ChangeNotifier {
       debouncingTime,
       planSend,
     );
-    screenshots[event.id] = screenshot;
+    screenshots[event.timestamp] = screenshot;
     eventsBuffer.add(event);
   }
 
@@ -313,11 +313,11 @@ class LogVault extends ChangeNotifier {
   static Uuid uid = Uuid();
 
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
-    final ts = DateTime.now().millisecondsSinceEpoch;
-    final id = uid.v4();
+    final ts = DateTime.now().microsecondsSinceEpoch;
+    //final id = uid.v4();
     return entry.map(
       scrollEvent: (value) => RegisteredEvent(
-        id: id,
+      //  id: id,
         timestamp: ts,
         scrollEvent: ScrollEvent(
           scope: value.scope,
@@ -330,7 +330,7 @@ class LogVault extends ChangeNotifier {
         kind: EventKind.swaggerGeneratedUnknown,
       ),
       navigationEvent: (value) => RegisteredEvent(
-        id: id,
+     //   id: id,
         timestamp: ts,
         kind: EventKind.navigation,
         navigationEvent: NavigationEvent(
@@ -344,7 +344,7 @@ class LogVault extends ChangeNotifier {
         ),
       ),
       tapEvent: (value) => RegisteredEvent(
-        id: id,
+     //   id: id,
         timestamp: ts,
         tapEvent: TapEvent(
           scope: value.scope,
@@ -356,7 +356,7 @@ class LogVault extends ChangeNotifier {
         kind: EventKind.swaggerGeneratedUnknown,
       ),
       networkCall: (value) => RegisteredEvent(
-        id: id,
+      //  id: id,
         timestamp: ts,
         kind: EventKind.network,
         networkEvent: NetworkEvent(
@@ -397,7 +397,7 @@ class LogVault extends ChangeNotifier {
       ),
       storageOperation: (value) => RegisteredEvent(
         timestamp: ts,
-        id: id,
+       // id: id,
         kind: EventKind.swaggerGeneratedUnknown,
         storageEvent: StorageEvent(
           scope: value.scope,
@@ -406,7 +406,7 @@ class LogVault extends ChangeNotifier {
         ),
       ),
       exception: (value) => RegisteredEvent(
-        id: id,
+       // id: id,
         timestamp: ts,
         kind: EventKind.exception,
         exceptionEvent: ExceptionEvent(
@@ -425,7 +425,7 @@ class LogVault extends ChangeNotifier {
         ),
       ),
       event: (value) => RegisteredEvent(
-        id: id,
+      //  id: id,
         timestamp: ts,
         kind: EventKind.text,
         textEvent: TextEvent(
@@ -435,7 +435,7 @@ class LogVault extends ChangeNotifier {
         ),
       ),
       stateChange: (value) => RegisteredEvent(
-        id: id,
+      //  id: id,
         timestamp: ts,
         kind: EventKind.state,
         stateEvent: StateEvent(
