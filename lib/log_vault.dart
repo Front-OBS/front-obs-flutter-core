@@ -314,7 +314,7 @@ class LogVault extends ChangeNotifier {
 
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
     final ts = DateTime.now().millisecondsSinceEpoch;
-    final id = uid.v1();
+    final id = uid.v4();
     return entry.map(
       scrollEvent: (value) => RegisteredEvent(
         id: id,
