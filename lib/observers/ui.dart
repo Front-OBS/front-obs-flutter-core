@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:easy_debounce/easy_debounce.dart';
@@ -68,10 +69,10 @@ class ScrollDetector extends StatelessWidget {
               EasyDebounce.cancel("____scroll_debouncer");
             } // <-- The target method
                 );
-            print(
+            /*print(
                 "SCROLL ${notification.metrics.extentBefore / notification.metrics.extentTotal}"
                 " ${notification.metrics.extentInside / notification.metrics.extentTotal}"
-                " ${notification.metrics.extentTotal / notification.metrics.extentTotal}");
+                " ${notification.metrics.extentTotal / notification.metrics.extentTotal}");*/
           }
           return false;
         },
@@ -134,6 +135,12 @@ class ScreenRecorderController extends State<ScreenRecorder> {
   final key = GlobalKey();
 
   Future<Uint8List?> captureScreen() async {
+    final c = Completer();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      c.complete();
+    });
+    await c;
+
     if (key.currentContext == null) {
       print("CONTEXT NULL");
       return null;

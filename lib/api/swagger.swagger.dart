@@ -46,6 +46,91 @@ abstract class Swagger extends ChopperService {
   }
 
   ///
+  Future<chopper.Response<PageListOfArtefactDTO?>> apiArtefactsPost(
+      {required ArtefactsListRequest? body}) {
+    generatedMapping.putIfAbsent(
+        PageListOfArtefactDTO, () => PageListOfArtefactDTO.fromJsonFactory);
+
+    return _apiArtefactsPost(body: body);
+  }
+
+  ///
+  @Post(
+    path: '/api/artefacts',
+    optionalBody: true,
+  )
+  Future<chopper.Response<PageListOfArtefactDTO?>> _apiArtefactsPost(
+      {@Body() required ArtefactsListRequest? body});
+
+  ///
+  ///@param projectId
+  ///@param ver
+  ///@param environment
+  ///@param flavor
+  ///@param platform
+  ///@param build
+  ///@param artefactExt
+  Future<chopper.Response<String>> apiArtefactsCreatePost({
+    String? projectId,
+    String? ver,
+    String? environment,
+    String? flavor,
+    String? platform,
+    int? build,
+    String? artefactExt,
+    String? contentType,
+    String? contentDisposition,
+    List? headers,
+    int? length,
+    String? name,
+    String? fileName,
+  }) {
+    return _apiArtefactsCreatePost(
+        projectId: projectId,
+        ver: ver,
+        environment: environment,
+        flavor: flavor,
+        platform: platform,
+        build: build,
+        artefactExt: artefactExt,
+        contentType: contentType,
+        contentDisposition: contentDisposition,
+        headers: headers,
+        length: length,
+        name: name,
+        fileName: fileName);
+  }
+
+  ///
+  ///@param projectId
+  ///@param ver
+  ///@param environment
+  ///@param flavor
+  ///@param platform
+  ///@param build
+  ///@param artefactExt
+  @Post(
+    path: '/api/artefacts/create',
+    optionalBody: true,
+  )
+  @Multipart()
+  Future<chopper.Response<String>> _apiArtefactsCreatePost({
+    @Query('projectId') String? projectId,
+    @Query('ver') String? ver,
+    @Query('environment') String? environment,
+    @Query('flavor') String? flavor,
+    @Query('platform') String? platform,
+    @Query('build') int? build,
+    @Query('artefactExt') String? artefactExt,
+    @Part('ContentType') String? contentType,
+    @Part('ContentDisposition') String? contentDisposition,
+    @Part('Headers') List? headers,
+    @Part('Length') int? length,
+    @Part('Name') String? name,
+    @Part('FileName') String? fileName,
+  });
+
+  ///
   Future<chopper.Response<SuccessAuthResponse?>> apiAuthAuthenticatePost(
       {required AuthenticateRequest? body}) {
     generatedMapping.putIfAbsent(
@@ -236,6 +321,361 @@ abstract class Swagger extends ChopperService {
   )
   Future<chopper.Response<bool>> _apiConsumerConsumePost(
       {@Body() required EventsBatch? body});
+}
+
+@JsonSerializable(explicitToJson: true)
+class ProblemDetails {
+  const ProblemDetails({
+    this.type,
+    this.title,
+    this.status,
+    this.detail,
+    this.instance,
+  });
+
+  factory ProblemDetails.fromJson(Map<String, dynamic> json) =>
+      _$ProblemDetailsFromJson(json);
+
+  static const toJsonFactory = _$ProblemDetailsToJson;
+  Map<String, dynamic> toJson() => _$ProblemDetailsToJson(this);
+
+  @JsonKey(name: 'type')
+  final String? type;
+  @JsonKey(name: 'title')
+  final String? title;
+  @JsonKey(name: 'status')
+  final int? status;
+  @JsonKey(name: 'detail')
+  final String? detail;
+  @JsonKey(name: 'instance')
+  final String? instance;
+  static const fromJsonFactory = _$ProblemDetailsFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ProblemDetails &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.title, title) ||
+                const DeepCollectionEquality().equals(other.title, title)) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)) &&
+            (identical(other.detail, detail) ||
+                const DeepCollectionEquality().equals(other.detail, detail)) &&
+            (identical(other.instance, instance) ||
+                const DeepCollectionEquality()
+                    .equals(other.instance, instance)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(type) ^
+      const DeepCollectionEquality().hash(title) ^
+      const DeepCollectionEquality().hash(status) ^
+      const DeepCollectionEquality().hash(detail) ^
+      const DeepCollectionEquality().hash(instance) ^
+      runtimeType.hashCode;
+}
+
+extension $ProblemDetailsExtension on ProblemDetails {
+  ProblemDetails copyWith(
+      {String? type,
+      String? title,
+      int? status,
+      String? detail,
+      String? instance}) {
+    return ProblemDetails(
+        type: type ?? this.type,
+        title: title ?? this.title,
+        status: status ?? this.status,
+        detail: detail ?? this.detail,
+        instance: instance ?? this.instance);
+  }
+
+  ProblemDetails copyWithWrapped(
+      {Wrapped<String?>? type,
+      Wrapped<String?>? title,
+      Wrapped<int?>? status,
+      Wrapped<String?>? detail,
+      Wrapped<String?>? instance}) {
+    return ProblemDetails(
+        type: (type != null ? type.value : this.type),
+        title: (title != null ? title.value : this.title),
+        status: (status != null ? status.value : this.status),
+        detail: (detail != null ? detail.value : this.detail),
+        instance: (instance != null ? instance.value : this.instance));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PageListOfArtefactDTO {
+  const PageListOfArtefactDTO({
+    required this.items,
+    required this.totalPages,
+    required this.totalItems,
+    required this.page,
+  });
+
+  factory PageListOfArtefactDTO.fromJson(Map<String, dynamic> json) =>
+      _$PageListOfArtefactDTOFromJson(json);
+
+  static const toJsonFactory = _$PageListOfArtefactDTOToJson;
+  Map<String, dynamic> toJson() => _$PageListOfArtefactDTOToJson(this);
+
+  @JsonKey(name: 'items', defaultValue: <ArtefactDTO>[])
+  final List<ArtefactDTO> items;
+  @JsonKey(name: 'totalPages')
+  final int totalPages;
+  @JsonKey(name: 'totalItems')
+  final int totalItems;
+  @JsonKey(name: 'page')
+  final int page;
+  static const fromJsonFactory = _$PageListOfArtefactDTOFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is PageListOfArtefactDTO &&
+            (identical(other.items, items) ||
+                const DeepCollectionEquality().equals(other.items, items)) &&
+            (identical(other.totalPages, totalPages) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalPages, totalPages)) &&
+            (identical(other.totalItems, totalItems) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalItems, totalItems)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(items) ^
+      const DeepCollectionEquality().hash(totalPages) ^
+      const DeepCollectionEquality().hash(totalItems) ^
+      const DeepCollectionEquality().hash(page) ^
+      runtimeType.hashCode;
+}
+
+extension $PageListOfArtefactDTOExtension on PageListOfArtefactDTO {
+  PageListOfArtefactDTO copyWith(
+      {List<ArtefactDTO>? items, int? totalPages, int? totalItems, int? page}) {
+    return PageListOfArtefactDTO(
+        items: items ?? this.items,
+        totalPages: totalPages ?? this.totalPages,
+        totalItems: totalItems ?? this.totalItems,
+        page: page ?? this.page);
+  }
+
+  PageListOfArtefactDTO copyWithWrapped(
+      {Wrapped<List<ArtefactDTO>>? items,
+      Wrapped<int>? totalPages,
+      Wrapped<int>? totalItems,
+      Wrapped<int>? page}) {
+    return PageListOfArtefactDTO(
+        items: (items != null ? items.value : this.items),
+        totalPages: (totalPages != null ? totalPages.value : this.totalPages),
+        totalItems: (totalItems != null ? totalItems.value : this.totalItems),
+        page: (page != null ? page.value : this.page));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ArtefactDTO {
+  const ArtefactDTO({
+    required this.id,
+    this.downloadLink,
+    this.artefactExt,
+    required this.environment,
+    required this.platform,
+    required this.flavor,
+    required this.version,
+    required this.build,
+  });
+
+  factory ArtefactDTO.fromJson(Map<String, dynamic> json) =>
+      _$ArtefactDTOFromJson(json);
+
+  static const toJsonFactory = _$ArtefactDTOToJson;
+  Map<String, dynamic> toJson() => _$ArtefactDTOToJson(this);
+
+  @JsonKey(name: 'id')
+  final String id;
+  @JsonKey(name: 'downloadLink')
+  final String? downloadLink;
+  @JsonKey(name: 'artefactExt')
+  final String? artefactExt;
+  @JsonKey(name: 'environment')
+  final String environment;
+  @JsonKey(name: 'platform')
+  final String platform;
+  @JsonKey(name: 'flavor')
+  final String flavor;
+  @JsonKey(name: 'version')
+  final String version;
+  @JsonKey(name: 'build')
+  final int build;
+  static const fromJsonFactory = _$ArtefactDTOFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ArtefactDTO &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.downloadLink, downloadLink) ||
+                const DeepCollectionEquality()
+                    .equals(other.downloadLink, downloadLink)) &&
+            (identical(other.artefactExt, artefactExt) ||
+                const DeepCollectionEquality()
+                    .equals(other.artefactExt, artefactExt)) &&
+            (identical(other.environment, environment) ||
+                const DeepCollectionEquality()
+                    .equals(other.environment, environment)) &&
+            (identical(other.platform, platform) ||
+                const DeepCollectionEquality()
+                    .equals(other.platform, platform)) &&
+            (identical(other.flavor, flavor) ||
+                const DeepCollectionEquality().equals(other.flavor, flavor)) &&
+            (identical(other.version, version) ||
+                const DeepCollectionEquality()
+                    .equals(other.version, version)) &&
+            (identical(other.build, build) ||
+                const DeepCollectionEquality().equals(other.build, build)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(downloadLink) ^
+      const DeepCollectionEquality().hash(artefactExt) ^
+      const DeepCollectionEquality().hash(environment) ^
+      const DeepCollectionEquality().hash(platform) ^
+      const DeepCollectionEquality().hash(flavor) ^
+      const DeepCollectionEquality().hash(version) ^
+      const DeepCollectionEquality().hash(build) ^
+      runtimeType.hashCode;
+}
+
+extension $ArtefactDTOExtension on ArtefactDTO {
+  ArtefactDTO copyWith(
+      {String? id,
+      String? downloadLink,
+      String? artefactExt,
+      String? environment,
+      String? platform,
+      String? flavor,
+      String? version,
+      int? build}) {
+    return ArtefactDTO(
+        id: id ?? this.id,
+        downloadLink: downloadLink ?? this.downloadLink,
+        artefactExt: artefactExt ?? this.artefactExt,
+        environment: environment ?? this.environment,
+        platform: platform ?? this.platform,
+        flavor: flavor ?? this.flavor,
+        version: version ?? this.version,
+        build: build ?? this.build);
+  }
+
+  ArtefactDTO copyWithWrapped(
+      {Wrapped<String>? id,
+      Wrapped<String?>? downloadLink,
+      Wrapped<String?>? artefactExt,
+      Wrapped<String>? environment,
+      Wrapped<String>? platform,
+      Wrapped<String>? flavor,
+      Wrapped<String>? version,
+      Wrapped<int>? build}) {
+    return ArtefactDTO(
+        id: (id != null ? id.value : this.id),
+        downloadLink:
+            (downloadLink != null ? downloadLink.value : this.downloadLink),
+        artefactExt:
+            (artefactExt != null ? artefactExt.value : this.artefactExt),
+        environment:
+            (environment != null ? environment.value : this.environment),
+        platform: (platform != null ? platform.value : this.platform),
+        flavor: (flavor != null ? flavor.value : this.flavor),
+        version: (version != null ? version.value : this.version),
+        build: (build != null ? build.value : this.build));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ArtefactsListRequest {
+  const ArtefactsListRequest({
+    this.projectId,
+    this.page,
+    this.pageSize,
+  });
+
+  factory ArtefactsListRequest.fromJson(Map<String, dynamic> json) =>
+      _$ArtefactsListRequestFromJson(json);
+
+  static const toJsonFactory = _$ArtefactsListRequestToJson;
+  Map<String, dynamic> toJson() => _$ArtefactsListRequestToJson(this);
+
+  @JsonKey(name: 'projectId')
+  final String? projectId;
+  @JsonKey(name: 'page')
+  final int? page;
+  @JsonKey(name: 'pageSize')
+  final int? pageSize;
+  static const fromJsonFactory = _$ArtefactsListRequestFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ArtefactsListRequest &&
+            (identical(other.projectId, projectId) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectId, projectId)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)) &&
+            (identical(other.pageSize, pageSize) ||
+                const DeepCollectionEquality()
+                    .equals(other.pageSize, pageSize)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(projectId) ^
+      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(pageSize) ^
+      runtimeType.hashCode;
+}
+
+extension $ArtefactsListRequestExtension on ArtefactsListRequest {
+  ArtefactsListRequest copyWith({String? projectId, int? page, int? pageSize}) {
+    return ArtefactsListRequest(
+        projectId: projectId ?? this.projectId,
+        page: page ?? this.page,
+        pageSize: pageSize ?? this.pageSize);
+  }
+
+  ArtefactsListRequest copyWithWrapped(
+      {Wrapped<String?>? projectId,
+      Wrapped<int?>? page,
+      Wrapped<int?>? pageSize}) {
+    return ArtefactsListRequest(
+        projectId: (projectId != null ? projectId.value : this.projectId),
+        page: (page != null ? page.value : this.page),
+        pageSize: (pageSize != null ? pageSize.value : this.pageSize));
+  }
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -1259,7 +1699,9 @@ extension $SessionFilterExtension on SessionFilter {
 class DeviceInfo {
   const DeviceInfo({
     required this.code,
-    required this.parameters,
+    required this.os,
+    this.androidInfo,
+    this.iosInfo,
   });
 
   factory DeviceInfo.fromJson(Map<String, dynamic> json) =>
@@ -1270,8 +1712,16 @@ class DeviceInfo {
 
   @JsonKey(name: 'code')
   final String code;
-  @JsonKey(name: 'parameters')
-  final Map<String, dynamic> parameters;
+  @JsonKey(
+    name: 'os',
+    toJson: deviceOSNullableToJson,
+    fromJson: deviceOSNullableFromJson,
+  )
+  final enums.DeviceOS? os;
+  @JsonKey(name: 'androidInfo')
+  final dynamic androidInfo;
+  @JsonKey(name: 'iosInfo')
+  final dynamic iosInfo;
   static const fromJsonFactory = _$DeviceInfoFromJson;
 
   @override
@@ -1280,9 +1730,13 @@ class DeviceInfo {
         (other is DeviceInfo &&
             (identical(other.code, code) ||
                 const DeepCollectionEquality().equals(other.code, code)) &&
-            (identical(other.parameters, parameters) ||
+            (identical(other.os, os) ||
+                const DeepCollectionEquality().equals(other.os, os)) &&
+            (identical(other.androidInfo, androidInfo) ||
                 const DeepCollectionEquality()
-                    .equals(other.parameters, parameters)));
+                    .equals(other.androidInfo, androidInfo)) &&
+            (identical(other.iosInfo, iosInfo) ||
+                const DeepCollectionEquality().equals(other.iosInfo, iosInfo)));
   }
 
   @override
@@ -1291,21 +1745,685 @@ class DeviceInfo {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(code) ^
-      const DeepCollectionEquality().hash(parameters) ^
+      const DeepCollectionEquality().hash(os) ^
+      const DeepCollectionEquality().hash(androidInfo) ^
+      const DeepCollectionEquality().hash(iosInfo) ^
       runtimeType.hashCode;
 }
 
 extension $DeviceInfoExtension on DeviceInfo {
-  DeviceInfo copyWith({String? code, Map<String, dynamic>? parameters}) {
+  DeviceInfo copyWith(
+      {String? code,
+      enums.DeviceOS? os,
+      dynamic androidInfo,
+      dynamic iosInfo}) {
     return DeviceInfo(
-        code: code ?? this.code, parameters: parameters ?? this.parameters);
+        code: code ?? this.code,
+        os: os ?? this.os,
+        androidInfo: androidInfo ?? this.androidInfo,
+        iosInfo: iosInfo ?? this.iosInfo);
   }
 
   DeviceInfo copyWithWrapped(
-      {Wrapped<String>? code, Wrapped<Map<String, dynamic>>? parameters}) {
+      {Wrapped<String>? code,
+      Wrapped<enums.DeviceOS?>? os,
+      Wrapped<dynamic>? androidInfo,
+      Wrapped<dynamic>? iosInfo}) {
     return DeviceInfo(
         code: (code != null ? code.value : this.code),
-        parameters: (parameters != null ? parameters.value : this.parameters));
+        os: (os != null ? os.value : this.os),
+        androidInfo:
+            (androidInfo != null ? androidInfo.value : this.androidInfo),
+        iosInfo: (iosInfo != null ? iosInfo.value : this.iosInfo));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AndroidInfo {
+  const AndroidInfo({
+    required this.id,
+    required this.host,
+    required this.manifacturer,
+    required this.androidVersion,
+    required this.board,
+    required this.bootLoader,
+    required this.brand,
+    required this.device,
+    required this.display,
+    required this.fingerprint,
+    required this.hardware,
+    required this.isPhysical,
+    required this.model,
+    required this.product,
+    required this.serialNumber,
+    required this.supported32BitAbis,
+    required this.supported64BitAbis,
+    required this.supportedAbis,
+    required this.systemFeatures,
+    required this.type,
+  });
+
+  factory AndroidInfo.fromJson(Map<String, dynamic> json) =>
+      _$AndroidInfoFromJson(json);
+
+  static const toJsonFactory = _$AndroidInfoToJson;
+  Map<String, dynamic> toJson() => _$AndroidInfoToJson(this);
+
+  @JsonKey(name: 'id')
+  final String id;
+  @JsonKey(name: 'host')
+  final String host;
+  @JsonKey(name: 'manifacturer')
+  final String manifacturer;
+  @JsonKey(name: 'androidVersion')
+  final AndroidVersion? androidVersion;
+  @JsonKey(name: 'board')
+  final String board;
+  @JsonKey(name: 'bootLoader')
+  final String bootLoader;
+  @JsonKey(name: 'brand')
+  final String brand;
+  @JsonKey(name: 'device')
+  final String device;
+  @JsonKey(name: 'display')
+  final DisplayMetrics? display;
+  @JsonKey(name: 'fingerprint')
+  final String fingerprint;
+  @JsonKey(name: 'hardware')
+  final String hardware;
+  @JsonKey(name: 'isPhysical')
+  final bool isPhysical;
+  @JsonKey(name: 'model')
+  final String model;
+  @JsonKey(name: 'product')
+  final String product;
+  @JsonKey(name: 'serialNumber')
+  final String serialNumber;
+  @JsonKey(name: 'supported32BitAbis', defaultValue: <String>[])
+  final List<String> supported32BitAbis;
+  @JsonKey(name: 'supported64BitAbis', defaultValue: <String>[])
+  final List<String> supported64BitAbis;
+  @JsonKey(name: 'supportedAbis', defaultValue: <String>[])
+  final List<String> supportedAbis;
+  @JsonKey(name: 'systemFeatures', defaultValue: <String>[])
+  final List<String> systemFeatures;
+  @JsonKey(name: 'type')
+  final String type;
+  static const fromJsonFactory = _$AndroidInfoFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is AndroidInfo &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.host, host) ||
+                const DeepCollectionEquality().equals(other.host, host)) &&
+            (identical(other.manifacturer, manifacturer) ||
+                const DeepCollectionEquality()
+                    .equals(other.manifacturer, manifacturer)) &&
+            (identical(other.androidVersion, androidVersion) ||
+                const DeepCollectionEquality()
+                    .equals(other.androidVersion, androidVersion)) &&
+            (identical(other.board, board) ||
+                const DeepCollectionEquality().equals(other.board, board)) &&
+            (identical(other.bootLoader, bootLoader) ||
+                const DeepCollectionEquality()
+                    .equals(other.bootLoader, bootLoader)) &&
+            (identical(other.brand, brand) ||
+                const DeepCollectionEquality().equals(other.brand, brand)) &&
+            (identical(other.device, device) ||
+                const DeepCollectionEquality().equals(other.device, device)) &&
+            (identical(other.display, display) ||
+                const DeepCollectionEquality()
+                    .equals(other.display, display)) &&
+            (identical(other.fingerprint, fingerprint) ||
+                const DeepCollectionEquality()
+                    .equals(other.fingerprint, fingerprint)) &&
+            (identical(other.hardware, hardware) ||
+                const DeepCollectionEquality()
+                    .equals(other.hardware, hardware)) &&
+            (identical(other.isPhysical, isPhysical) ||
+                const DeepCollectionEquality()
+                    .equals(other.isPhysical, isPhysical)) &&
+            (identical(other.model, model) ||
+                const DeepCollectionEquality().equals(other.model, model)) &&
+            (identical(other.product, product) ||
+                const DeepCollectionEquality()
+                    .equals(other.product, product)) &&
+            (identical(other.serialNumber, serialNumber) ||
+                const DeepCollectionEquality()
+                    .equals(other.serialNumber, serialNumber)) &&
+            (identical(other.supported32BitAbis, supported32BitAbis) ||
+                const DeepCollectionEquality()
+                    .equals(other.supported32BitAbis, supported32BitAbis)) &&
+            (identical(other.supported64BitAbis, supported64BitAbis) ||
+                const DeepCollectionEquality()
+                    .equals(other.supported64BitAbis, supported64BitAbis)) &&
+            (identical(other.supportedAbis, supportedAbis) ||
+                const DeepCollectionEquality()
+                    .equals(other.supportedAbis, supportedAbis)) &&
+            (identical(other.systemFeatures, systemFeatures) ||
+                const DeepCollectionEquality()
+                    .equals(other.systemFeatures, systemFeatures)) &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(host) ^
+      const DeepCollectionEquality().hash(manifacturer) ^
+      const DeepCollectionEquality().hash(androidVersion) ^
+      const DeepCollectionEquality().hash(board) ^
+      const DeepCollectionEquality().hash(bootLoader) ^
+      const DeepCollectionEquality().hash(brand) ^
+      const DeepCollectionEquality().hash(device) ^
+      const DeepCollectionEquality().hash(display) ^
+      const DeepCollectionEquality().hash(fingerprint) ^
+      const DeepCollectionEquality().hash(hardware) ^
+      const DeepCollectionEquality().hash(isPhysical) ^
+      const DeepCollectionEquality().hash(model) ^
+      const DeepCollectionEquality().hash(product) ^
+      const DeepCollectionEquality().hash(serialNumber) ^
+      const DeepCollectionEquality().hash(supported32BitAbis) ^
+      const DeepCollectionEquality().hash(supported64BitAbis) ^
+      const DeepCollectionEquality().hash(supportedAbis) ^
+      const DeepCollectionEquality().hash(systemFeatures) ^
+      const DeepCollectionEquality().hash(type) ^
+      runtimeType.hashCode;
+}
+
+extension $AndroidInfoExtension on AndroidInfo {
+  AndroidInfo copyWith(
+      {String? id,
+      String? host,
+      String? manifacturer,
+      AndroidVersion? androidVersion,
+      String? board,
+      String? bootLoader,
+      String? brand,
+      String? device,
+      DisplayMetrics? display,
+      String? fingerprint,
+      String? hardware,
+      bool? isPhysical,
+      String? model,
+      String? product,
+      String? serialNumber,
+      List<String>? supported32BitAbis,
+      List<String>? supported64BitAbis,
+      List<String>? supportedAbis,
+      List<String>? systemFeatures,
+      String? type}) {
+    return AndroidInfo(
+        id: id ?? this.id,
+        host: host ?? this.host,
+        manifacturer: manifacturer ?? this.manifacturer,
+        androidVersion: androidVersion ?? this.androidVersion,
+        board: board ?? this.board,
+        bootLoader: bootLoader ?? this.bootLoader,
+        brand: brand ?? this.brand,
+        device: device ?? this.device,
+        display: display ?? this.display,
+        fingerprint: fingerprint ?? this.fingerprint,
+        hardware: hardware ?? this.hardware,
+        isPhysical: isPhysical ?? this.isPhysical,
+        model: model ?? this.model,
+        product: product ?? this.product,
+        serialNumber: serialNumber ?? this.serialNumber,
+        supported32BitAbis: supported32BitAbis ?? this.supported32BitAbis,
+        supported64BitAbis: supported64BitAbis ?? this.supported64BitAbis,
+        supportedAbis: supportedAbis ?? this.supportedAbis,
+        systemFeatures: systemFeatures ?? this.systemFeatures,
+        type: type ?? this.type);
+  }
+
+  AndroidInfo copyWithWrapped(
+      {Wrapped<String>? id,
+      Wrapped<String>? host,
+      Wrapped<String>? manifacturer,
+      Wrapped<AndroidVersion?>? androidVersion,
+      Wrapped<String>? board,
+      Wrapped<String>? bootLoader,
+      Wrapped<String>? brand,
+      Wrapped<String>? device,
+      Wrapped<DisplayMetrics?>? display,
+      Wrapped<String>? fingerprint,
+      Wrapped<String>? hardware,
+      Wrapped<bool>? isPhysical,
+      Wrapped<String>? model,
+      Wrapped<String>? product,
+      Wrapped<String>? serialNumber,
+      Wrapped<List<String>>? supported32BitAbis,
+      Wrapped<List<String>>? supported64BitAbis,
+      Wrapped<List<String>>? supportedAbis,
+      Wrapped<List<String>>? systemFeatures,
+      Wrapped<String>? type}) {
+    return AndroidInfo(
+        id: (id != null ? id.value : this.id),
+        host: (host != null ? host.value : this.host),
+        manifacturer:
+            (manifacturer != null ? manifacturer.value : this.manifacturer),
+        androidVersion: (androidVersion != null
+            ? androidVersion.value
+            : this.androidVersion),
+        board: (board != null ? board.value : this.board),
+        bootLoader: (bootLoader != null ? bootLoader.value : this.bootLoader),
+        brand: (brand != null ? brand.value : this.brand),
+        device: (device != null ? device.value : this.device),
+        display: (display != null ? display.value : this.display),
+        fingerprint:
+            (fingerprint != null ? fingerprint.value : this.fingerprint),
+        hardware: (hardware != null ? hardware.value : this.hardware),
+        isPhysical: (isPhysical != null ? isPhysical.value : this.isPhysical),
+        model: (model != null ? model.value : this.model),
+        product: (product != null ? product.value : this.product),
+        serialNumber:
+            (serialNumber != null ? serialNumber.value : this.serialNumber),
+        supported32BitAbis: (supported32BitAbis != null
+            ? supported32BitAbis.value
+            : this.supported32BitAbis),
+        supported64BitAbis: (supported64BitAbis != null
+            ? supported64BitAbis.value
+            : this.supported64BitAbis),
+        supportedAbis:
+            (supportedAbis != null ? supportedAbis.value : this.supportedAbis),
+        systemFeatures: (systemFeatures != null
+            ? systemFeatures.value
+            : this.systemFeatures),
+        type: (type != null ? type.value : this.type));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class AndroidVersion {
+  const AndroidVersion({
+    this.baseOS,
+    required this.codeName,
+    required this.incremental,
+    this.previewSdkInt,
+    required this.release,
+    required this.sdkInt,
+    this.securityPatch,
+  });
+
+  factory AndroidVersion.fromJson(Map<String, dynamic> json) =>
+      _$AndroidVersionFromJson(json);
+
+  static const toJsonFactory = _$AndroidVersionToJson;
+  Map<String, dynamic> toJson() => _$AndroidVersionToJson(this);
+
+  @JsonKey(name: 'baseOS')
+  final String? baseOS;
+  @JsonKey(name: 'codeName')
+  final String codeName;
+  @JsonKey(name: 'incremental')
+  final String incremental;
+  @JsonKey(name: 'previewSdkInt')
+  final int? previewSdkInt;
+  @JsonKey(name: 'release')
+  final String release;
+  @JsonKey(name: 'sdkInt')
+  final int sdkInt;
+  @JsonKey(name: 'securityPatch')
+  final String? securityPatch;
+  static const fromJsonFactory = _$AndroidVersionFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is AndroidVersion &&
+            (identical(other.baseOS, baseOS) ||
+                const DeepCollectionEquality().equals(other.baseOS, baseOS)) &&
+            (identical(other.codeName, codeName) ||
+                const DeepCollectionEquality()
+                    .equals(other.codeName, codeName)) &&
+            (identical(other.incremental, incremental) ||
+                const DeepCollectionEquality()
+                    .equals(other.incremental, incremental)) &&
+            (identical(other.previewSdkInt, previewSdkInt) ||
+                const DeepCollectionEquality()
+                    .equals(other.previewSdkInt, previewSdkInt)) &&
+            (identical(other.release, release) ||
+                const DeepCollectionEquality()
+                    .equals(other.release, release)) &&
+            (identical(other.sdkInt, sdkInt) ||
+                const DeepCollectionEquality().equals(other.sdkInt, sdkInt)) &&
+            (identical(other.securityPatch, securityPatch) ||
+                const DeepCollectionEquality()
+                    .equals(other.securityPatch, securityPatch)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(baseOS) ^
+      const DeepCollectionEquality().hash(codeName) ^
+      const DeepCollectionEquality().hash(incremental) ^
+      const DeepCollectionEquality().hash(previewSdkInt) ^
+      const DeepCollectionEquality().hash(release) ^
+      const DeepCollectionEquality().hash(sdkInt) ^
+      const DeepCollectionEquality().hash(securityPatch) ^
+      runtimeType.hashCode;
+}
+
+extension $AndroidVersionExtension on AndroidVersion {
+  AndroidVersion copyWith(
+      {String? baseOS,
+      String? codeName,
+      String? incremental,
+      int? previewSdkInt,
+      String? release,
+      int? sdkInt,
+      String? securityPatch}) {
+    return AndroidVersion(
+        baseOS: baseOS ?? this.baseOS,
+        codeName: codeName ?? this.codeName,
+        incremental: incremental ?? this.incremental,
+        previewSdkInt: previewSdkInt ?? this.previewSdkInt,
+        release: release ?? this.release,
+        sdkInt: sdkInt ?? this.sdkInt,
+        securityPatch: securityPatch ?? this.securityPatch);
+  }
+
+  AndroidVersion copyWithWrapped(
+      {Wrapped<String?>? baseOS,
+      Wrapped<String>? codeName,
+      Wrapped<String>? incremental,
+      Wrapped<int?>? previewSdkInt,
+      Wrapped<String>? release,
+      Wrapped<int>? sdkInt,
+      Wrapped<String?>? securityPatch}) {
+    return AndroidVersion(
+        baseOS: (baseOS != null ? baseOS.value : this.baseOS),
+        codeName: (codeName != null ? codeName.value : this.codeName),
+        incremental:
+            (incremental != null ? incremental.value : this.incremental),
+        previewSdkInt:
+            (previewSdkInt != null ? previewSdkInt.value : this.previewSdkInt),
+        release: (release != null ? release.value : this.release),
+        sdkInt: (sdkInt != null ? sdkInt.value : this.sdkInt),
+        securityPatch:
+            (securityPatch != null ? securityPatch.value : this.securityPatch));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class DisplayMetrics {
+  const DisplayMetrics({
+    required this.widthPx,
+    required this.heightPx,
+    required this.xDpi,
+    required this.yDpi,
+  });
+
+  factory DisplayMetrics.fromJson(Map<String, dynamic> json) =>
+      _$DisplayMetricsFromJson(json);
+
+  static const toJsonFactory = _$DisplayMetricsToJson;
+  Map<String, dynamic> toJson() => _$DisplayMetricsToJson(this);
+
+  @JsonKey(name: 'widthPx')
+  final double widthPx;
+  @JsonKey(name: 'heightPx')
+  final double heightPx;
+  @JsonKey(name: 'xDpi')
+  final double xDpi;
+  @JsonKey(name: 'yDpi')
+  final double yDpi;
+  static const fromJsonFactory = _$DisplayMetricsFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is DisplayMetrics &&
+            (identical(other.widthPx, widthPx) ||
+                const DeepCollectionEquality()
+                    .equals(other.widthPx, widthPx)) &&
+            (identical(other.heightPx, heightPx) ||
+                const DeepCollectionEquality()
+                    .equals(other.heightPx, heightPx)) &&
+            (identical(other.xDpi, xDpi) ||
+                const DeepCollectionEquality().equals(other.xDpi, xDpi)) &&
+            (identical(other.yDpi, yDpi) ||
+                const DeepCollectionEquality().equals(other.yDpi, yDpi)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(widthPx) ^
+      const DeepCollectionEquality().hash(heightPx) ^
+      const DeepCollectionEquality().hash(xDpi) ^
+      const DeepCollectionEquality().hash(yDpi) ^
+      runtimeType.hashCode;
+}
+
+extension $DisplayMetricsExtension on DisplayMetrics {
+  DisplayMetrics copyWith(
+      {double? widthPx, double? heightPx, double? xDpi, double? yDpi}) {
+    return DisplayMetrics(
+        widthPx: widthPx ?? this.widthPx,
+        heightPx: heightPx ?? this.heightPx,
+        xDpi: xDpi ?? this.xDpi,
+        yDpi: yDpi ?? this.yDpi);
+  }
+
+  DisplayMetrics copyWithWrapped(
+      {Wrapped<double>? widthPx,
+      Wrapped<double>? heightPx,
+      Wrapped<double>? xDpi,
+      Wrapped<double>? yDpi}) {
+    return DisplayMetrics(
+        widthPx: (widthPx != null ? widthPx.value : this.widthPx),
+        heightPx: (heightPx != null ? heightPx.value : this.heightPx),
+        xDpi: (xDpi != null ? xDpi.value : this.xDpi),
+        yDpi: (yDpi != null ? yDpi.value : this.yDpi));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class IOSInfo {
+  const IOSInfo({
+    required this.isPhysical,
+    required this.localizedModel,
+    required this.model,
+    required this.systemVersion,
+    required this.systemName,
+    required this.utsName,
+  });
+
+  factory IOSInfo.fromJson(Map<String, dynamic> json) =>
+      _$IOSInfoFromJson(json);
+
+  static const toJsonFactory = _$IOSInfoToJson;
+  Map<String, dynamic> toJson() => _$IOSInfoToJson(this);
+
+  @JsonKey(name: 'isPhysical')
+  final bool isPhysical;
+  @JsonKey(name: 'localizedModel')
+  final String localizedModel;
+  @JsonKey(name: 'model')
+  final String model;
+  @JsonKey(name: 'systemVersion')
+  final String systemVersion;
+  @JsonKey(name: 'systemName')
+  final String systemName;
+  @JsonKey(name: 'utsName')
+  final UtsName? utsName;
+  static const fromJsonFactory = _$IOSInfoFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is IOSInfo &&
+            (identical(other.isPhysical, isPhysical) ||
+                const DeepCollectionEquality()
+                    .equals(other.isPhysical, isPhysical)) &&
+            (identical(other.localizedModel, localizedModel) ||
+                const DeepCollectionEquality()
+                    .equals(other.localizedModel, localizedModel)) &&
+            (identical(other.model, model) ||
+                const DeepCollectionEquality().equals(other.model, model)) &&
+            (identical(other.systemVersion, systemVersion) ||
+                const DeepCollectionEquality()
+                    .equals(other.systemVersion, systemVersion)) &&
+            (identical(other.systemName, systemName) ||
+                const DeepCollectionEquality()
+                    .equals(other.systemName, systemName)) &&
+            (identical(other.utsName, utsName) ||
+                const DeepCollectionEquality().equals(other.utsName, utsName)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(isPhysical) ^
+      const DeepCollectionEquality().hash(localizedModel) ^
+      const DeepCollectionEquality().hash(model) ^
+      const DeepCollectionEquality().hash(systemVersion) ^
+      const DeepCollectionEquality().hash(systemName) ^
+      const DeepCollectionEquality().hash(utsName) ^
+      runtimeType.hashCode;
+}
+
+extension $IOSInfoExtension on IOSInfo {
+  IOSInfo copyWith(
+      {bool? isPhysical,
+      String? localizedModel,
+      String? model,
+      String? systemVersion,
+      String? systemName,
+      UtsName? utsName}) {
+    return IOSInfo(
+        isPhysical: isPhysical ?? this.isPhysical,
+        localizedModel: localizedModel ?? this.localizedModel,
+        model: model ?? this.model,
+        systemVersion: systemVersion ?? this.systemVersion,
+        systemName: systemName ?? this.systemName,
+        utsName: utsName ?? this.utsName);
+  }
+
+  IOSInfo copyWithWrapped(
+      {Wrapped<bool>? isPhysical,
+      Wrapped<String>? localizedModel,
+      Wrapped<String>? model,
+      Wrapped<String>? systemVersion,
+      Wrapped<String>? systemName,
+      Wrapped<UtsName?>? utsName}) {
+    return IOSInfo(
+        isPhysical: (isPhysical != null ? isPhysical.value : this.isPhysical),
+        localizedModel: (localizedModel != null
+            ? localizedModel.value
+            : this.localizedModel),
+        model: (model != null ? model.value : this.model),
+        systemVersion:
+            (systemVersion != null ? systemVersion.value : this.systemVersion),
+        systemName: (systemName != null ? systemName.value : this.systemName),
+        utsName: (utsName != null ? utsName.value : this.utsName));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class UtsName {
+  const UtsName({
+    required this.sysName,
+    required this.nodeName,
+    required this.releaseName,
+    required this.version,
+    required this.machine,
+  });
+
+  factory UtsName.fromJson(Map<String, dynamic> json) =>
+      _$UtsNameFromJson(json);
+
+  static const toJsonFactory = _$UtsNameToJson;
+  Map<String, dynamic> toJson() => _$UtsNameToJson(this);
+
+  @JsonKey(name: 'sysName')
+  final String sysName;
+  @JsonKey(name: 'nodeName')
+  final String nodeName;
+  @JsonKey(name: 'releaseName')
+  final String releaseName;
+  @JsonKey(name: 'version')
+  final String version;
+  @JsonKey(name: 'machine')
+  final String machine;
+  static const fromJsonFactory = _$UtsNameFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is UtsName &&
+            (identical(other.sysName, sysName) ||
+                const DeepCollectionEquality()
+                    .equals(other.sysName, sysName)) &&
+            (identical(other.nodeName, nodeName) ||
+                const DeepCollectionEquality()
+                    .equals(other.nodeName, nodeName)) &&
+            (identical(other.releaseName, releaseName) ||
+                const DeepCollectionEquality()
+                    .equals(other.releaseName, releaseName)) &&
+            (identical(other.version, version) ||
+                const DeepCollectionEquality()
+                    .equals(other.version, version)) &&
+            (identical(other.machine, machine) ||
+                const DeepCollectionEquality().equals(other.machine, machine)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(sysName) ^
+      const DeepCollectionEquality().hash(nodeName) ^
+      const DeepCollectionEquality().hash(releaseName) ^
+      const DeepCollectionEquality().hash(version) ^
+      const DeepCollectionEquality().hash(machine) ^
+      runtimeType.hashCode;
+}
+
+extension $UtsNameExtension on UtsName {
+  UtsName copyWith(
+      {String? sysName,
+      String? nodeName,
+      String? releaseName,
+      String? version,
+      String? machine}) {
+    return UtsName(
+        sysName: sysName ?? this.sysName,
+        nodeName: nodeName ?? this.nodeName,
+        releaseName: releaseName ?? this.releaseName,
+        version: version ?? this.version,
+        machine: machine ?? this.machine);
+  }
+
+  UtsName copyWithWrapped(
+      {Wrapped<String>? sysName,
+      Wrapped<String>? nodeName,
+      Wrapped<String>? releaseName,
+      Wrapped<String>? version,
+      Wrapped<String>? machine}) {
+    return UtsName(
+        sysName: (sysName != null ? sysName.value : this.sysName),
+        nodeName: (nodeName != null ? nodeName.value : this.nodeName),
+        releaseName:
+            (releaseName != null ? releaseName.value : this.releaseName),
+        version: (version != null ? version.value : this.version),
+        machine: (machine != null ? machine.value : this.machine));
   }
 }
 
@@ -1357,8 +2475,11 @@ extension $LiveDevicesListRequestExtension on LiveDevicesListRequest {
 class EventsBatch {
   const EventsBatch({
     required this.isLive,
-    required this.deviceInfo,
+    this.os,
+    this.androidInfo,
+    this.iosInfo,
     this.identification,
+    required this.bundle,
     this.screenshotsBatch,
     required this.events,
     required this.projectID,
@@ -1372,10 +2493,20 @@ class EventsBatch {
 
   @JsonKey(name: 'isLive')
   final bool isLive;
-  @JsonKey(name: 'deviceInfo')
-  final Map<String, dynamic> deviceInfo;
+  @JsonKey(
+    name: 'os',
+    toJson: deviceOSNullableToJson,
+    fromJson: deviceOSNullableFromJson,
+  )
+  final enums.DeviceOS? os;
+  @JsonKey(name: 'androidInfo')
+  final AndroidInfo? androidInfo;
+  @JsonKey(name: 'iosInfo')
+  final IOSInfo? iosInfo;
   @JsonKey(name: 'identification')
   final Identification? identification;
+  @JsonKey(name: 'bundle')
+  final BundleInfo? bundle;
   @JsonKey(name: 'screenshotsBatch')
   final ScreenshotsBatch? screenshotsBatch;
   @JsonKey(name: 'events', defaultValue: <RegisteredEvent>[])
@@ -1390,12 +2521,19 @@ class EventsBatch {
         (other is EventsBatch &&
             (identical(other.isLive, isLive) ||
                 const DeepCollectionEquality().equals(other.isLive, isLive)) &&
-            (identical(other.deviceInfo, deviceInfo) ||
+            (identical(other.os, os) ||
+                const DeepCollectionEquality().equals(other.os, os)) &&
+            (identical(other.androidInfo, androidInfo) ||
                 const DeepCollectionEquality()
-                    .equals(other.deviceInfo, deviceInfo)) &&
+                    .equals(other.androidInfo, androidInfo)) &&
+            (identical(other.iosInfo, iosInfo) ||
+                const DeepCollectionEquality()
+                    .equals(other.iosInfo, iosInfo)) &&
             (identical(other.identification, identification) ||
                 const DeepCollectionEquality()
                     .equals(other.identification, identification)) &&
+            (identical(other.bundle, bundle) ||
+                const DeepCollectionEquality().equals(other.bundle, bundle)) &&
             (identical(other.screenshotsBatch, screenshotsBatch) ||
                 const DeepCollectionEquality()
                     .equals(other.screenshotsBatch, screenshotsBatch)) &&
@@ -1412,8 +2550,11 @@ class EventsBatch {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(isLive) ^
-      const DeepCollectionEquality().hash(deviceInfo) ^
+      const DeepCollectionEquality().hash(os) ^
+      const DeepCollectionEquality().hash(androidInfo) ^
+      const DeepCollectionEquality().hash(iosInfo) ^
       const DeepCollectionEquality().hash(identification) ^
+      const DeepCollectionEquality().hash(bundle) ^
       const DeepCollectionEquality().hash(screenshotsBatch) ^
       const DeepCollectionEquality().hash(events) ^
       const DeepCollectionEquality().hash(projectID) ^
@@ -1423,15 +2564,21 @@ class EventsBatch {
 extension $EventsBatchExtension on EventsBatch {
   EventsBatch copyWith(
       {bool? isLive,
-      Map<String, dynamic>? deviceInfo,
+      enums.DeviceOS? os,
+      AndroidInfo? androidInfo,
+      IOSInfo? iosInfo,
       Identification? identification,
+      BundleInfo? bundle,
       ScreenshotsBatch? screenshotsBatch,
       List<RegisteredEvent>? events,
       String? projectID}) {
     return EventsBatch(
         isLive: isLive ?? this.isLive,
-        deviceInfo: deviceInfo ?? this.deviceInfo,
+        os: os ?? this.os,
+        androidInfo: androidInfo ?? this.androidInfo,
+        iosInfo: iosInfo ?? this.iosInfo,
         identification: identification ?? this.identification,
+        bundle: bundle ?? this.bundle,
         screenshotsBatch: screenshotsBatch ?? this.screenshotsBatch,
         events: events ?? this.events,
         projectID: projectID ?? this.projectID);
@@ -1439,17 +2586,24 @@ extension $EventsBatchExtension on EventsBatch {
 
   EventsBatch copyWithWrapped(
       {Wrapped<bool>? isLive,
-      Wrapped<Map<String, dynamic>>? deviceInfo,
+      Wrapped<enums.DeviceOS?>? os,
+      Wrapped<AndroidInfo?>? androidInfo,
+      Wrapped<IOSInfo?>? iosInfo,
       Wrapped<Identification?>? identification,
+      Wrapped<BundleInfo?>? bundle,
       Wrapped<ScreenshotsBatch?>? screenshotsBatch,
       Wrapped<List<RegisteredEvent>>? events,
       Wrapped<String>? projectID}) {
     return EventsBatch(
         isLive: (isLive != null ? isLive.value : this.isLive),
-        deviceInfo: (deviceInfo != null ? deviceInfo.value : this.deviceInfo),
+        os: (os != null ? os.value : this.os),
+        androidInfo:
+            (androidInfo != null ? androidInfo.value : this.androidInfo),
+        iosInfo: (iosInfo != null ? iosInfo.value : this.iosInfo),
         identification: (identification != null
             ? identification.value
             : this.identification),
+        bundle: (bundle != null ? bundle.value : this.bundle),
         screenshotsBatch: (screenshotsBatch != null
             ? screenshotsBatch.value
             : this.screenshotsBatch),
@@ -1516,10 +2670,75 @@ extension $IdentificationExtension on Identification {
 }
 
 @JsonSerializable(explicitToJson: true)
+class BundleInfo {
+  const BundleInfo({
+    this.version,
+    this.build,
+    this.branch,
+  });
+
+  factory BundleInfo.fromJson(Map<String, dynamic> json) =>
+      _$BundleInfoFromJson(json);
+
+  static const toJsonFactory = _$BundleInfoToJson;
+  Map<String, dynamic> toJson() => _$BundleInfoToJson(this);
+
+  @JsonKey(name: 'version')
+  final String? version;
+  @JsonKey(name: 'build')
+  final String? build;
+  @JsonKey(name: 'branch')
+  final String? branch;
+  static const fromJsonFactory = _$BundleInfoFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is BundleInfo &&
+            (identical(other.version, version) ||
+                const DeepCollectionEquality()
+                    .equals(other.version, version)) &&
+            (identical(other.build, build) ||
+                const DeepCollectionEquality().equals(other.build, build)) &&
+            (identical(other.branch, branch) ||
+                const DeepCollectionEquality().equals(other.branch, branch)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(version) ^
+      const DeepCollectionEquality().hash(build) ^
+      const DeepCollectionEquality().hash(branch) ^
+      runtimeType.hashCode;
+}
+
+extension $BundleInfoExtension on BundleInfo {
+  BundleInfo copyWith({String? version, String? build, String? branch}) {
+    return BundleInfo(
+        version: version ?? this.version,
+        build: build ?? this.build,
+        branch: branch ?? this.branch);
+  }
+
+  BundleInfo copyWithWrapped(
+      {Wrapped<String?>? version,
+      Wrapped<String?>? build,
+      Wrapped<String?>? branch}) {
+    return BundleInfo(
+        version: (version != null ? version.value : this.version),
+        build: (build != null ? build.value : this.build),
+        branch: (branch != null ? branch.value : this.branch));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class ScreenshotsBatch {
   const ScreenshotsBatch({
-    this.frameIndexes,
-    this.data,
+    this.framesMaping,
+    this.frames,
   });
 
   factory ScreenshotsBatch.fromJson(Map<String, dynamic> json) =>
@@ -1528,21 +2747,21 @@ class ScreenshotsBatch {
   static const toJsonFactory = _$ScreenshotsBatchToJson;
   Map<String, dynamic> toJson() => _$ScreenshotsBatchToJson(this);
 
-  @JsonKey(name: 'frameIndexes', defaultValue: <int>[])
-  final List<int>? frameIndexes;
-  @JsonKey(name: 'data')
-  final String? data;
+  @JsonKey(name: 'framesMaping', defaultValue: <int>[])
+  final List<int>? framesMaping;
+  @JsonKey(name: 'frames', defaultValue: <String>[])
+  final List<String>? frames;
   static const fromJsonFactory = _$ScreenshotsBatchFromJson;
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is ScreenshotsBatch &&
-            (identical(other.frameIndexes, frameIndexes) ||
+            (identical(other.framesMaping, framesMaping) ||
                 const DeepCollectionEquality()
-                    .equals(other.frameIndexes, frameIndexes)) &&
-            (identical(other.data, data) ||
-                const DeepCollectionEquality().equals(other.data, data)));
+                    .equals(other.framesMaping, framesMaping)) &&
+            (identical(other.frames, frames) ||
+                const DeepCollectionEquality().equals(other.frames, frames)));
   }
 
   @override
@@ -1550,24 +2769,24 @@ class ScreenshotsBatch {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(frameIndexes) ^
-      const DeepCollectionEquality().hash(data) ^
+      const DeepCollectionEquality().hash(framesMaping) ^
+      const DeepCollectionEquality().hash(frames) ^
       runtimeType.hashCode;
 }
 
 extension $ScreenshotsBatchExtension on ScreenshotsBatch {
-  ScreenshotsBatch copyWith({List<int>? frameIndexes, String? data}) {
+  ScreenshotsBatch copyWith({List<int>? framesMaping, List<String>? frames}) {
     return ScreenshotsBatch(
-        frameIndexes: frameIndexes ?? this.frameIndexes,
-        data: data ?? this.data);
+        framesMaping: framesMaping ?? this.framesMaping,
+        frames: frames ?? this.frames);
   }
 
   ScreenshotsBatch copyWithWrapped(
-      {Wrapped<List<int>?>? frameIndexes, Wrapped<String?>? data}) {
+      {Wrapped<List<int>?>? framesMaping, Wrapped<List<String>?>? frames}) {
     return ScreenshotsBatch(
-        frameIndexes:
-            (frameIndexes != null ? frameIndexes.value : this.frameIndexes),
-        data: (data != null ? data.value : this.data));
+        framesMaping:
+            (framesMaping != null ? framesMaping.value : this.framesMaping),
+        frames: (frames != null ? frames.value : this.frames));
   }
 }
 
@@ -2583,71 +3802,64 @@ extension $NavigationEventExtension on NavigationEvent {
   }
 }
 
-int? deviceInfoEntryKindNullableToJson(
-    enums.DeviceInfoEntryKind? deviceInfoEntryKind) {
-  return deviceInfoEntryKind?.value;
+int? deviceOSNullableToJson(enums.DeviceOS? deviceOS) {
+  return deviceOS?.value;
 }
 
-int? deviceInfoEntryKindToJson(enums.DeviceInfoEntryKind deviceInfoEntryKind) {
-  return deviceInfoEntryKind.value;
+int? deviceOSToJson(enums.DeviceOS deviceOS) {
+  return deviceOS.value;
 }
 
-enums.DeviceInfoEntryKind deviceInfoEntryKindFromJson(
-  Object? deviceInfoEntryKind, [
-  enums.DeviceInfoEntryKind? defaultValue,
+enums.DeviceOS deviceOSFromJson(
+  Object? deviceOS, [
+  enums.DeviceOS? defaultValue,
 ]) {
-  return enums.DeviceInfoEntryKind.values.firstWhereOrNull((e) =>
+  return enums.DeviceOS.values.firstWhereOrNull((e) =>
           e.value.toString().toLowerCase() ==
-          deviceInfoEntryKind?.toString().toLowerCase()) ??
+          deviceOS?.toString().toLowerCase()) ??
       defaultValue ??
-      enums.DeviceInfoEntryKind.swaggerGeneratedUnknown;
+      enums.DeviceOS.swaggerGeneratedUnknown;
 }
 
-enums.DeviceInfoEntryKind? deviceInfoEntryKindNullableFromJson(
-  Object? deviceInfoEntryKind, [
-  enums.DeviceInfoEntryKind? defaultValue,
+enums.DeviceOS? deviceOSNullableFromJson(
+  Object? deviceOS, [
+  enums.DeviceOS? defaultValue,
 ]) {
-  if (deviceInfoEntryKind == null) {
+  if (deviceOS == null) {
     return null;
   }
-  return enums.DeviceInfoEntryKind.values
-          .firstWhereOrNull((e) => e.value == deviceInfoEntryKind) ??
+  return enums.DeviceOS.values.firstWhereOrNull((e) => e.value == deviceOS) ??
       defaultValue;
 }
 
-List<int> deviceInfoEntryKindListToJson(
-    List<enums.DeviceInfoEntryKind>? deviceInfoEntryKind) {
-  if (deviceInfoEntryKind == null) {
+List<int> deviceOSListToJson(List<enums.DeviceOS>? deviceOS) {
+  if (deviceOS == null) {
     return [];
   }
 
-  return deviceInfoEntryKind.map((e) => e.value!).toList();
+  return deviceOS.map((e) => e.value!).toList();
 }
 
-List<enums.DeviceInfoEntryKind> deviceInfoEntryKindListFromJson(
-  List? deviceInfoEntryKind, [
-  List<enums.DeviceInfoEntryKind>? defaultValue,
+List<enums.DeviceOS> deviceOSListFromJson(
+  List? deviceOS, [
+  List<enums.DeviceOS>? defaultValue,
 ]) {
-  if (deviceInfoEntryKind == null) {
+  if (deviceOS == null) {
     return defaultValue ?? [];
   }
 
-  return deviceInfoEntryKind
-      .map((e) => deviceInfoEntryKindFromJson(e.toString()))
-      .toList();
+  return deviceOS.map((e) => deviceOSFromJson(e.toString())).toList();
 }
 
-List<enums.DeviceInfoEntryKind>? deviceInfoEntryKindNullableListFromJson(
-  List? deviceInfoEntryKind, [
-  List<enums.DeviceInfoEntryKind>? defaultValue,
+List<enums.DeviceOS>? deviceOSNullableListFromJson(
+  List? deviceOS, [
+  List<enums.DeviceOS>? defaultValue,
 ]) {
-  if (deviceInfoEntryKind == null) {
+  if (deviceOS == null) {
     return defaultValue;
   }
 
-  return deviceInfoEntryKind
-      .map((e) => deviceInfoEntryKindFromJson(e.toString()))
-      .toList();
+  return deviceOS.map((e) => deviceOSFromJson(e.toString())).toList();
 }
 
 int? eventKindNullableToJson(enums.EventKind? eventKind) {

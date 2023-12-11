@@ -17,6 +17,83 @@ class _$Swagger extends Swagger {
   final definitionType = Swagger;
 
   @override
+  Future<Response<PageListOfArtefactDTO>> _apiArtefactsPost(
+      {required ArtefactsListRequest? body}) {
+    final Uri $url = Uri.parse('/api/artefacts');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<PageListOfArtefactDTO, PageListOfArtefactDTO>($request);
+  }
+
+  @override
+  Future<Response<String>> _apiArtefactsCreatePost({
+    String? projectId,
+    String? ver,
+    String? environment,
+    String? flavor,
+    String? platform,
+    int? build,
+    String? artefactExt,
+    String? contentType,
+    String? contentDisposition,
+    List<dynamic>? headers,
+    int? length,
+    String? name,
+    String? fileName,
+  }) {
+    final Uri $url = Uri.parse('/api/artefacts/create');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'projectId': projectId,
+      'ver': ver,
+      'environment': environment,
+      'flavor': flavor,
+      'platform': platform,
+      'build': build,
+      'artefactExt': artefactExt,
+    };
+    final List<PartValue> $parts = <PartValue>[
+      PartValue<String?>(
+        'ContentType',
+        contentType,
+      ),
+      PartValue<String?>(
+        'ContentDisposition',
+        contentDisposition,
+      ),
+      PartValue<List<dynamic>?>(
+        'Headers',
+        headers,
+      ),
+      PartValue<int?>(
+        'Length',
+        length,
+      ),
+      PartValue<String?>(
+        'Name',
+        name,
+      ),
+      PartValue<String?>(
+        'FileName',
+        fileName,
+      ),
+    ];
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      parts: $parts,
+      multipart: true,
+      parameters: $params,
+    );
+    return client.send<String, String>($request);
+  }
+
+  @override
   Future<Response<SuccessAuthResponse>> _apiAuthAuthenticatePost(
       {required AuthenticateRequest? body}) {
     final Uri $url = Uri.parse('/api/auth/authenticate');

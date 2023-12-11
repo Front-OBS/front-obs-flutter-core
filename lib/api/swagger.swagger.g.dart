@@ -6,6 +6,84 @@ part of 'swagger.swagger.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+ProblemDetails _$ProblemDetailsFromJson(Map<String, dynamic> json) =>
+    ProblemDetails(
+      type: json['type'] as String?,
+      title: json['title'] as String?,
+      status: json['status'] as int?,
+      detail: json['detail'] as String?,
+      instance: json['instance'] as String?,
+    );
+
+Map<String, dynamic> _$ProblemDetailsToJson(ProblemDetails instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'title': instance.title,
+      'status': instance.status,
+      'detail': instance.detail,
+      'instance': instance.instance,
+    };
+
+PageListOfArtefactDTO _$PageListOfArtefactDTOFromJson(
+        Map<String, dynamic> json) =>
+    PageListOfArtefactDTO(
+      items: (json['items'] as List<dynamic>?)
+              ?.map((e) => ArtefactDTO.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      totalPages: json['totalPages'] as int,
+      totalItems: json['totalItems'] as int,
+      page: json['page'] as int,
+    );
+
+Map<String, dynamic> _$PageListOfArtefactDTOToJson(
+        PageListOfArtefactDTO instance) =>
+    <String, dynamic>{
+      'items': instance.items.map((e) => e.toJson()).toList(),
+      'totalPages': instance.totalPages,
+      'totalItems': instance.totalItems,
+      'page': instance.page,
+    };
+
+ArtefactDTO _$ArtefactDTOFromJson(Map<String, dynamic> json) => ArtefactDTO(
+      id: json['id'] as String,
+      downloadLink: json['downloadLink'] as String?,
+      artefactExt: json['artefactExt'] as String?,
+      environment: json['environment'] as String,
+      platform: json['platform'] as String,
+      flavor: json['flavor'] as String,
+      version: json['version'] as String,
+      build: json['build'] as int,
+    );
+
+Map<String, dynamic> _$ArtefactDTOToJson(ArtefactDTO instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'downloadLink': instance.downloadLink,
+      'artefactExt': instance.artefactExt,
+      'environment': instance.environment,
+      'platform': instance.platform,
+      'flavor': instance.flavor,
+      'version': instance.version,
+      'build': instance.build,
+    };
+
+ArtefactsListRequest _$ArtefactsListRequestFromJson(
+        Map<String, dynamic> json) =>
+    ArtefactsListRequest(
+      projectId: json['projectId'] as String?,
+      page: json['page'] as int?,
+      pageSize: json['pageSize'] as int?,
+    );
+
+Map<String, dynamic> _$ArtefactsListRequestToJson(
+        ArtefactsListRequest instance) =>
+    <String, dynamic>{
+      'projectId': instance.projectId,
+      'page': instance.page,
+      'pageSize': instance.pageSize,
+    };
+
 SuccessAuthResponse _$SuccessAuthResponseFromJson(Map<String, dynamic> json) =>
     SuccessAuthResponse(
       jwt: json['jwt'] as String,
@@ -239,13 +317,155 @@ Map<String, dynamic> _$SessionFilterToJson(SessionFilter instance) =>
 
 DeviceInfo _$DeviceInfoFromJson(Map<String, dynamic> json) => DeviceInfo(
       code: json['code'] as String,
-      parameters: json['parameters'] as Map<String, dynamic>,
+      os: deviceOSNullableFromJson(json['os']),
+      androidInfo: json['androidInfo'],
+      iosInfo: json['iosInfo'],
     );
 
 Map<String, dynamic> _$DeviceInfoToJson(DeviceInfo instance) =>
     <String, dynamic>{
       'code': instance.code,
-      'parameters': instance.parameters,
+      'os': deviceOSNullableToJson(instance.os),
+      'androidInfo': instance.androidInfo,
+      'iosInfo': instance.iosInfo,
+    };
+
+AndroidInfo _$AndroidInfoFromJson(Map<String, dynamic> json) => AndroidInfo(
+      id: json['id'] as String,
+      host: json['host'] as String,
+      manifacturer: json['manifacturer'] as String,
+      androidVersion: json['androidVersion'] == null
+          ? null
+          : AndroidVersion.fromJson(
+              json['androidVersion'] as Map<String, dynamic>),
+      board: json['board'] as String,
+      bootLoader: json['bootLoader'] as String,
+      brand: json['brand'] as String,
+      device: json['device'] as String,
+      display: json['display'] == null
+          ? null
+          : DisplayMetrics.fromJson(json['display'] as Map<String, dynamic>),
+      fingerprint: json['fingerprint'] as String,
+      hardware: json['hardware'] as String,
+      isPhysical: json['isPhysical'] as bool,
+      model: json['model'] as String,
+      product: json['product'] as String,
+      serialNumber: json['serialNumber'] as String,
+      supported32BitAbis: (json['supported32BitAbis'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      supported64BitAbis: (json['supported64BitAbis'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      supportedAbis: (json['supportedAbis'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      systemFeatures: (json['systemFeatures'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      type: json['type'] as String,
+    );
+
+Map<String, dynamic> _$AndroidInfoToJson(AndroidInfo instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'host': instance.host,
+      'manifacturer': instance.manifacturer,
+      'androidVersion': instance.androidVersion?.toJson(),
+      'board': instance.board,
+      'bootLoader': instance.bootLoader,
+      'brand': instance.brand,
+      'device': instance.device,
+      'display': instance.display?.toJson(),
+      'fingerprint': instance.fingerprint,
+      'hardware': instance.hardware,
+      'isPhysical': instance.isPhysical,
+      'model': instance.model,
+      'product': instance.product,
+      'serialNumber': instance.serialNumber,
+      'supported32BitAbis': instance.supported32BitAbis,
+      'supported64BitAbis': instance.supported64BitAbis,
+      'supportedAbis': instance.supportedAbis,
+      'systemFeatures': instance.systemFeatures,
+      'type': instance.type,
+    };
+
+AndroidVersion _$AndroidVersionFromJson(Map<String, dynamic> json) =>
+    AndroidVersion(
+      baseOS: json['baseOS'] as String?,
+      codeName: json['codeName'] as String,
+      incremental: json['incremental'] as String,
+      previewSdkInt: json['previewSdkInt'] as int?,
+      release: json['release'] as String,
+      sdkInt: json['sdkInt'] as int,
+      securityPatch: json['securityPatch'] as String?,
+    );
+
+Map<String, dynamic> _$AndroidVersionToJson(AndroidVersion instance) =>
+    <String, dynamic>{
+      'baseOS': instance.baseOS,
+      'codeName': instance.codeName,
+      'incremental': instance.incremental,
+      'previewSdkInt': instance.previewSdkInt,
+      'release': instance.release,
+      'sdkInt': instance.sdkInt,
+      'securityPatch': instance.securityPatch,
+    };
+
+DisplayMetrics _$DisplayMetricsFromJson(Map<String, dynamic> json) =>
+    DisplayMetrics(
+      widthPx: (json['widthPx'] as num).toDouble(),
+      heightPx: (json['heightPx'] as num).toDouble(),
+      xDpi: (json['xDpi'] as num).toDouble(),
+      yDpi: (json['yDpi'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$DisplayMetricsToJson(DisplayMetrics instance) =>
+    <String, dynamic>{
+      'widthPx': instance.widthPx,
+      'heightPx': instance.heightPx,
+      'xDpi': instance.xDpi,
+      'yDpi': instance.yDpi,
+    };
+
+IOSInfo _$IOSInfoFromJson(Map<String, dynamic> json) => IOSInfo(
+      isPhysical: json['isPhysical'] as bool,
+      localizedModel: json['localizedModel'] as String,
+      model: json['model'] as String,
+      systemVersion: json['systemVersion'] as String,
+      systemName: json['systemName'] as String,
+      utsName: json['utsName'] == null
+          ? null
+          : UtsName.fromJson(json['utsName'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$IOSInfoToJson(IOSInfo instance) => <String, dynamic>{
+      'isPhysical': instance.isPhysical,
+      'localizedModel': instance.localizedModel,
+      'model': instance.model,
+      'systemVersion': instance.systemVersion,
+      'systemName': instance.systemName,
+      'utsName': instance.utsName?.toJson(),
+    };
+
+UtsName _$UtsNameFromJson(Map<String, dynamic> json) => UtsName(
+      sysName: json['sysName'] as String,
+      nodeName: json['nodeName'] as String,
+      releaseName: json['releaseName'] as String,
+      version: json['version'] as String,
+      machine: json['machine'] as String,
+    );
+
+Map<String, dynamic> _$UtsNameToJson(UtsName instance) => <String, dynamic>{
+      'sysName': instance.sysName,
+      'nodeName': instance.nodeName,
+      'releaseName': instance.releaseName,
+      'version': instance.version,
+      'machine': instance.machine,
     };
 
 LiveDevicesListRequest _$LiveDevicesListRequestFromJson(
@@ -262,11 +482,20 @@ Map<String, dynamic> _$LiveDevicesListRequestToJson(
 
 EventsBatch _$EventsBatchFromJson(Map<String, dynamic> json) => EventsBatch(
       isLive: json['isLive'] as bool,
-      deviceInfo: json['deviceInfo'] as Map<String, dynamic>,
+      os: deviceOSNullableFromJson(json['os']),
+      androidInfo: json['androidInfo'] == null
+          ? null
+          : AndroidInfo.fromJson(json['androidInfo'] as Map<String, dynamic>),
+      iosInfo: json['iosInfo'] == null
+          ? null
+          : IOSInfo.fromJson(json['iosInfo'] as Map<String, dynamic>),
       identification: json['identification'] == null
           ? null
           : Identification.fromJson(
               json['identification'] as Map<String, dynamic>),
+      bundle: json['bundle'] == null
+          ? null
+          : BundleInfo.fromJson(json['bundle'] as Map<String, dynamic>),
       screenshotsBatch: json['screenshotsBatch'] == null
           ? null
           : ScreenshotsBatch.fromJson(
@@ -281,8 +510,11 @@ EventsBatch _$EventsBatchFromJson(Map<String, dynamic> json) => EventsBatch(
 Map<String, dynamic> _$EventsBatchToJson(EventsBatch instance) =>
     <String, dynamic>{
       'isLive': instance.isLive,
-      'deviceInfo': instance.deviceInfo,
+      'os': deviceOSNullableToJson(instance.os),
+      'androidInfo': instance.androidInfo?.toJson(),
+      'iosInfo': instance.iosInfo?.toJson(),
       'identification': instance.identification?.toJson(),
+      'bundle': instance.bundle?.toJson(),
       'screenshotsBatch': instance.screenshotsBatch?.toJson(),
       'events': instance.events.map((e) => e.toJson()).toList(),
       'projectID': instance.projectID,
@@ -300,19 +532,35 @@ Map<String, dynamic> _$IdentificationToJson(Identification instance) =>
       'userIdentification': instance.userIdentification,
     };
 
+BundleInfo _$BundleInfoFromJson(Map<String, dynamic> json) => BundleInfo(
+      version: json['version'] as String?,
+      build: json['build'] as String?,
+      branch: json['branch'] as String?,
+    );
+
+Map<String, dynamic> _$BundleInfoToJson(BundleInfo instance) =>
+    <String, dynamic>{
+      'version': instance.version,
+      'build': instance.build,
+      'branch': instance.branch,
+    };
+
 ScreenshotsBatch _$ScreenshotsBatchFromJson(Map<String, dynamic> json) =>
     ScreenshotsBatch(
-      frameIndexes: (json['frameIndexes'] as List<dynamic>?)
+      framesMaping: (json['framesMaping'] as List<dynamic>?)
               ?.map((e) => e as int)
               .toList() ??
           [],
-      data: json['data'] as String?,
+      frames: (json['frames'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$ScreenshotsBatchToJson(ScreenshotsBatch instance) =>
     <String, dynamic>{
-      'frameIndexes': instance.frameIndexes,
-      'data': instance.data,
+      'framesMaping': instance.framesMaping,
+      'frames': instance.frames,
     };
 
 RegisteredEvent _$RegisteredEventFromJson(Map<String, dynamic> json) =>

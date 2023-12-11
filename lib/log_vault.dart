@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:chopper/chopper.dart';
+import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_uuid/device_uuid.dart';
@@ -11,7 +12,9 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart' as fnd;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:oberon_connector/environments.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:uuid/uuid.dart';
 
@@ -49,65 +52,117 @@ class LogVault extends ChangeNotifier {
   static late bool doLiveStreams;
 
   static int inQueueCount = 0;
+  static int inrocessingQueueCount = 0;
 
   static bool initialized = false;
   static late String _projectCode;
 
   static late ScreenRecorderController recorderController;
 
-  static late Map<DeviceInfoEntryKind, String> devicePrams;
+  static AndroidInfo? android;
+  static IOSInfo? ios;
+  static late BundleInfo bundle;
+
+  static final processBatchController = StreamController<
+      (List<RegisteredEvent>, Map<String, Uint8List?>)>.broadcast();
+  static late Stream<(List<RegisteredEvent>, Map<String, Uint8List?>)>
+      sendsQueue = processBatchController.stream;
 
   static Future initVault(bool liveStreams, String projectCode) async {
     _projectCode = projectCode;
     debouncingTime =
         liveStreams ? Duration(milliseconds: 200) : Duration(seconds: 3);
     doLiveStreams = liveStreams;
-    client = Swagger.create(baseUrl: Uri.parse("https://oberon-lab.ru"));
+    client = Swagger.create(
+        baseUrl: Uri.parse(
+      //"http://localhost:8080",
+          "https://oberon-lab.ru",
+    ));
     deviceCode = await getDeviceCode();
+
+    if (liveStreams) {
+      try {
+        final _head = await rootBundle.loadString('.git/HEAD');
+
+        final branch = _head.split('/').last;
+        bundle = BundleInfo(branch: branch);
+      } catch (ex) {
+        print("Couldn't determine branch of artefact");
+        bundle = BundleInfo();
+      }
+    } else {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      bundle = BundleInfo(
+        version: packageInfo.version,
+        build: packageInfo.buildNumber,
+      );
+    }
 
     if (Platform.isIOS) {
       var deviceInfo = await DeviceInfoPlugin().iosInfo;
-      devicePrams = {
-        DeviceInfoEntryKind.isphysical: deviceInfo.isPhysicalDevice.toString(),
-        DeviceInfoEntryKind.localizedmodel: deviceInfo.localizedModel,
-        DeviceInfoEntryKind.model: deviceInfo.model,
-        DeviceInfoEntryKind.ostype: "IOS",
-        DeviceInfoEntryKind.iosversion: deviceInfo.systemVersion,
-        DeviceInfoEntryKind.systemname: deviceInfo.systemName,
-        DeviceInfoEntryKind.utsname:
-            "${deviceInfo.utsname.machine}|${deviceInfo.utsname.nodename}|${deviceInfo.utsname.release}|${deviceInfo.utsname.sysname}|${deviceInfo.utsname.version}"
-      };
+      ios = IOSInfo(
+        isPhysical: deviceInfo.isPhysicalDevice,
+        localizedModel: deviceInfo.localizedModel,
+        model: deviceInfo.model,
+        systemVersion: deviceInfo.systemVersion,
+        systemName: deviceInfo.systemName,
+        utsName: UtsName(
+          sysName: deviceInfo.utsname.sysname,
+          nodeName: deviceInfo.utsname.nodename,
+          releaseName: deviceInfo.utsname.release,
+          version: deviceInfo.utsname.version,
+          machine: deviceInfo.utsname.machine,
+        ),
+      );
     } else {
       var deviceInfo = await DeviceInfoPlugin().androidInfo;
-      devicePrams = {
-        DeviceInfoEntryKind.id: deviceInfo.id,
-        DeviceInfoEntryKind.host: deviceInfo.host,
-        DeviceInfoEntryKind.manifacturer: deviceInfo.manufacturer,
-        DeviceInfoEntryKind.androidversion:
-            "${deviceInfo.version.release} (${deviceInfo.version.sdkInt})",
-        DeviceInfoEntryKind.board: deviceInfo.board,
-        DeviceInfoEntryKind.bootloader: deviceInfo.bootloader,
-        DeviceInfoEntryKind.brand: deviceInfo.brand,
-        DeviceInfoEntryKind.device: deviceInfo.device,
-        DeviceInfoEntryKind.display: deviceInfo.display,
-        DeviceInfoEntryKind.displaymetrics:
-            "${deviceInfo.displayMetrics.widthPx}x${deviceInfo.displayMetrics.heightPx} (${deviceInfo.displayMetrics.sizeInches}) DPI ${deviceInfo.displayMetrics.xDpi}",
-        DeviceInfoEntryKind.fingerprint: deviceInfo.fingerprint,
-        DeviceInfoEntryKind.hardware: deviceInfo.hardware,
-        DeviceInfoEntryKind.isphysical: deviceInfo.isPhysicalDevice.toString(),
-        DeviceInfoEntryKind.model: deviceInfo.model,
-        DeviceInfoEntryKind.ostype: "ANDROID",
-        DeviceInfoEntryKind.product: deviceInfo.product,
-        DeviceInfoEntryKind.serialnumber: deviceInfo.serialNumber,
-        DeviceInfoEntryKind.supported32bitabis:
-            deviceInfo.supported32BitAbis.join(","),
-        DeviceInfoEntryKind.supported64bitabis:
-            deviceInfo.supported64BitAbis.join(","),
-        DeviceInfoEntryKind.supportedabis: deviceInfo.supportedAbis.join(","),
-        DeviceInfoEntryKind.systemfeatures: deviceInfo.systemFeatures.join(","),
-        DeviceInfoEntryKind.type: deviceInfo.type,
-      };
+      android = AndroidInfo(
+        id: deviceInfo.id,
+        host: deviceInfo.host,
+        manifacturer: deviceInfo.manufacturer,
+        androidVersion: AndroidVersion(
+          codeName: deviceInfo.version.codename,
+          incremental: deviceInfo.version.incremental,
+          release: deviceInfo.version.release,
+          sdkInt: deviceInfo.version.sdkInt,
+        ),
+        board: deviceInfo.board,
+        bootLoader: deviceInfo.bootloader,
+        brand: deviceInfo.brand,
+        device: deviceInfo.device,
+        display: DisplayMetrics(
+          widthPx: deviceInfo.displayMetrics.widthPx,
+          heightPx: deviceInfo.displayMetrics.heightPx,
+          xDpi: deviceInfo.displayMetrics.xDpi,
+          yDpi: deviceInfo.displayMetrics.yDpi,
+        ),
+        fingerprint: deviceInfo.fingerprint,
+        hardware: deviceInfo.hardware,
+        isPhysical: deviceInfo.isPhysicalDevice,
+        model: deviceInfo.model,
+        product: deviceInfo.product,
+        serialNumber: deviceInfo.serialNumber,
+        supported32BitAbis: deviceInfo.supported32BitAbis,
+        supported64BitAbis: deviceInfo.supported64BitAbis,
+        supportedAbis: deviceInfo.supportedAbis,
+        systemFeatures: deviceInfo.systemFeatures,
+        type: deviceInfo.type,
+      );
     }
+
+    processBatchController.stream
+        .asyncMap((event) {
+          inrocessingQueueCount++;
+          return event;
+        })
+        .asyncMap(scheduleSend)
+        .asyncMap((event) {
+          inrocessingQueueCount--;
+          return event;
+        })
+        .listen((event) {
+          print("Processed batch");
+        });
 
     sendingQueue.stream
         .asyncMap((event) {
@@ -149,45 +204,86 @@ class LogVault extends ChangeNotifier {
     //final decoder = img.PngDecoder();
     final encoder = img.GifEncoder();
 
-    final pngs =
-        listS.map((e) => e != null ? img.PngDecoder().decode(e)!.convert(numChannels: 3) : null);
-    print("Creating APNG for ${pngs}");
+    int totalSize = 0;
+
+    final pngs = listS.map((Uint8List? e) {
+      final png = e != null
+          ? img.PngDecoder().decode(e)!.convert(numChannels: 3)
+          : null;
+      if (png != null) totalSize += (e?.length ?? 0);
+      return png;
+    });
+    print("Creating APNG for ${pngs.length}");
     for (final p in pngs) {
       if (p != null) encoder.addFrame(p);
     }
 
     final apng = encoder.finish()!;
     final baseEncoded = base64Encode(apng.toList(growable: false));
-    print("APNG DELAY ${DateTime.now().difference(tsStart).inMilliseconds}");
+    print(
+        "APNG DELAY ${DateTime.now().difference(tsStart).inMilliseconds} size total ${totalSize} size after ${apng.length}");
     return baseEncoded;
   }
 
-  static void scheduleSend() async {
+  static void planSend() {
     final events = eventsBuffer.toList();
     final ss = Map.fromEntries(screenshots.entries);
     screenshots.clear();
     eventsBuffer.clear();
+    processBatchController.add((events, ss));
+  }
+
+  static void scheduleSend(
+      (List<RegisteredEvent>, Map<String, Uint8List?>) request) async {
     //EasyDebounce.cancel("oberon_event");
+    final (events, ss) = request;
 
     ScreenshotsBatch? sbatch;
     if (ss.values.any((element) => element != null)) {
-      final batch =
-          await fnd.compute(computeBatchOfScreenshots, ss.values.toList());
-      final sIndexes = ss.values
+      final imagesGroupedByCrcWithListOfImagesAndEvents = groupBy(
+          ss.entries,
+          (kv) => kv.value != null
+              ? base64Encode(md5.convert(kv.value!.toList()).bytes)
+              : null);
+
+      final imagesByCrc = imagesGroupedByCrcWithListOfImagesAndEvents
+          .map((key, value) => MapEntry(key, value.firstOrNull?.value));
+      final crcByEvent = Map.fromEntries(
+          imagesGroupedByCrcWithListOfImagesAndEvents.entries.expand(
+              (element) =>
+                  element.value.map((e) => MapEntry(e.key, element.key))));
+      //final eventsByCrc = groupB
+
+      final images = imagesByCrc.values.toList().cast<Uint8List>();
+      final crcs = imagesByCrc.keys.toList();
+      final indexes = events
+          .map((e) =>
+              crcByEvent[e.id] != null ? crcs.indexOf(crcByEvent[e.id]) : -1)
+          .toList();
+
+      /*final batch =
+          await fnd.compute(computeBatchOfScreenshots, ss.values.toList());*/
+      final encodedImages = await fnd.compute(
+          (List<Uint8List> value) => value.map((e) => base64Encode(e)).toList(),
+          images);
+      /* final sIndexes = ss.values
           .toList()
           .asMap()
           .entries
           .map((kv) => kv.value != null ? kv.key : null)
           .where((element) => element != null)
           .cast<int>()
-          .toList();
-      sbatch = ScreenshotsBatch(data: batch, frameIndexes: sIndexes);
+          .toList();*/
+      sbatch = ScreenshotsBatch(frames: encodedImages, framesMaping: indexes);
     }
     //print(batch.length / 1024 / 1024);
     sendingQueue.add(
       EventsBatch(
+        bundle: bundle,
         screenshotsBatch: sbatch,
-        deviceInfo: devicePrams.map((key, value) => MapEntry(key.name, value)),
+        os: android != null ? DeviceOS.android : DeviceOS.ios,
+        androidInfo: android,
+        iosInfo: ios,
         projectID: _projectCode,
         isLive: doLiveStreams,
         identification: Identification(
@@ -203,7 +299,7 @@ class LogVault extends ChangeNotifier {
     EasyDebounce.debounce(
       'oberon_event',
       debouncingTime,
-      scheduleSend,
+      planSend,
     );
     screenshots[event.id] = screenshot;
     eventsBuffer.add(event);
@@ -356,7 +452,7 @@ class LogVault extends ChangeNotifier {
     }
     // entries.add(entry);
     //logsStreamController.sink.add(entry);
-    print("got entry ${entry.kind}");
+    //print("got entry ${entry.kind}");
     final currentScreenshot = await recorderController.captureScreen();
     //print("Has screenshot ${currentScreenshot != null}");
 
