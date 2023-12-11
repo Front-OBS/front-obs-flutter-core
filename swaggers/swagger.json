@@ -1729,10 +1729,16 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "id",
           "timestamp",
           "kind"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid",
+            "minLength": 1
+          },
           "timestamp": {
             "type": "integer",
             "format": "int64"

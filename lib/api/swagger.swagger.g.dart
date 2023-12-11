@@ -648,6 +648,7 @@ Map<String, dynamic> _$ScreenshotsBatchToJson(ScreenshotsBatch instance) =>
 
 RegisteredEvent _$RegisteredEventFromJson(Map<String, dynamic> json) =>
     RegisteredEvent(
+      id: json['id'] as String,
       timestamp: json['timestamp'] as int,
       kind: eventKindNullableFromJson(json['kind']),
       textEvent: json['textEvent'] == null
@@ -680,6 +681,7 @@ RegisteredEvent _$RegisteredEventFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$RegisteredEventToJson(RegisteredEvent instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'timestamp': instance.timestamp,
       'kind': eventKindNullableToJson(instance.kind),
       'textEvent': instance.textEvent?.toJson(),

@@ -3184,6 +3184,7 @@ extension $ScreenshotsBatchExtension on ScreenshotsBatch {
 @JsonSerializable(explicitToJson: true)
 class RegisteredEvent {
   const RegisteredEvent({
+    required this.id,
     required this.timestamp,
     required this.kind,
     this.textEvent,
@@ -3202,6 +3203,8 @@ class RegisteredEvent {
   static const toJsonFactory = _$RegisteredEventToJson;
   Map<String, dynamic> toJson() => _$RegisteredEventToJson(this);
 
+  @JsonKey(name: 'id')
+  final String id;
   @JsonKey(name: 'timestamp')
   final int timestamp;
   @JsonKey(
@@ -3232,6 +3235,8 @@ class RegisteredEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is RegisteredEvent &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.timestamp, timestamp) ||
                 const DeepCollectionEquality()
                     .equals(other.timestamp, timestamp)) &&
@@ -3268,6 +3273,7 @@ class RegisteredEvent {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(timestamp) ^
       const DeepCollectionEquality().hash(kind) ^
       const DeepCollectionEquality().hash(textEvent) ^
@@ -3283,7 +3289,8 @@ class RegisteredEvent {
 
 extension $RegisteredEventExtension on RegisteredEvent {
   RegisteredEvent copyWith(
-      {int? timestamp,
+      {String? id,
+      int? timestamp,
       enums.EventKind? kind,
       TextEvent? textEvent,
       StateEvent? stateEvent,
@@ -3294,6 +3301,7 @@ extension $RegisteredEventExtension on RegisteredEvent {
       ScrollEvent? scrollEvent,
       NavigationEvent? navigationEvent}) {
     return RegisteredEvent(
+        id: id ?? this.id,
         timestamp: timestamp ?? this.timestamp,
         kind: kind ?? this.kind,
         textEvent: textEvent ?? this.textEvent,
@@ -3307,7 +3315,8 @@ extension $RegisteredEventExtension on RegisteredEvent {
   }
 
   RegisteredEvent copyWithWrapped(
-      {Wrapped<int>? timestamp,
+      {Wrapped<String>? id,
+      Wrapped<int>? timestamp,
       Wrapped<enums.EventKind?>? kind,
       Wrapped<TextEvent?>? textEvent,
       Wrapped<StateEvent?>? stateEvent,
@@ -3318,6 +3327,7 @@ extension $RegisteredEventExtension on RegisteredEvent {
       Wrapped<ScrollEvent?>? scrollEvent,
       Wrapped<NavigationEvent?>? navigationEvent}) {
     return RegisteredEvent(
+        id: (id != null ? id.value : this.id),
         timestamp: (timestamp != null ? timestamp.value : this.timestamp),
         kind: (kind != null ? kind.value : this.kind),
         textEvent: (textEvent != null ? textEvent.value : this.textEvent),
