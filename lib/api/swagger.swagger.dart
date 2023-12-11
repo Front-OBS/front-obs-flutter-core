@@ -179,16 +179,85 @@ abstract class Swagger extends ChopperService {
       {@Body() required DevicesFilter? body});
 
   ///
-  Future<chopper.Response<List<ProjectInfo>>> apiProjectListGet() {
+  Future<chopper.Response<PageListOfProblem?>> apiProblemsPost(
+      {required ProblemsRequest? body}) {
     generatedMapping.putIfAbsent(
-        ProjectInfo, () => ProjectInfo.fromJsonFactory);
+        PageListOfProblem, () => PageListOfProblem.fromJsonFactory);
 
-    return _apiProjectListGet();
+    return _apiProblemsPost(body: body);
   }
 
   ///
-  @Get(path: '/api/project/list')
-  Future<chopper.Response<List<ProjectInfo>>> _apiProjectListGet();
+  @Post(
+    path: '/api/problems',
+    optionalBody: true,
+  )
+  Future<chopper.Response<PageListOfProblem?>> _apiProblemsPost(
+      {@Body() required ProblemsRequest? body});
+
+  ///
+  ///@param id
+  Future<chopper.Response<Problem?>> apiProblemsIdGet({required String? id}) {
+    generatedMapping.putIfAbsent(Problem, () => Problem.fromJsonFactory);
+
+    return _apiProblemsIdGet(id: id);
+  }
+
+  ///
+  ///@param id
+  @Get(path: '/api/problems/{id}')
+  Future<chopper.Response<Problem?>> _apiProblemsIdGet(
+      {@Path('id') required String? id});
+
+  ///
+  ///@param id
+  ///@param status
+  Future<chopper.Response> apiProblemsIdPatch({
+    required String? id,
+    bool? status,
+  }) {
+    return _apiProblemsIdPatch(id: id, status: status);
+  }
+
+  ///
+  ///@param id
+  ///@param status
+  @Patch(
+    path: '/api/problems/{id}',
+    optionalBody: true,
+  )
+  Future<chopper.Response> _apiProblemsIdPatch({
+    @Path('id') required String? id,
+    @Query('status') bool? status,
+  });
+
+  ///
+  Future<chopper.Response<List<ProjectInfo>>> apiProjectAllGet() {
+    generatedMapping.putIfAbsent(
+        ProjectInfo, () => ProjectInfo.fromJsonFactory);
+
+    return _apiProjectAllGet();
+  }
+
+  ///
+  @Get(path: '/api/project/all')
+  Future<chopper.Response<List<ProjectInfo>>> _apiProjectAllGet();
+
+  ///
+  ///@param id
+  Future<chopper.Response<ProjectInfo?>> apiProjectIdGet(
+      {required String? id}) {
+    generatedMapping.putIfAbsent(
+        ProjectInfo, () => ProjectInfo.fromJsonFactory);
+
+    return _apiProjectIdGet(id: id);
+  }
+
+  ///
+  ///@param id
+  @Get(path: '/api/project/{id}')
+  Future<chopper.Response<ProjectInfo?>> _apiProjectIdGet(
+      {@Path('id') required String? id});
 
   ///
   Future<chopper.Response<bool>> apiProjectInvitePost(
@@ -415,9 +484,7 @@ extension $ProblemDetailsExtension on ProblemDetails {
 class PageListOfArtefactDTO {
   const PageListOfArtefactDTO({
     required this.items,
-    required this.totalPages,
-    required this.totalItems,
-    required this.page,
+    required this.pagination,
   });
 
   factory PageListOfArtefactDTO.fromJson(Map<String, dynamic> json) =>
@@ -428,12 +495,8 @@ class PageListOfArtefactDTO {
 
   @JsonKey(name: 'items', defaultValue: <ArtefactDTO>[])
   final List<ArtefactDTO> items;
-  @JsonKey(name: 'totalPages')
-  final int totalPages;
-  @JsonKey(name: 'totalItems')
-  final int totalItems;
-  @JsonKey(name: 'page')
-  final int page;
+  @JsonKey(name: 'pagination')
+  final PaginationInfo? pagination;
   static const fromJsonFactory = _$PageListOfArtefactDTOFromJson;
 
   @override
@@ -442,14 +505,9 @@ class PageListOfArtefactDTO {
         (other is PageListOfArtefactDTO &&
             (identical(other.items, items) ||
                 const DeepCollectionEquality().equals(other.items, items)) &&
-            (identical(other.totalPages, totalPages) ||
+            (identical(other.pagination, pagination) ||
                 const DeepCollectionEquality()
-                    .equals(other.totalPages, totalPages)) &&
-            (identical(other.totalItems, totalItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.totalItems, totalItems)) &&
-            (identical(other.page, page) ||
-                const DeepCollectionEquality().equals(other.page, page)));
+                    .equals(other.pagination, pagination)));
   }
 
   @override
@@ -458,32 +516,23 @@ class PageListOfArtefactDTO {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(items) ^
-      const DeepCollectionEquality().hash(totalPages) ^
-      const DeepCollectionEquality().hash(totalItems) ^
-      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(pagination) ^
       runtimeType.hashCode;
 }
 
 extension $PageListOfArtefactDTOExtension on PageListOfArtefactDTO {
   PageListOfArtefactDTO copyWith(
-      {List<ArtefactDTO>? items, int? totalPages, int? totalItems, int? page}) {
+      {List<ArtefactDTO>? items, PaginationInfo? pagination}) {
     return PageListOfArtefactDTO(
-        items: items ?? this.items,
-        totalPages: totalPages ?? this.totalPages,
-        totalItems: totalItems ?? this.totalItems,
-        page: page ?? this.page);
+        items: items ?? this.items, pagination: pagination ?? this.pagination);
   }
 
   PageListOfArtefactDTO copyWithWrapped(
       {Wrapped<List<ArtefactDTO>>? items,
-      Wrapped<int>? totalPages,
-      Wrapped<int>? totalItems,
-      Wrapped<int>? page}) {
+      Wrapped<PaginationInfo?>? pagination}) {
     return PageListOfArtefactDTO(
         items: (items != null ? items.value : this.items),
-        totalPages: (totalPages != null ? totalPages.value : this.totalPages),
-        totalItems: (totalItems != null ? totalItems.value : this.totalItems),
-        page: (page != null ? page.value : this.page));
+        pagination: (pagination != null ? pagination.value : this.pagination));
   }
 }
 
@@ -609,6 +658,72 @@ extension $ArtefactDTOExtension on ArtefactDTO {
         flavor: (flavor != null ? flavor.value : this.flavor),
         version: (version != null ? version.value : this.version),
         build: (build != null ? build.value : this.build));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PaginationInfo {
+  const PaginationInfo({
+    required this.totalPages,
+    required this.totalItems,
+    required this.page,
+  });
+
+  factory PaginationInfo.fromJson(Map<String, dynamic> json) =>
+      _$PaginationInfoFromJson(json);
+
+  static const toJsonFactory = _$PaginationInfoToJson;
+  Map<String, dynamic> toJson() => _$PaginationInfoToJson(this);
+
+  @JsonKey(name: 'totalPages')
+  final int totalPages;
+  @JsonKey(name: 'totalItems')
+  final int totalItems;
+  @JsonKey(name: 'page')
+  final int page;
+  static const fromJsonFactory = _$PaginationInfoFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is PaginationInfo &&
+            (identical(other.totalPages, totalPages) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalPages, totalPages)) &&
+            (identical(other.totalItems, totalItems) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalItems, totalItems)) &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(totalPages) ^
+      const DeepCollectionEquality().hash(totalItems) ^
+      const DeepCollectionEquality().hash(page) ^
+      runtimeType.hashCode;
+}
+
+extension $PaginationInfoExtension on PaginationInfo {
+  PaginationInfo copyWith({int? totalPages, int? totalItems, int? page}) {
+    return PaginationInfo(
+        totalPages: totalPages ?? this.totalPages,
+        totalItems: totalItems ?? this.totalItems,
+        page: page ?? this.page);
+  }
+
+  PaginationInfo copyWithWrapped(
+      {Wrapped<int>? totalPages,
+      Wrapped<int>? totalItems,
+      Wrapped<int>? page}) {
+    return PaginationInfo(
+        totalPages: (totalPages != null ? totalPages.value : this.totalPages),
+        totalItems: (totalItems != null ? totalItems.value : this.totalItems),
+        page: (page != null ? page.value : this.page));
   }
 }
 
@@ -904,9 +1019,7 @@ extension $RegisterRequestExtension on RegisterRequest {
 class PageListOfDeviceSummary {
   const PageListOfDeviceSummary({
     required this.items,
-    required this.totalPages,
-    required this.totalItems,
-    required this.page,
+    required this.pagination,
   });
 
   factory PageListOfDeviceSummary.fromJson(Map<String, dynamic> json) =>
@@ -917,12 +1030,8 @@ class PageListOfDeviceSummary {
 
   @JsonKey(name: 'items', defaultValue: <DeviceSummary>[])
   final List<DeviceSummary> items;
-  @JsonKey(name: 'totalPages')
-  final int totalPages;
-  @JsonKey(name: 'totalItems')
-  final int totalItems;
-  @JsonKey(name: 'page')
-  final int page;
+  @JsonKey(name: 'pagination')
+  final PaginationInfo? pagination;
   static const fromJsonFactory = _$PageListOfDeviceSummaryFromJson;
 
   @override
@@ -931,14 +1040,9 @@ class PageListOfDeviceSummary {
         (other is PageListOfDeviceSummary &&
             (identical(other.items, items) ||
                 const DeepCollectionEquality().equals(other.items, items)) &&
-            (identical(other.totalPages, totalPages) ||
+            (identical(other.pagination, pagination) ||
                 const DeepCollectionEquality()
-                    .equals(other.totalPages, totalPages)) &&
-            (identical(other.totalItems, totalItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.totalItems, totalItems)) &&
-            (identical(other.page, page) ||
-                const DeepCollectionEquality().equals(other.page, page)));
+                    .equals(other.pagination, pagination)));
   }
 
   @override
@@ -947,35 +1051,23 @@ class PageListOfDeviceSummary {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(items) ^
-      const DeepCollectionEquality().hash(totalPages) ^
-      const DeepCollectionEquality().hash(totalItems) ^
-      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(pagination) ^
       runtimeType.hashCode;
 }
 
 extension $PageListOfDeviceSummaryExtension on PageListOfDeviceSummary {
   PageListOfDeviceSummary copyWith(
-      {List<DeviceSummary>? items,
-      int? totalPages,
-      int? totalItems,
-      int? page}) {
+      {List<DeviceSummary>? items, PaginationInfo? pagination}) {
     return PageListOfDeviceSummary(
-        items: items ?? this.items,
-        totalPages: totalPages ?? this.totalPages,
-        totalItems: totalItems ?? this.totalItems,
-        page: page ?? this.page);
+        items: items ?? this.items, pagination: pagination ?? this.pagination);
   }
 
   PageListOfDeviceSummary copyWithWrapped(
       {Wrapped<List<DeviceSummary>>? items,
-      Wrapped<int>? totalPages,
-      Wrapped<int>? totalItems,
-      Wrapped<int>? page}) {
+      Wrapped<PaginationInfo?>? pagination}) {
     return PageListOfDeviceSummary(
         items: (items != null ? items.value : this.items),
-        totalPages: (totalPages != null ? totalPages.value : this.totalPages),
-        totalItems: (totalItems != null ? totalItems.value : this.totalItems),
-        page: (page != null ? page.value : this.page));
+        pagination: (pagination != null ? pagination.value : this.pagination));
   }
 }
 
@@ -1172,6 +1264,329 @@ extension $DevicesFilterExtension on DevicesFilter {
         associatedAccountEmail: (associatedAccountEmail != null
             ? associatedAccountEmail.value
             : this.associatedAccountEmail));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class PageListOfProblem {
+  const PageListOfProblem({
+    required this.items,
+    required this.pagination,
+  });
+
+  factory PageListOfProblem.fromJson(Map<String, dynamic> json) =>
+      _$PageListOfProblemFromJson(json);
+
+  static const toJsonFactory = _$PageListOfProblemToJson;
+  Map<String, dynamic> toJson() => _$PageListOfProblemToJson(this);
+
+  @JsonKey(name: 'items', defaultValue: <Problem>[])
+  final List<Problem> items;
+  @JsonKey(name: 'pagination')
+  final PaginationInfo? pagination;
+  static const fromJsonFactory = _$PageListOfProblemFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is PageListOfProblem &&
+            (identical(other.items, items) ||
+                const DeepCollectionEquality().equals(other.items, items)) &&
+            (identical(other.pagination, pagination) ||
+                const DeepCollectionEquality()
+                    .equals(other.pagination, pagination)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(items) ^
+      const DeepCollectionEquality().hash(pagination) ^
+      runtimeType.hashCode;
+}
+
+extension $PageListOfProblemExtension on PageListOfProblem {
+  PageListOfProblem copyWith(
+      {List<Problem>? items, PaginationInfo? pagination}) {
+    return PageListOfProblem(
+        items: items ?? this.items, pagination: pagination ?? this.pagination);
+  }
+
+  PageListOfProblem copyWithWrapped(
+      {Wrapped<List<Problem>>? items, Wrapped<PaginationInfo?>? pagination}) {
+    return PageListOfProblem(
+        items: (items != null ? items.value : this.items),
+        pagination: (pagination != null ? pagination.value : this.pagination));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class Problem {
+  const Problem({
+    required this.id,
+    required this.error,
+    required this.isSolved,
+    required this.lastOccurance,
+    required this.totalOccurances,
+    required this.affectedDevices,
+    required this.traces,
+  });
+
+  factory Problem.fromJson(Map<String, dynamic> json) =>
+      _$ProblemFromJson(json);
+
+  static const toJsonFactory = _$ProblemToJson;
+  Map<String, dynamic> toJson() => _$ProblemToJson(this);
+
+  @JsonKey(name: 'id')
+  final String id;
+  @JsonKey(name: 'error')
+  final String error;
+  @JsonKey(name: 'isSolved')
+  final bool isSolved;
+  @JsonKey(name: 'lastOccurance')
+  final DateTime lastOccurance;
+  @JsonKey(name: 'totalOccurances')
+  final int totalOccurances;
+  @JsonKey(name: 'affectedDevices')
+  final int affectedDevices;
+  @JsonKey(name: 'traces', defaultValue: <TraceEntry>[])
+  final List<TraceEntry> traces;
+  static const fromJsonFactory = _$ProblemFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is Problem &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)) &&
+            (identical(other.isSolved, isSolved) ||
+                const DeepCollectionEquality()
+                    .equals(other.isSolved, isSolved)) &&
+            (identical(other.lastOccurance, lastOccurance) ||
+                const DeepCollectionEquality()
+                    .equals(other.lastOccurance, lastOccurance)) &&
+            (identical(other.totalOccurances, totalOccurances) ||
+                const DeepCollectionEquality()
+                    .equals(other.totalOccurances, totalOccurances)) &&
+            (identical(other.affectedDevices, affectedDevices) ||
+                const DeepCollectionEquality()
+                    .equals(other.affectedDevices, affectedDevices)) &&
+            (identical(other.traces, traces) ||
+                const DeepCollectionEquality().equals(other.traces, traces)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(error) ^
+      const DeepCollectionEquality().hash(isSolved) ^
+      const DeepCollectionEquality().hash(lastOccurance) ^
+      const DeepCollectionEquality().hash(totalOccurances) ^
+      const DeepCollectionEquality().hash(affectedDevices) ^
+      const DeepCollectionEquality().hash(traces) ^
+      runtimeType.hashCode;
+}
+
+extension $ProblemExtension on Problem {
+  Problem copyWith(
+      {String? id,
+      String? error,
+      bool? isSolved,
+      DateTime? lastOccurance,
+      int? totalOccurances,
+      int? affectedDevices,
+      List<TraceEntry>? traces}) {
+    return Problem(
+        id: id ?? this.id,
+        error: error ?? this.error,
+        isSolved: isSolved ?? this.isSolved,
+        lastOccurance: lastOccurance ?? this.lastOccurance,
+        totalOccurances: totalOccurances ?? this.totalOccurances,
+        affectedDevices: affectedDevices ?? this.affectedDevices,
+        traces: traces ?? this.traces);
+  }
+
+  Problem copyWithWrapped(
+      {Wrapped<String>? id,
+      Wrapped<String>? error,
+      Wrapped<bool>? isSolved,
+      Wrapped<DateTime>? lastOccurance,
+      Wrapped<int>? totalOccurances,
+      Wrapped<int>? affectedDevices,
+      Wrapped<List<TraceEntry>>? traces}) {
+    return Problem(
+        id: (id != null ? id.value : this.id),
+        error: (error != null ? error.value : this.error),
+        isSolved: (isSolved != null ? isSolved.value : this.isSolved),
+        lastOccurance:
+            (lastOccurance != null ? lastOccurance.value : this.lastOccurance),
+        totalOccurances: (totalOccurances != null
+            ? totalOccurances.value
+            : this.totalOccurances),
+        affectedDevices: (affectedDevices != null
+            ? affectedDevices.value
+            : this.affectedDevices),
+        traces: (traces != null ? traces.value : this.traces));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class TraceEntry {
+  const TraceEntry({
+    required this.line,
+    required this.column,
+    required this.function,
+    required this.path,
+  });
+
+  factory TraceEntry.fromJson(Map<String, dynamic> json) =>
+      _$TraceEntryFromJson(json);
+
+  static const toJsonFactory = _$TraceEntryToJson;
+  Map<String, dynamic> toJson() => _$TraceEntryToJson(this);
+
+  @JsonKey(name: 'line')
+  final int line;
+  @JsonKey(name: 'column')
+  final int column;
+  @JsonKey(name: 'function')
+  final String function;
+  @JsonKey(name: 'path')
+  final String path;
+  static const fromJsonFactory = _$TraceEntryFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is TraceEntry &&
+            (identical(other.line, line) ||
+                const DeepCollectionEquality().equals(other.line, line)) &&
+            (identical(other.column, column) ||
+                const DeepCollectionEquality().equals(other.column, column)) &&
+            (identical(other.function, function) ||
+                const DeepCollectionEquality()
+                    .equals(other.function, function)) &&
+            (identical(other.path, path) ||
+                const DeepCollectionEquality().equals(other.path, path)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(line) ^
+      const DeepCollectionEquality().hash(column) ^
+      const DeepCollectionEquality().hash(function) ^
+      const DeepCollectionEquality().hash(path) ^
+      runtimeType.hashCode;
+}
+
+extension $TraceEntryExtension on TraceEntry {
+  TraceEntry copyWith(
+      {int? line, int? column, String? function, String? path}) {
+    return TraceEntry(
+        line: line ?? this.line,
+        column: column ?? this.column,
+        function: function ?? this.function,
+        path: path ?? this.path);
+  }
+
+  TraceEntry copyWithWrapped(
+      {Wrapped<int>? line,
+      Wrapped<int>? column,
+      Wrapped<String>? function,
+      Wrapped<String>? path}) {
+    return TraceEntry(
+        line: (line != null ? line.value : this.line),
+        column: (column != null ? column.value : this.column),
+        function: (function != null ? function.value : this.function),
+        path: (path != null ? path.value : this.path));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ProblemsRequest {
+  const ProblemsRequest({
+    this.page,
+    this.pageSize,
+    this.projectId,
+    this.isSolved,
+  });
+
+  factory ProblemsRequest.fromJson(Map<String, dynamic> json) =>
+      _$ProblemsRequestFromJson(json);
+
+  static const toJsonFactory = _$ProblemsRequestToJson;
+  Map<String, dynamic> toJson() => _$ProblemsRequestToJson(this);
+
+  @JsonKey(name: 'page')
+  final int? page;
+  @JsonKey(name: 'pageSize')
+  final int? pageSize;
+  @JsonKey(name: 'projectId')
+  final String? projectId;
+  @JsonKey(name: 'isSolved')
+  final bool? isSolved;
+  static const fromJsonFactory = _$ProblemsRequestFromJson;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ProblemsRequest &&
+            (identical(other.page, page) ||
+                const DeepCollectionEquality().equals(other.page, page)) &&
+            (identical(other.pageSize, pageSize) ||
+                const DeepCollectionEquality()
+                    .equals(other.pageSize, pageSize)) &&
+            (identical(other.projectId, projectId) ||
+                const DeepCollectionEquality()
+                    .equals(other.projectId, projectId)) &&
+            (identical(other.isSolved, isSolved) ||
+                const DeepCollectionEquality()
+                    .equals(other.isSolved, isSolved)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(pageSize) ^
+      const DeepCollectionEquality().hash(projectId) ^
+      const DeepCollectionEquality().hash(isSolved) ^
+      runtimeType.hashCode;
+}
+
+extension $ProblemsRequestExtension on ProblemsRequest {
+  ProblemsRequest copyWith(
+      {int? page, int? pageSize, String? projectId, bool? isSolved}) {
+    return ProblemsRequest(
+        page: page ?? this.page,
+        pageSize: pageSize ?? this.pageSize,
+        projectId: projectId ?? this.projectId,
+        isSolved: isSolved ?? this.isSolved);
+  }
+
+  ProblemsRequest copyWithWrapped(
+      {Wrapped<int?>? page,
+      Wrapped<int?>? pageSize,
+      Wrapped<String?>? projectId,
+      Wrapped<bool?>? isSolved}) {
+    return ProblemsRequest(
+        page: (page != null ? page.value : this.page),
+        pageSize: (pageSize != null ? pageSize.value : this.pageSize),
+        projectId: (projectId != null ? projectId.value : this.projectId),
+        isSolved: (isSolved != null ? isSolved.value : this.isSolved));
   }
 }
 
@@ -1401,9 +1816,7 @@ extension $GetProjectUsersRequestExtension on GetProjectUsersRequest {
 class PageListOfSessionSummary {
   const PageListOfSessionSummary({
     required this.items,
-    required this.totalPages,
-    required this.totalItems,
-    required this.page,
+    required this.pagination,
   });
 
   factory PageListOfSessionSummary.fromJson(Map<String, dynamic> json) =>
@@ -1414,12 +1827,8 @@ class PageListOfSessionSummary {
 
   @JsonKey(name: 'items', defaultValue: <SessionSummary>[])
   final List<SessionSummary> items;
-  @JsonKey(name: 'totalPages')
-  final int totalPages;
-  @JsonKey(name: 'totalItems')
-  final int totalItems;
-  @JsonKey(name: 'page')
-  final int page;
+  @JsonKey(name: 'pagination')
+  final PaginationInfo? pagination;
   static const fromJsonFactory = _$PageListOfSessionSummaryFromJson;
 
   @override
@@ -1428,14 +1837,9 @@ class PageListOfSessionSummary {
         (other is PageListOfSessionSummary &&
             (identical(other.items, items) ||
                 const DeepCollectionEquality().equals(other.items, items)) &&
-            (identical(other.totalPages, totalPages) ||
+            (identical(other.pagination, pagination) ||
                 const DeepCollectionEquality()
-                    .equals(other.totalPages, totalPages)) &&
-            (identical(other.totalItems, totalItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.totalItems, totalItems)) &&
-            (identical(other.page, page) ||
-                const DeepCollectionEquality().equals(other.page, page)));
+                    .equals(other.pagination, pagination)));
   }
 
   @override
@@ -1444,35 +1848,23 @@ class PageListOfSessionSummary {
   @override
   int get hashCode =>
       const DeepCollectionEquality().hash(items) ^
-      const DeepCollectionEquality().hash(totalPages) ^
-      const DeepCollectionEquality().hash(totalItems) ^
-      const DeepCollectionEquality().hash(page) ^
+      const DeepCollectionEquality().hash(pagination) ^
       runtimeType.hashCode;
 }
 
 extension $PageListOfSessionSummaryExtension on PageListOfSessionSummary {
   PageListOfSessionSummary copyWith(
-      {List<SessionSummary>? items,
-      int? totalPages,
-      int? totalItems,
-      int? page}) {
+      {List<SessionSummary>? items, PaginationInfo? pagination}) {
     return PageListOfSessionSummary(
-        items: items ?? this.items,
-        totalPages: totalPages ?? this.totalPages,
-        totalItems: totalItems ?? this.totalItems,
-        page: page ?? this.page);
+        items: items ?? this.items, pagination: pagination ?? this.pagination);
   }
 
   PageListOfSessionSummary copyWithWrapped(
       {Wrapped<List<SessionSummary>>? items,
-      Wrapped<int>? totalPages,
-      Wrapped<int>? totalItems,
-      Wrapped<int>? page}) {
+      Wrapped<PaginationInfo?>? pagination}) {
     return PageListOfSessionSummary(
         items: (items != null ? items.value : this.items),
-        totalPages: (totalPages != null ? totalPages.value : this.totalPages),
-        totalItems: (totalItems != null ? totalItems.value : this.totalItems),
-        page: (page != null ? page.value : this.page));
+        pagination: (pagination != null ? pagination.value : this.pagination));
   }
 }
 
@@ -1719,9 +2111,9 @@ class DeviceInfo {
   )
   final enums.DeviceOS? os;
   @JsonKey(name: 'androidInfo')
-  final dynamic androidInfo;
+  final AndroidInfo? androidInfo;
   @JsonKey(name: 'iosInfo')
-  final dynamic iosInfo;
+  final IOSInfo? iosInfo;
   static const fromJsonFactory = _$DeviceInfoFromJson;
 
   @override
@@ -1755,8 +2147,8 @@ extension $DeviceInfoExtension on DeviceInfo {
   DeviceInfo copyWith(
       {String? code,
       enums.DeviceOS? os,
-      dynamic androidInfo,
-      dynamic iosInfo}) {
+      AndroidInfo? androidInfo,
+      IOSInfo? iosInfo}) {
     return DeviceInfo(
         code: code ?? this.code,
         os: os ?? this.os,
@@ -1767,8 +2159,8 @@ extension $DeviceInfoExtension on DeviceInfo {
   DeviceInfo copyWithWrapped(
       {Wrapped<String>? code,
       Wrapped<enums.DeviceOS?>? os,
-      Wrapped<dynamic>? androidInfo,
-      Wrapped<dynamic>? iosInfo}) {
+      Wrapped<AndroidInfo?>? androidInfo,
+      Wrapped<IOSInfo?>? iosInfo}) {
     return DeviceInfo(
         code: (code != null ? code.value : this.code),
         os: (os != null ? os.value : this.os),
@@ -2171,13 +2563,13 @@ class DisplayMetrics {
   Map<String, dynamic> toJson() => _$DisplayMetricsToJson(this);
 
   @JsonKey(name: 'widthPx')
-  final double widthPx;
+  final int widthPx;
   @JsonKey(name: 'heightPx')
-  final double heightPx;
+  final int heightPx;
   @JsonKey(name: 'xDpi')
-  final double xDpi;
+  final int xDpi;
   @JsonKey(name: 'yDpi')
-  final double yDpi;
+  final int yDpi;
   static const fromJsonFactory = _$DisplayMetricsFromJson;
 
   @override
@@ -2209,8 +2601,7 @@ class DisplayMetrics {
 }
 
 extension $DisplayMetricsExtension on DisplayMetrics {
-  DisplayMetrics copyWith(
-      {double? widthPx, double? heightPx, double? xDpi, double? yDpi}) {
+  DisplayMetrics copyWith({int? widthPx, int? heightPx, int? xDpi, int? yDpi}) {
     return DisplayMetrics(
         widthPx: widthPx ?? this.widthPx,
         heightPx: heightPx ?? this.heightPx,
@@ -2219,10 +2610,10 @@ extension $DisplayMetricsExtension on DisplayMetrics {
   }
 
   DisplayMetrics copyWithWrapped(
-      {Wrapped<double>? widthPx,
-      Wrapped<double>? heightPx,
-      Wrapped<double>? xDpi,
-      Wrapped<double>? yDpi}) {
+      {Wrapped<int>? widthPx,
+      Wrapped<int>? heightPx,
+      Wrapped<int>? xDpi,
+      Wrapped<int>? yDpi}) {
     return DisplayMetrics(
         widthPx: (widthPx != null ? widthPx.value : this.widthPx),
         heightPx: (heightPx != null ? heightPx.value : this.heightPx),
@@ -3149,81 +3540,6 @@ extension $ExceptionEventExtension on ExceptionEvent {
         scope: (scope != null ? scope.value : this.scope),
         exception: (exception != null ? exception.value : this.exception),
         traces: (traces != null ? traces.value : this.traces));
-  }
-}
-
-@JsonSerializable(explicitToJson: true)
-class TraceEntry {
-  const TraceEntry({
-    required this.line,
-    required this.column,
-    required this.function,
-    required this.path,
-  });
-
-  factory TraceEntry.fromJson(Map<String, dynamic> json) =>
-      _$TraceEntryFromJson(json);
-
-  static const toJsonFactory = _$TraceEntryToJson;
-  Map<String, dynamic> toJson() => _$TraceEntryToJson(this);
-
-  @JsonKey(name: 'line')
-  final int line;
-  @JsonKey(name: 'column')
-  final int column;
-  @JsonKey(name: 'function')
-  final String function;
-  @JsonKey(name: 'path')
-  final String path;
-  static const fromJsonFactory = _$TraceEntryFromJson;
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is TraceEntry &&
-            (identical(other.line, line) ||
-                const DeepCollectionEquality().equals(other.line, line)) &&
-            (identical(other.column, column) ||
-                const DeepCollectionEquality().equals(other.column, column)) &&
-            (identical(other.function, function) ||
-                const DeepCollectionEquality()
-                    .equals(other.function, function)) &&
-            (identical(other.path, path) ||
-                const DeepCollectionEquality().equals(other.path, path)));
-  }
-
-  @override
-  String toString() => jsonEncode(this);
-
-  @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(line) ^
-      const DeepCollectionEquality().hash(column) ^
-      const DeepCollectionEquality().hash(function) ^
-      const DeepCollectionEquality().hash(path) ^
-      runtimeType.hashCode;
-}
-
-extension $TraceEntryExtension on TraceEntry {
-  TraceEntry copyWith(
-      {int? line, int? column, String? function, String? path}) {
-    return TraceEntry(
-        line: line ?? this.line,
-        column: column ?? this.column,
-        function: function ?? this.function,
-        path: path ?? this.path);
-  }
-
-  TraceEntry copyWithWrapped(
-      {Wrapped<int>? line,
-      Wrapped<int>? column,
-      Wrapped<String>? function,
-      Wrapped<String>? path}) {
-    return TraceEntry(
-        line: (line != null ? line.value : this.line),
-        column: (column != null ? column.value : this.column),
-        function: (function != null ? function.value : this.function),
-        path: (path != null ? path.value : this.path));
   }
 }
 

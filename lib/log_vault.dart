@@ -61,7 +61,7 @@ class LogVault extends ChangeNotifier {
 
   static AndroidInfo? android;
   static IOSInfo? ios;
-  static late BundleInfo bundle;
+  static BundleInfo bundle = BundleInfo();
 
   static final processBatchController = StreamController<
       (List<RegisteredEvent>, Map<String, Uint8List?>)>.broadcast();
@@ -75,8 +75,8 @@ class LogVault extends ChangeNotifier {
     doLiveStreams = liveStreams;
     client = Swagger.create(
         baseUrl: Uri.parse(
-      //"http://localhost:8080",
-          "https://oberon-lab.ru",
+      "http://10.0.2.2:8080",
+      //"https://oberon-lab.ru",
     ));
     deviceCode = await getDeviceCode();
 
@@ -121,6 +121,9 @@ class LogVault extends ChangeNotifier {
         host: deviceInfo.host,
         manifacturer: deviceInfo.manufacturer,
         androidVersion: AndroidVersion(
+          previewSdkInt: deviceInfo.version.previewSdkInt,
+          baseOS: deviceInfo.version.baseOS,
+          securityPatch: deviceInfo.version.securityPatch,
           codeName: deviceInfo.version.codename,
           incremental: deviceInfo.version.incremental,
           release: deviceInfo.version.release,
@@ -131,10 +134,10 @@ class LogVault extends ChangeNotifier {
         brand: deviceInfo.brand,
         device: deviceInfo.device,
         display: DisplayMetrics(
-          widthPx: deviceInfo.displayMetrics.widthPx,
-          heightPx: deviceInfo.displayMetrics.heightPx,
-          xDpi: deviceInfo.displayMetrics.xDpi,
-          yDpi: deviceInfo.displayMetrics.yDpi,
+          widthPx: deviceInfo.displayMetrics.widthPx.toInt(),
+          heightPx: deviceInfo.displayMetrics.heightPx.toInt(),
+          xDpi: deviceInfo.displayMetrics.xDpi.toInt(),
+          yDpi: deviceInfo.displayMetrics.yDpi.toInt(),
         ),
         fingerprint: deviceInfo.fingerprint,
         hardware: deviceInfo.hardware,
@@ -307,9 +310,11 @@ class LogVault extends ChangeNotifier {
 
   static bool consuming = false;
 
+  static Uuid uid = Uuid();
+
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
     final ts = DateTime.now().millisecondsSinceEpoch;
-    final id = Uuid().v1();
+    final id = uid.v1();
     return entry.map(
       scrollEvent: (value) => RegisteredEvent(
         id: id,

@@ -31,18 +31,16 @@ PageListOfArtefactDTO _$PageListOfArtefactDTOFromJson(
               ?.map((e) => ArtefactDTO.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      totalPages: json['totalPages'] as int,
-      totalItems: json['totalItems'] as int,
-      page: json['page'] as int,
+      pagination: json['pagination'] == null
+          ? null
+          : PaginationInfo.fromJson(json['pagination'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PageListOfArtefactDTOToJson(
         PageListOfArtefactDTO instance) =>
     <String, dynamic>{
       'items': instance.items.map((e) => e.toJson()).toList(),
-      'totalPages': instance.totalPages,
-      'totalItems': instance.totalItems,
-      'page': instance.page,
+      'pagination': instance.pagination?.toJson(),
     };
 
 ArtefactDTO _$ArtefactDTOFromJson(Map<String, dynamic> json) => ArtefactDTO(
@@ -66,6 +64,20 @@ Map<String, dynamic> _$ArtefactDTOToJson(ArtefactDTO instance) =>
       'flavor': instance.flavor,
       'version': instance.version,
       'build': instance.build,
+    };
+
+PaginationInfo _$PaginationInfoFromJson(Map<String, dynamic> json) =>
+    PaginationInfo(
+      totalPages: json['totalPages'] as int,
+      totalItems: json['totalItems'] as int,
+      page: json['page'] as int,
+    );
+
+Map<String, dynamic> _$PaginationInfoToJson(PaginationInfo instance) =>
+    <String, dynamic>{
+      'totalPages': instance.totalPages,
+      'totalItems': instance.totalItems,
+      'page': instance.page,
     };
 
 ArtefactsListRequest _$ArtefactsListRequestFromJson(
@@ -144,18 +156,16 @@ PageListOfDeviceSummary _$PageListOfDeviceSummaryFromJson(
               ?.map((e) => DeviceSummary.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      totalPages: json['totalPages'] as int,
-      totalItems: json['totalItems'] as int,
-      page: json['page'] as int,
+      pagination: json['pagination'] == null
+          ? null
+          : PaginationInfo.fromJson(json['pagination'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PageListOfDeviceSummaryToJson(
         PageListOfDeviceSummary instance) =>
     <String, dynamic>{
       'items': instance.items.map((e) => e.toJson()).toList(),
-      'totalPages': instance.totalPages,
-      'totalItems': instance.totalItems,
-      'page': instance.page,
+      'pagination': instance.pagination?.toJson(),
     };
 
 DeviceSummary _$DeviceSummaryFromJson(Map<String, dynamic> json) =>
@@ -192,6 +202,77 @@ Map<String, dynamic> _$DevicesFilterToJson(DevicesFilter instance) =>
       'deviceId': instance.deviceId,
       'associatedAccountPhone': instance.associatedAccountPhone,
       'associatedAccountEmail': instance.associatedAccountEmail,
+    };
+
+PageListOfProblem _$PageListOfProblemFromJson(Map<String, dynamic> json) =>
+    PageListOfProblem(
+      items: (json['items'] as List<dynamic>?)
+              ?.map((e) => Problem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      pagination: json['pagination'] == null
+          ? null
+          : PaginationInfo.fromJson(json['pagination'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$PageListOfProblemToJson(PageListOfProblem instance) =>
+    <String, dynamic>{
+      'items': instance.items.map((e) => e.toJson()).toList(),
+      'pagination': instance.pagination?.toJson(),
+    };
+
+Problem _$ProblemFromJson(Map<String, dynamic> json) => Problem(
+      id: json['id'] as String,
+      error: json['error'] as String,
+      isSolved: json['isSolved'] as bool,
+      lastOccurance: DateTime.parse(json['lastOccurance'] as String),
+      totalOccurances: json['totalOccurances'] as int,
+      affectedDevices: json['affectedDevices'] as int,
+      traces: (json['traces'] as List<dynamic>?)
+              ?.map((e) => TraceEntry.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$ProblemToJson(Problem instance) => <String, dynamic>{
+      'id': instance.id,
+      'error': instance.error,
+      'isSolved': instance.isSolved,
+      'lastOccurance': instance.lastOccurance.toIso8601String(),
+      'totalOccurances': instance.totalOccurances,
+      'affectedDevices': instance.affectedDevices,
+      'traces': instance.traces.map((e) => e.toJson()).toList(),
+    };
+
+TraceEntry _$TraceEntryFromJson(Map<String, dynamic> json) => TraceEntry(
+      line: json['line'] as int,
+      column: json['column'] as int,
+      function: json['function'] as String,
+      path: json['path'] as String,
+    );
+
+Map<String, dynamic> _$TraceEntryToJson(TraceEntry instance) =>
+    <String, dynamic>{
+      'line': instance.line,
+      'column': instance.column,
+      'function': instance.function,
+      'path': instance.path,
+    };
+
+ProblemsRequest _$ProblemsRequestFromJson(Map<String, dynamic> json) =>
+    ProblemsRequest(
+      page: json['page'] as int?,
+      pageSize: json['pageSize'] as int?,
+      projectId: json['projectId'] as String?,
+      isSolved: json['isSolved'] as bool?,
+    );
+
+Map<String, dynamic> _$ProblemsRequestToJson(ProblemsRequest instance) =>
+    <String, dynamic>{
+      'page': instance.page,
+      'pageSize': instance.pageSize,
+      'projectId': instance.projectId,
+      'isSolved': instance.isSolved,
     };
 
 ProjectInfo _$ProjectInfoFromJson(Map<String, dynamic> json) => ProjectInfo(
@@ -256,18 +337,16 @@ PageListOfSessionSummary _$PageListOfSessionSummaryFromJson(
               ?.map((e) => SessionSummary.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      totalPages: json['totalPages'] as int,
-      totalItems: json['totalItems'] as int,
-      page: json['page'] as int,
+      pagination: json['pagination'] == null
+          ? null
+          : PaginationInfo.fromJson(json['pagination'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PageListOfSessionSummaryToJson(
         PageListOfSessionSummary instance) =>
     <String, dynamic>{
       'items': instance.items.map((e) => e.toJson()).toList(),
-      'totalPages': instance.totalPages,
-      'totalItems': instance.totalItems,
-      'page': instance.page,
+      'pagination': instance.pagination?.toJson(),
     };
 
 SessionSummary _$SessionSummaryFromJson(Map<String, dynamic> json) =>
@@ -318,16 +397,20 @@ Map<String, dynamic> _$SessionFilterToJson(SessionFilter instance) =>
 DeviceInfo _$DeviceInfoFromJson(Map<String, dynamic> json) => DeviceInfo(
       code: json['code'] as String,
       os: deviceOSNullableFromJson(json['os']),
-      androidInfo: json['androidInfo'],
-      iosInfo: json['iosInfo'],
+      androidInfo: json['androidInfo'] == null
+          ? null
+          : AndroidInfo.fromJson(json['androidInfo'] as Map<String, dynamic>),
+      iosInfo: json['iosInfo'] == null
+          ? null
+          : IOSInfo.fromJson(json['iosInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DeviceInfoToJson(DeviceInfo instance) =>
     <String, dynamic>{
       'code': instance.code,
       'os': deviceOSNullableToJson(instance.os),
-      'androidInfo': instance.androidInfo,
-      'iosInfo': instance.iosInfo,
+      'androidInfo': instance.androidInfo?.toJson(),
+      'iosInfo': instance.iosInfo?.toJson(),
     };
 
 AndroidInfo _$AndroidInfoFromJson(Map<String, dynamic> json) => AndroidInfo(
@@ -418,10 +501,10 @@ Map<String, dynamic> _$AndroidVersionToJson(AndroidVersion instance) =>
 
 DisplayMetrics _$DisplayMetricsFromJson(Map<String, dynamic> json) =>
     DisplayMetrics(
-      widthPx: (json['widthPx'] as num).toDouble(),
-      heightPx: (json['heightPx'] as num).toDouble(),
-      xDpi: (json['xDpi'] as num).toDouble(),
-      yDpi: (json['yDpi'] as num).toDouble(),
+      widthPx: json['widthPx'] as int,
+      heightPx: json['heightPx'] as int,
+      xDpi: json['xDpi'] as int,
+      yDpi: json['yDpi'] as int,
     );
 
 Map<String, dynamic> _$DisplayMetricsToJson(DisplayMetrics instance) =>
@@ -651,21 +734,6 @@ Map<String, dynamic> _$ExceptionEventToJson(ExceptionEvent instance) =>
       'scope': instance.scope,
       'exception': instance.exception,
       'traces': instance.traces.map((e) => e.toJson()).toList(),
-    };
-
-TraceEntry _$TraceEntryFromJson(Map<String, dynamic> json) => TraceEntry(
-      line: json['line'] as int,
-      column: json['column'] as int,
-      function: json['function'] as String,
-      path: json['path'] as String,
-    );
-
-Map<String, dynamic> _$TraceEntryToJson(TraceEntry instance) =>
-    <String, dynamic>{
-      'line': instance.line,
-      'column': instance.column,
-      'function': instance.function,
-      'path': instance.path,
     };
 
 NetworkEvent _$NetworkEventFromJson(Map<String, dynamic> json) => NetworkEvent(

@@ -284,7 +284,121 @@
         }
       }
     },
-    "/api/project/list": {
+    "/api/problems": {
+      "post": {
+        "tags": [
+          "Problems"
+        ],
+        "operationId": "Problems_GetProblems",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProblemsRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageListOfProblem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/problems/{id}": {
+      "get": {
+        "tags": [
+          "Problems"
+        ],
+        "operationId": "Problems_GetProblem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Problems"
+        ],
+        "operationId": "Problems_UpdateProblem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "status",
+            "x-originalName": "solved",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/project/all": {
       "get": {
         "tags": [
           "ProjectsService"
@@ -305,6 +419,44 @@
             }
           },
           "401": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/project/{id}": {
+      "get": {
+        "tags": [
+          "ProjectsService"
+        ],
+        "operationId": "ProjectsService_GetById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
             "description": ""
           }
         }
@@ -648,9 +800,7 @@
         "additionalProperties": false,
         "required": [
           "items",
-          "totalPages",
-          "totalItems",
-          "page"
+          "pagination"
         ],
         "properties": {
           "items": {
@@ -659,17 +809,8 @@
               "$ref": "#/components/schemas/ArtefactDTO"
             }
           },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalItems": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "page": {
-            "type": "integer",
-            "format": "int32"
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationInfo"
           }
         }
       },
@@ -715,6 +856,29 @@
             "minLength": 1
           },
           "build": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PaginationInfo": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "totalPages",
+          "totalItems",
+          "page"
+        ],
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
             "type": "integer",
             "format": "int32"
           }
@@ -814,9 +978,7 @@
         "additionalProperties": false,
         "required": [
           "items",
-          "totalPages",
-          "totalItems",
-          "page"
+          "pagination"
         ],
         "properties": {
           "items": {
@@ -825,17 +987,8 @@
               "$ref": "#/components/schemas/DeviceSummary"
             }
           },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalItems": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "page": {
-            "type": "integer",
-            "format": "int32"
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationInfo"
           }
         }
       },
@@ -895,6 +1048,121 @@
           },
           "associatedAccountEmail": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PageListOfProblem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "pagination"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationInfo"
+          }
+        }
+      },
+      "Problem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "error",
+          "isSolved",
+          "lastOccurance",
+          "totalOccurances",
+          "affectedDevices",
+          "traces"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid",
+            "minLength": 1
+          },
+          "error": {
+            "type": "string",
+            "minLength": 1
+          },
+          "isSolved": {
+            "type": "boolean"
+          },
+          "lastOccurance": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          },
+          "totalOccurances": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "affectedDevices": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "traces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TraceEntry"
+            }
+          }
+        }
+      },
+      "TraceEntry": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "line",
+          "column",
+          "function",
+          "path"
+        ],
+        "properties": {
+          "line": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "column": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "function": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "ProblemsRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "isSolved": {
+            "type": "boolean",
             "nullable": true
           }
         }
@@ -974,9 +1242,7 @@
         "additionalProperties": false,
         "required": [
           "items",
-          "totalPages",
-          "totalItems",
-          "page"
+          "pagination"
         ],
         "properties": {
           "items": {
@@ -985,17 +1251,8 @@
               "$ref": "#/components/schemas/SessionSummary"
             }
           },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalItems": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "page": {
-            "type": "integer",
-            "format": "int32"
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationInfo"
           }
         }
       },
@@ -1093,20 +1350,10 @@
             "$ref": "#/components/schemas/DeviceOS"
           },
           "androidInfo": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/AndroidInfo"
-              }
-            ]
+            "$ref": "#/components/schemas/AndroidInfo"
           },
           "iosInfo": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/IOSInfo"
-              }
-            ]
+            "$ref": "#/components/schemas/IOSInfo"
           }
         }
       },
@@ -1246,8 +1493,7 @@
         ],
         "properties": {
           "baseOS": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "codeName": {
             "type": "string",
@@ -1259,8 +1505,7 @@
           },
           "previewSdkInt": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "release": {
             "type": "string",
@@ -1271,8 +1516,7 @@
             "format": "int32"
           },
           "securityPatch": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -1287,20 +1531,20 @@
         ],
         "properties": {
           "widthPx": {
-            "type": "number",
-            "format": "float"
+            "type": "integer",
+            "format": "int32"
           },
           "heightPx": {
-            "type": "number",
-            "format": "float"
+            "type": "integer",
+            "format": "int32"
           },
           "xDpi": {
-            "type": "number",
-            "format": "float"
+            "type": "integer",
+            "format": "int32"
           },
           "yDpi": {
-            "type": "number",
-            "format": "float"
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -1619,34 +1863,6 @@
             "items": {
               "$ref": "#/components/schemas/TraceEntry"
             }
-          }
-        }
-      },
-      "TraceEntry": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "line",
-          "column",
-          "function",
-          "path"
-        ],
-        "properties": {
-          "line": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "column": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "function": {
-            "type": "string",
-            "minLength": 1
-          },
-          "path": {
-            "type": "string",
-            "minLength": 1
           }
         }
       },

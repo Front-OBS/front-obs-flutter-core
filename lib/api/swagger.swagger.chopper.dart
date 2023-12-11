@@ -137,14 +137,66 @@ class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<List<ProjectInfo>>> _apiProjectListGet() {
-    final Uri $url = Uri.parse('/api/project/list');
+  Future<Response<PageListOfProblem>> _apiProblemsPost(
+      {required ProblemsRequest? body}) {
+    final Uri $url = Uri.parse('/api/problems');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<PageListOfProblem, PageListOfProblem>($request);
+  }
+
+  @override
+  Future<Response<Problem>> _apiProblemsIdGet({required String? id}) {
+    final Uri $url = Uri.parse('/api/problems/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<Problem, Problem>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _apiProblemsIdPatch({
+    required String? id,
+    bool? status,
+  }) {
+    final Uri $url = Uri.parse('/api/problems/${id}');
+    final Map<String, dynamic> $params = <String, dynamic>{'status': status};
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<List<ProjectInfo>>> _apiProjectAllGet() {
+    final Uri $url = Uri.parse('/api/project/all');
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
     );
     return client.send<List<ProjectInfo>, ProjectInfo>($request);
+  }
+
+  @override
+  Future<Response<ProjectInfo>> _apiProjectIdGet({required String? id}) {
+    final Uri $url = Uri.parse('/api/project/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<ProjectInfo, ProjectInfo>($request);
   }
 
   @override
