@@ -5,8 +5,12 @@ import 'package:oberon_connector/monitoring_entries.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:uuid/uuid.dart';
 
-void eventLog(String text,
-    {String scope = "Уведомления", Map<String, dynamic>? jsonPayload}) {
+void eventLog(
+  String text, {
+  String scope = "Уведомления",
+  Map<String, dynamic>? jsonPayload,
+  bool liveOnly = false,
+}) {
   String? jsonP;
   try {
     if (jsonPayload != null) jsonP = jsonEncode(jsonPayload);
@@ -20,6 +24,7 @@ void eventLog(String text,
       payload: jsonP,
       logTimestamp: DateTime.now(),
     ),
+    liveOnly,
   );
 }
 

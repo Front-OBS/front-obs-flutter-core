@@ -456,7 +456,10 @@ class LogVault extends ChangeNotifier {
 /*
   void sendLog(MonitoringEntry entry) {}*/
 
-  static void addEntry(MonitoringEntry entry) async {
+  static void addEntry(MonitoringEntry entry, [bool liveOnly = false]) async {
+    if (!doLiveStreams && liveOnly) {
+      return;
+    }
     if (!initialized) {
       print(entry);
       return;
