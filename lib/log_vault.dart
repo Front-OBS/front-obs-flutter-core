@@ -200,6 +200,7 @@ class LogVault extends ChangeNotifier {
 
   static final List<RegisteredEvent> eventsBuffer = [];
   static final Map<String, Uint8List?> screenshots = {};
+
 /*
   static String computeBatchOfScreenshots(dynamic message) {
     final tsStart = DateTime.now();
@@ -278,6 +279,11 @@ class LogVault extends ChangeNotifier {
           .cast<int>()
           .toList();*/
       sbatch = ScreenshotsBatch(frames: encodedImages, framesMaping: indexes);
+    } else {
+      sbatch = ScreenshotsBatch(
+        frames: [],
+        framesMaping: [for (final e in events) -1],
+      );
     }
     //print(batch.length / 1024 / 1024);
     sendingQueue.add(
