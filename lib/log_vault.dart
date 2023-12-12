@@ -87,7 +87,7 @@ class LogVault extends ChangeNotifier {
         final branch = _head.split('/').last;
         bundle = BundleInfo(branch: branch);
       } catch (ex) {
-        print("Couldn't determine branch of artefact");
+        print("[OBERON] Не удалось получить информацию о гит-ветке");
         bundle = BundleInfo();
       }
     } else {
@@ -164,7 +164,7 @@ class LogVault extends ChangeNotifier {
           return event;
         })
         .listen((event) {
-          print("Processed batch");
+          print("[OBERON] Пакет обработан");
         });
 
     sendingQueue.stream
@@ -178,7 +178,7 @@ class LogVault extends ChangeNotifier {
           return event;
         })
         .listen((event) {
-          print("Sent batch");
+          print("[OBERON] Пакет успешно отправлен");
         });
     initialized = true;
   }
@@ -187,20 +187,20 @@ class LogVault extends ChangeNotifier {
 
   static void sendBatch(EventsBatch batch) async {
     print(
-        "Sending batch with ${batch.events.length} ewents. In queue ${inQueueCount}");
+        "[OBERON] Отправка пакета с ${batch.events.length} событиями. В очареди ${inQueueCount} пакетов на отправку");
     try {
       consuming = true;
       final response = await client.apiConsumerConsumePost(body: batch);
       consuming = false;
     } catch (ex) {
-      print("BATCH SEND ERR $ex tried send");
+      print("[OBERON] Ошибка отправки пакета $ex");
     }
     //eventsBuffer.removeRange(0, eventsToSend.length - 1);
   }
 
   static final List<RegisteredEvent> eventsBuffer = [];
   static final Map<String, Uint8List?> screenshots = {};
-
+/*
   static String computeBatchOfScreenshots(dynamic message) {
     final tsStart = DateTime.now();
     final listS = message as List<Uint8List?>;
@@ -216,7 +216,7 @@ class LogVault extends ChangeNotifier {
       if (png != null) totalSize += (e?.length ?? 0);
       return png;
     });
-    print("Creating APNG for ${pngs.length}");
+    print("[OBERON] Screenshot not awailable ${pngs.length}");
     for (final p in pngs) {
       if (p != null) encoder.addFrame(p);
     }
@@ -226,7 +226,7 @@ class LogVault extends ChangeNotifier {
     print(
         "APNG DELAY ${DateTime.now().difference(tsStart).inMilliseconds} size total ${totalSize} size after ${apng.length}");
     return baseEncoded;
-  }
+  }*/
 
   static void planSend() {
     final events = eventsBuffer.toList();
@@ -327,7 +327,7 @@ class LogVault extends ChangeNotifier {
           offsetStart: value.offsetFrom,
           viewport: value.viewport,
         ),
-        kind: EventKind.swaggerGeneratedUnknown,
+        kind: EventKind.scroll,
       ),
       navigationEvent: (value) => RegisteredEvent(
         id: id,
@@ -353,7 +353,7 @@ class LogVault extends ChangeNotifier {
           identification: value.identification,
           payload: value.payload,
         ),
-        kind: EventKind.swaggerGeneratedUnknown,
+        kind: EventKind.tap,
       ),
       networkCall: (value) => RegisteredEvent(
         id: id,
@@ -479,7 +479,7 @@ class LogVault extends ChangeNotifier {
 
   static void addException(Object exception, StackTrace? trace,
       {String scope = "Общие ошибки"}) {
-    print(exception.toString() + trace.toString());
+    //print(exception.toString() + trace.toString());
     try {
       final t = trace != null ? Trace.from(trace) : null;
       addEntry(MonitoringEntry.exception(
@@ -496,7 +496,7 @@ class LogVault extends ChangeNotifier {
         ],
       ));
     } catch (ex) {
-      print("Ошибка запили исключения");
+      print("[OBERON] Ошибка сборка сведений об ошибке");
     }
   }
 

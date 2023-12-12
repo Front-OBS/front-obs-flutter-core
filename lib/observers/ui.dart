@@ -139,10 +139,10 @@ class ScreenRecorderController extends State<ScreenRecorder> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       c.complete();
     });
-    await c;
+    await c.future;
 
     if (key.currentContext == null) {
-      print("CONTEXT NULL");
+      print("[OBERON] Screenshot not awailable");
       return null;
     }
     final rObj =
