@@ -1,22 +1,31 @@
+import 'dart:convert';
+
 import 'package:oberon_connector/log_vault.dart';
 import 'package:oberon_connector/monitoring_entries.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:uuid/uuid.dart';
 
-void eventLog(String ext, {String scope = "Уведомления", String? payload = null}) {
+void eventLog(String text,
+    {String scope = "Уведомления", Map<String, dynamic>? jsonPayload}) {
+  String? jsonP;
+  try {
+    if (jsonPayload != null) jsonP = jsonEncode(jsonPayload);
+  } catch (ex) {
+    print("[ОБЕРОН] Не удалось закодировать payload события ${text}");
+  }
   LogVault.addEntry(
     MonitoringEntry.event(
       scope: scope,
-      event: ext,
-      payload: payload,
+      event: text,
+      payload: jsonP,
       logTimestamp: DateTime.now(),
     ),
   );
 }
 
-void exceptionLog(Object ext, StackTrace trace) {
+void exceptionLog(Object ext, StackTrace trace, {String? scope}) {
   print(ext);
-  LogVault.addException(ext, trace);
+  LogVault.addException(ext, trace, scope: scope ?? "Общие ошибки");
 }
 
 void stateLog(String key, String value, {String scope = "Общее состояние"}) {
