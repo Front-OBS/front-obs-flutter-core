@@ -30,15 +30,20 @@ launchRelease<TEnv extends IApplicationEnvironment>(
   LogVault.recorderController = recorderController;
 
   //initServices();
-  runZonedGuarded(
-      () => launcher(
-          env,
-          ({
-            required Widget child,
-          }) =>
-              ScreenRecorder(child: child, controller: recorderController)), (error, stack) {
+  try{
+    launcher(
+        env,
+            ({
+          required Widget child,
+        }) =>
+            ScreenRecorder(child: child, controller: recorderController));
+  }catch(error, stack){
     exceptionLog(error, stack);
-  });
+  }
+  /*runZonedGuarded(
+      () => , (error, stack) {
+    exceptionLog(error, stack);
+  });*/
 }
 
 Future launchDebug<TEnv extends IApplicationEnvironment>({
