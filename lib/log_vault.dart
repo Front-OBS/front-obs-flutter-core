@@ -318,18 +318,33 @@ class LogVault extends ChangeNotifier {
 
   static Uuid uid = Uuid();
 
+  static Map<String, dynamic> encodePayload(Map<String, dynamic> map) =>
+      map.map((key, value) {
+        if (value is DateTime) {
+          return MapEntry(key, value.toString());
+        }
+        if (value is Map<String, dynamic>) {
+          return MapEntry(key, encodePayload(value));
+        }
+        if (value is List<dynamic>) {
+          return MapEntry(key, value.map((e) => encodePayload(e)));
+        }
+        return MapEntry(key, value);
+      });
+
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
     final ts = DateTime.now().millisecondsSinceEpoch;
     final id = uid.v1();
     return RegisteredEvent(
-      id: id,
-      timestamp: ts,
-      identification: entry.identification,
-      kind: entry.kind,
-      scope: entry.scope,
-      severity: entry.severity,
-      payload: jsonEncode(entry.payload)
-    );
+        id: id,
+        timestamp: ts,
+        identification: entry.identification,
+        kind: entry.kind,
+        scope: entry.scope,
+        severity: entry.severity,
+        payload: entry.payload == null
+            ? jsonEncode(encodePayload(entry.payload!))
+            : null);
   }
 
 /*
@@ -371,24 +386,24 @@ class LogVault extends ChangeNotifier {
     try {
       final t = trace != null ? Trace.from(trace) : null;
       addEntry(MonitoringEntry(
-        identification: exception.toString(),
-        kind: "Исключение",
-        logTimestamp: DateTime.now(),
-        severity: "Ошибка",
-        screenshot: null,
-        scope: scope,
-        payload: {
-          "frames": [
-            if (t != null)
-              for (final trace in t.frames)
-                StackFrame(
-                    funcName: trace.member ?? "",
-                    column: trace.column,
-                    line: trace.line,
-                    path: trace.uri.toString()),
-          ],
-        }
-      ));
+          identification: exception.toString(),
+          kind: "Исключение",
+          logTimestamp: DateTime.now(),
+          severity: "Ошибка",
+          screenshot: null,
+          scope: scope,
+          payload: {
+            "frames": [
+              if (t != null)
+                for (final trace in t.frames)
+                  StackFrame(
+                          funcName: trace.member ?? "",
+                          column: trace.column,
+                          line: trace.line,
+                          path: trace.uri.toString())
+                      .toJson(),
+            ],
+          }));
     } catch (ex) {
       print("[OBERON] Ошибка сборка сведений об ошибке");
     }
