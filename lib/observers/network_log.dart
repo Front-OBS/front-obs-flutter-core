@@ -11,7 +11,7 @@ class OberonDioInterceptor extends Interceptor {
 
   final String scope;
 
-  final Map<String, MonitoringEntryNetworkCall> monitoring = Map();
+  final Map<String, MonitoringEntry> monitoring = Map();
 
   MonitoringNetworkCallPayload computePayload(dynamic data) {
     if (data is FormData) {
@@ -21,13 +21,12 @@ class OberonDioInterceptor extends Interceptor {
     } else if (data is Map<String, dynamic>) {
       return MonitoringNetworkCallPayload.json(json: jsonEncode(data));
     } else {
-      try{
+      try {
         final json = data.toJson();
         return MonitoringNetworkCallPayload.json(json: jsonEncode(data));
-      }catch(ex){
+      } catch (ex) {
         return MonitoringNetworkCallPayload.custom(content: data.toString());
       }
-
     }
   }
 
@@ -36,22 +35,24 @@ class OberonDioInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) {
     final reqId = Uuid().v1();
-    final entry = MonitoringEntry.networkCall(
+    final entry = MonitoringEntry(
       scope: scope,
-      id: reqId,
-      start: DateTime.now(),
-      uri: options.uri.toString(),
-      requestHeaders:
-          options.headers.map((key, value) => MapEntry(key, value.toString())),
-      requestQuery: options.queryParameters
-          .map((key, value) => MapEntry(key, value.toString())),
-      request: computePayload(options.data),
-      response: null,
-      statusCode: 0,
-      end: null,
+      identification: options.uri.toString(),
+      severity: "Отладка",
+      kind: "Сетевой запрос",
+      payload: {
+        "id": reqId,
+        "start": DateTime.now(),
+        "uri": options.uri.toString(),
+        "requestHeaders": options.headers
+            .map((key, value) => MapEntry(key, value.toString())),
+        "requestQuery": options.queryParameters
+            .map((key, value) => MapEntry(key, value.toString())),
+        "request": computePayload(options.data).toJson(),
+      },
       logTimestamp: DateTime.now(),
     );
-    monitoring[reqId] = entry as MonitoringEntryNetworkCall;
+    monitoring[reqId] = entry;
     // GetIt.I.get<LogVault>().addEntry(entry);
     options.extra["reqId"] = reqId;
     handler.next(options);
@@ -63,13 +64,16 @@ class OberonDioInterceptor extends Interceptor {
   ) {
     try {
       final id = response.requestOptions.extra["reqId"];
-      final entry = monitoring[id];
+      var entry = monitoring[id];
       if (entry != null) {
-        entry.statusCode = response.statusCode ?? 0;
-        entry.responseHeaders = response.headers.map
-            .map((key, value) => MapEntry(key, value.join("; ")));
-        entry.response = computePayload(response.data);
-        entry.end = DateTime.now();
+        entry = entry.copyWith(payload: {
+          ...(entry?.payload ?? {}),
+          "statusCode": response.statusCode,
+          "responseHeaders": response.headers.map
+              .map((key, value) => MapEntry(key, value.join("; "))),
+          "response": computePayload(response.data).toJson(),
+          "end": DateTime.now(),
+        });
         //add entry
         LogVault.addEntry(entry);
       }
@@ -85,13 +89,20 @@ class OberonDioInterceptor extends Interceptor {
     ErrorInterceptorHandler handler,
   ) {
     final id = err.requestOptions.extra["reqId"];
-    final entry = monitoring[id];
+    var entry = monitoring[id];
     if (entry != null) {
-      entry.statusCode = err.response?.statusCode ?? 0;
-      entry.responseHeaders = err.response?.headers.map
-          .map((key, value) => MapEntry(key, value.join("; ")));
-      entry.response = computePayload(err.response?.data);
-      entry.end = DateTime.now();
+      entry = entry.copyWith(payload: {
+        ...(entry?.payload ?? {}),
+        "statusCode": err.response?.statusCode,
+        "responseHeaders": err.response?.headers.map
+            .map((key, value) => MapEntry(key, value.join("; "))),
+        "response": computePayload(err.response?.data).toJson(),
+        "error": err.error?.toString(),
+        "stacktrace": err.stackTrace.toString(),
+        "message": err.message,
+        "end": DateTime.now(),
+      });
+      //add entry
       LogVault.addEntry(entry);
     }
     handler.next(err);

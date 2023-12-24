@@ -29,7 +29,7 @@ class ScrollDetector extends StatelessWidget {
   final Widget child;
   final String scope;
   String? identification;
-  final String? payload;
+  final Map<String, dynamic>? payload;
 
   double startExtent = 0.0;
   bool debouncing = false;
@@ -56,13 +56,17 @@ class ScrollDetector extends StatelessWidget {
               final viewport = notification.metrics.extentInside /
                   notification.metrics.extentTotal;
 
-              LogVault.addEntry(MonitoringEntry.scrollEvent(
+              LogVault.addEntry(MonitoringEntry(
                 scope: scope,
-                identification: identification ?? "NO IDENTIF",
-                payload: payload,
-                offsetFrom: offsetStart,
-                offsetTo: offsetCurrent,
-                viewport: viewport,
+                kind: "Скролл",
+                severity: "Отладка",
+                identification: identification ?? "Без идентификации",
+                payload: {
+                  "Процент отступа от начала экрана": offsetStart,
+                  "Конец отступа": offsetCurrent,
+                  "Процент видимого экрана": viewport,
+                  if (payload != null) ...payload!,
+                },
                 logTimestamp: DateTime.now(),
               ));
 
@@ -103,12 +107,15 @@ class TapDetector extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTapDown: (details) {
-        LogVault.addEntry(MonitoringEntry.tapEvent(
+        LogVault.addEntry(MonitoringEntry(
           scope: scope,
-          identification: identification ?? "Без названия",
-          payload: payload,
-          coordX: details.globalPosition.dx,
-          coordY: details.globalPosition.dy,
+          kind: "Нажатие",
+          identification: identification ?? "Без индентификации",
+          severity: "Отладка",
+          payload: {
+            "Координата Х": details.globalPosition.dx,
+            "Координата Y": details.globalPosition.dy,
+          },
           logTimestamp: DateTime.now(),
         ));
       },
@@ -148,7 +155,7 @@ class ScreenRecorderController extends State<ScreenRecorder> {
     final rObj =
         key.currentContext!.findRenderObject() as RenderRepaintBoundary;
     final imageRaw =
-        await rObj.toImage(pixelRatio: View.of(context).devicePixelRatio/6);
+        await rObj.toImage(pixelRatio: View.of(context).devicePixelRatio / 6);
     final bytes = await imageRaw.toByteData(format: ImageByteFormat.png);
     return Uint8List.view(bytes!.buffer);
     // return img.Image.fromBytes(

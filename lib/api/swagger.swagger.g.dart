@@ -52,6 +52,7 @@ ArtefactDTO _$ArtefactDTOFromJson(Map<String, dynamic> json) => ArtefactDTO(
       flavor: json['flavor'] as String,
       version: json['version'] as String,
       build: json['build'] as int,
+      publication: DateTime.parse(json['publication'] as String),
     );
 
 Map<String, dynamic> _$ArtefactDTOToJson(ArtefactDTO instance) =>
@@ -64,6 +65,7 @@ Map<String, dynamic> _$ArtefactDTOToJson(ArtefactDTO instance) =>
       'flavor': instance.flavor,
       'version': instance.version,
       'build': instance.build,
+      'publication': instance.publication.toIso8601String(),
     };
 
 PaginationInfo _$PaginationInfoFromJson(Map<String, dynamic> json) =>
@@ -650,201 +652,20 @@ RegisteredEvent _$RegisteredEventFromJson(Map<String, dynamic> json) =>
     RegisteredEvent(
       id: json['id'] as String,
       timestamp: json['timestamp'] as int,
-      kind: eventKindNullableFromJson(json['kind']),
-      textEvent: json['textEvent'] == null
-          ? null
-          : TextEvent.fromJson(json['textEvent'] as Map<String, dynamic>),
-      stateEvent: json['stateEvent'] == null
-          ? null
-          : StateEvent.fromJson(json['stateEvent'] as Map<String, dynamic>),
-      exceptionEvent: json['exceptionEvent'] == null
-          ? null
-          : ExceptionEvent.fromJson(
-              json['exceptionEvent'] as Map<String, dynamic>),
-      networkEvent: json['networkEvent'] == null
-          ? null
-          : NetworkEvent.fromJson(json['networkEvent'] as Map<String, dynamic>),
-      storageEvent: json['storageEvent'] == null
-          ? null
-          : StorageEvent.fromJson(json['storageEvent'] as Map<String, dynamic>),
-      tapEvent: json['tapEvent'] == null
-          ? null
-          : TapEvent.fromJson(json['tapEvent'] as Map<String, dynamic>),
-      scrollEvent: json['scrollEvent'] == null
-          ? null
-          : ScrollEvent.fromJson(json['scrollEvent'] as Map<String, dynamic>),
-      navigationEvent: json['navigationEvent'] == null
-          ? null
-          : NavigationEvent.fromJson(
-              json['navigationEvent'] as Map<String, dynamic>),
+      identification: json['identification'] as String,
+      kind: json['kind'] as String,
+      scope: json['scope'] as String,
+      severity: json['severity'] as String,
+      payload: json['payload'] as String?,
     );
 
 Map<String, dynamic> _$RegisteredEventToJson(RegisteredEvent instance) =>
     <String, dynamic>{
       'id': instance.id,
       'timestamp': instance.timestamp,
-      'kind': eventKindNullableToJson(instance.kind),
-      'textEvent': instance.textEvent?.toJson(),
-      'stateEvent': instance.stateEvent?.toJson(),
-      'exceptionEvent': instance.exceptionEvent?.toJson(),
-      'networkEvent': instance.networkEvent?.toJson(),
-      'storageEvent': instance.storageEvent?.toJson(),
-      'tapEvent': instance.tapEvent?.toJson(),
-      'scrollEvent': instance.scrollEvent?.toJson(),
-      'navigationEvent': instance.navigationEvent?.toJson(),
-    };
-
-TextEvent _$TextEventFromJson(Map<String, dynamic> json) => TextEvent(
-      scope: json['scope'] as String,
-      text: json['text'] as String,
-      payload: json['payload'] as String?,
-    );
-
-Map<String, dynamic> _$TextEventToJson(TextEvent instance) => <String, dynamic>{
-      'scope': instance.scope,
-      'text': instance.text,
-      'payload': instance.payload,
-    };
-
-StateEvent _$StateEventFromJson(Map<String, dynamic> json) => StateEvent(
-      scope: json['scope'] as String,
-      stateName: json['stateName'] as String,
-      value: json['value'] as String,
-    );
-
-Map<String, dynamic> _$StateEventToJson(StateEvent instance) =>
-    <String, dynamic>{
-      'scope': instance.scope,
-      'stateName': instance.stateName,
-      'value': instance.value,
-    };
-
-ExceptionEvent _$ExceptionEventFromJson(Map<String, dynamic> json) =>
-    ExceptionEvent(
-      scope: json['scope'] as String,
-      exception: json['exception'] as String,
-      traces: (json['traces'] as List<dynamic>?)
-              ?.map((e) => TraceEntry.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-    );
-
-Map<String, dynamic> _$ExceptionEventToJson(ExceptionEvent instance) =>
-    <String, dynamic>{
-      'scope': instance.scope,
-      'exception': instance.exception,
-      'traces': instance.traces.map((e) => e.toJson()).toList(),
-    };
-
-NetworkEvent _$NetworkEventFromJson(Map<String, dynamic> json) => NetworkEvent(
-      scope: json['scope'] as String,
-      url: json['url'] as String,
-      statusCode: json['statusCode'] as int,
-      requestHeaders: json['requestHeaders'] as Map<String, dynamic>,
-      responseHeaders: json['responseHeaders'] as Map<String, dynamic>,
-      requestPayload: json['requestPayload'] == null
-          ? null
-          : NetworkPayload.fromJson(
-              json['requestPayload'] as Map<String, dynamic>),
-      responsePayload: json['responsePayload'] == null
-          ? null
-          : NetworkPayload.fromJson(
-              json['responsePayload'] as Map<String, dynamic>),
-    );
-
-Map<String, dynamic> _$NetworkEventToJson(NetworkEvent instance) =>
-    <String, dynamic>{
-      'scope': instance.scope,
-      'url': instance.url,
-      'statusCode': instance.statusCode,
-      'requestHeaders': instance.requestHeaders,
-      'responseHeaders': instance.responseHeaders,
-      'requestPayload': instance.requestPayload?.toJson(),
-      'responsePayload': instance.responsePayload?.toJson(),
-    };
-
-NetworkPayload _$NetworkPayloadFromJson(Map<String, dynamic> json) =>
-    NetworkPayload(
-      kind: networkPayloadKindNullableFromJson(json['kind']),
-      formData: json['formData'] as Map<String, dynamic>?,
-      json: json['json'] as String?,
-      custom: json['custom'] as String?,
-    );
-
-Map<String, dynamic> _$NetworkPayloadToJson(NetworkPayload instance) =>
-    <String, dynamic>{
-      'kind': networkPayloadKindNullableToJson(instance.kind),
-      'formData': instance.formData,
-      'json': instance.json,
-      'custom': instance.custom,
-    };
-
-StorageEvent _$StorageEventFromJson(Map<String, dynamic> json) => StorageEvent(
-      scope: json['scope'] as String,
-      key: json['key'] as String,
-      value: json['value'] as String,
-    );
-
-Map<String, dynamic> _$StorageEventToJson(StorageEvent instance) =>
-    <String, dynamic>{
-      'scope': instance.scope,
-      'key': instance.key,
-      'value': instance.value,
-    };
-
-TapEvent _$TapEventFromJson(Map<String, dynamic> json) => TapEvent(
-      scope: json['scope'] as String,
-      x: (json['x'] as num).toDouble(),
-      y: (json['y'] as num).toDouble(),
-      identification: json['identification'] as String?,
-      payload: json['payload'] as String?,
-    );
-
-Map<String, dynamic> _$TapEventToJson(TapEvent instance) => <String, dynamic>{
-      'scope': instance.scope,
-      'x': instance.x,
-      'y': instance.y,
       'identification': instance.identification,
-      'payload': instance.payload,
-    };
-
-ScrollEvent _$ScrollEventFromJson(Map<String, dynamic> json) => ScrollEvent(
-      scope: json['scope'] as String,
-      identification: json['identification'] as String,
-      payload: json['payload'] as String?,
-      offsetStart: (json['offsetStart'] as num).toDouble(),
-      offsetEnd: (json['offsetEnd'] as num).toDouble(),
-      viewport: (json['viewport'] as num).toDouble(),
-    );
-
-Map<String, dynamic> _$ScrollEventToJson(ScrollEvent instance) =>
-    <String, dynamic>{
-      'scope': instance.scope,
-      'identification': instance.identification,
-      'payload': instance.payload,
-      'offsetStart': instance.offsetStart,
-      'offsetEnd': instance.offsetEnd,
-      'viewport': instance.viewport,
-    };
-
-NavigationEvent _$NavigationEventFromJson(Map<String, dynamic> json) =>
-    NavigationEvent(
-      scope: json['scope'] as String,
-      kind: json['kind'] as String,
-      routeName: json['routeName'] as String,
-      previousRouteName: json['previousRouteName'] as String?,
-      arguments: json['arguments'] as String?,
-      previousArguments: json['previousArguments'] as String?,
-      popResult: json['popResult'] as String?,
-    );
-
-Map<String, dynamic> _$NavigationEventToJson(NavigationEvent instance) =>
-    <String, dynamic>{
-      'scope': instance.scope,
       'kind': instance.kind,
-      'routeName': instance.routeName,
-      'previousRouteName': instance.previousRouteName,
-      'arguments': instance.arguments,
-      'previousArguments': instance.previousArguments,
-      'popResult': instance.popResult,
+      'scope': instance.scope,
+      'severity': instance.severity,
+      'payload': instance.payload,
     };

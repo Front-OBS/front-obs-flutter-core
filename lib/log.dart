@@ -11,17 +11,13 @@ void eventLog(
   Map<String, dynamic>? jsonPayload,
   bool liveOnly = false,
 }) {
-  String? jsonP;
-  try {
-    if (jsonPayload != null) jsonP = jsonEncode(jsonPayload);
-  } catch (ex) {
-    print("[ОБЕРОН] Не удалось закодировать payload события ${text}");
-  }
   LogVault.addEntry(
-    MonitoringEntry.event(
+    MonitoringEntry(
       scope: scope,
-      event: text,
-      payload: jsonP,
+      identification: text,
+      severity: "Информация",
+      payload: jsonPayload,
+      kind: "Событие",
       logTimestamp: DateTime.now(),
     ),
     liveOnly,
@@ -33,12 +29,18 @@ void exceptionLog(Object ext, StackTrace trace, {String? scope}) {
   LogVault.addException(ext, trace, scope: scope ?? "Общие ошибки");
 }
 
-void stateLog(String key, String value, {String scope = "Общее состояние"}) {
+void stateLog(String key, String value,
+    {String? previous, String scope = "Общее состояние"}) {
   LogVault.addEntry(
-    MonitoringEntry.stateChange(
+    MonitoringEntry(
       scope: scope,
-      payload: value,
-      key: key,
+      payload: {
+        "next": value,
+        "prev": previous,
+      },
+      kind: "Состояние",
+      identification: key,
+      severity: "Отладка",
       logTimestamp: DateTime.now(),
     ),
   );

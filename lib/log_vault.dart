@@ -321,135 +321,14 @@ class LogVault extends ChangeNotifier {
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
     final ts = DateTime.now().millisecondsSinceEpoch;
     final id = uid.v1();
-    return entry.map(
-      scrollEvent: (value) => RegisteredEvent(
-        id: id,
-        timestamp: ts,
-        scrollEvent: ScrollEvent(
-          scope: value.scope,
-          identification: value.identification,
-          payload: value.payload,
-          offsetEnd: value.offsetTo,
-          offsetStart: value.offsetFrom,
-          viewport: value.viewport,
-        ),
-        kind: EventKind.scroll,
-      ),
-      navigationEvent: (value) => RegisteredEvent(
-        id: id,
-        timestamp: ts,
-        kind: EventKind.navigation,
-        navigationEvent: NavigationEvent(
-          scope: value.scope,
-          kind: value.type,
-          routeName: value.routeName,
-          previousRouteName: value.previousRouteName,
-          arguments: value.arguments,
-          previousArguments: value.previousArguments,
-          popResult: value.popResult,
-        ),
-      ),
-      tapEvent: (value) => RegisteredEvent(
-        id: id,
-        timestamp: ts,
-        tapEvent: TapEvent(
-          scope: value.scope,
-          x: value.coordX,
-          y: value.coordY,
-          identification: value.identification,
-          payload: value.payload,
-        ),
-        kind: EventKind.tap,
-      ),
-      networkCall: (value) => RegisteredEvent(
-        id: id,
-        timestamp: ts,
-        kind: EventKind.network,
-        networkEvent: NetworkEvent(
-          scope: value.scope,
-          requestHeaders: value.requestHeaders,
-          responseHeaders: value.responseHeaders!,
-          url: value.uri,
-          statusCode: value.statusCode,
-          requestPayload: value.request.map(
-            json: (value) => NetworkPayload(
-              kind: NetworkPayloadKind.json,
-              json: value.json,
-            ),
-            custom: (value) => NetworkPayload(
-              kind: NetworkPayloadKind.custom,
-              custom: value.content,
-            ),
-            formdata: (value) => NetworkPayload(
-              formData: value.data,
-              kind: NetworkPayloadKind.formdata,
-            ),
-          ),
-          responsePayload: value.response?.map(
-            json: (value) => NetworkPayload(
-              kind: NetworkPayloadKind.json,
-              json: value.json,
-            ),
-            custom: (value) => NetworkPayload(
-              kind: NetworkPayloadKind.custom,
-              custom: value.content,
-            ),
-            formdata: (value) => NetworkPayload(
-              formData: value.data,
-              kind: NetworkPayloadKind.formdata,
-            ),
-          ),
-        ),
-      ),
-      storageOperation: (value) => RegisteredEvent(
-        timestamp: ts,
-        id: id,
-        kind: EventKind.swaggerGeneratedUnknown,
-        storageEvent: StorageEvent(
-          scope: value.scope,
-          key: value.key,
-          value: value.value,
-        ),
-      ),
-      exception: (value) => RegisteredEvent(
-        id: id,
-        timestamp: ts,
-        kind: EventKind.exception,
-        exceptionEvent: ExceptionEvent(
-          scope: value.scope,
-          exception: value.text,
-          traces: value.frames
-              .map(
-                (e) => TraceEntry(
-                  column: e.column ?? 0,
-                  line: e.line ?? 0,
-                  function: e.funcName ?? "MISSING",
-                  path: e.path,
-                ),
-              )
-              .toList(),
-        ),
-      ),
-      event: (value) => RegisteredEvent(
-        id: id,
-        timestamp: ts,
-        kind: EventKind.text,
-        textEvent: TextEvent(
-          scope: value.scope,
-          text: value.event,
-          payload: value.payload,
-        ),
-      ),
-      stateChange: (value) => RegisteredEvent(
-        id: id,
-        timestamp: ts,
-        kind: EventKind.state,
-        stateEvent: StateEvent(
-          scope: value.scope,
-          value: value.payload,
-          stateName: value.key,
-        ),
-      ),
+    return RegisteredEvent(
+      id: id,
+      timestamp: ts,
+      identification: entry.identification,
+      kind: entry.kind,
+      scope: entry.scope,
+      severity: entry.severity,
+      payload: jsonEncode(entry.payload)
     );
   }
 
@@ -491,18 +370,24 @@ class LogVault extends ChangeNotifier {
     //print(exception.toString() + trace.toString());
     try {
       final t = trace != null ? Trace.from(trace) : null;
-      addEntry(MonitoringEntry.exception(
+      addEntry(MonitoringEntry(
+        identification: exception.toString(),
+        kind: "Исключение",
+        logTimestamp: DateTime.now(),
+        severity: "Ошибка",
+        screenshot: null,
         scope: scope,
-        text: exception.toString(),
-        frames: [
-          if (t != null)
-            for (final trace in t.frames)
-              StackFrame(
-                  funcName: trace.member ?? "",
-                  column: trace.column,
-                  line: trace.line,
-                  path: trace.uri.toString()),
-        ],
+        payload: {
+          "frames": [
+            if (t != null)
+              for (final trace in t.frames)
+                StackFrame(
+                    funcName: trace.member ?? "",
+                    column: trace.column,
+                    line: trace.line,
+                    path: trace.uri.toString()),
+          ],
+        }
       ));
     } catch (ex) {
       print("[OBERON] Ошибка сборка сведений об ошибке");

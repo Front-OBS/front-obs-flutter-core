@@ -16,14 +16,18 @@ class OberonNavigationObserver extends NavigatorObserver {
     var arguments = route.settings.arguments?.toString();
     var previousArguments = previousRoute?.settings.arguments?.toString();
     var popResult = route.currentResult.toString();
-    LogVault.addEntry(MonitoringEntry.navigationEvent(
+    LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      type: "didPush",
-      routeName: routeName,
-      previousRouteName: previousRouteName,
-      arguments: arguments,
-      previousArguments: previousArguments,
-      popResult: popResult,
+      kind: "Навигация",
+      severity: "Отладка",
+      identification: "Открыт",
+      payload: {
+        "routeName": routeName,
+        "previousRouteName": previousRouteName,
+        "arguments": arguments,
+        "previousArguments": previousArguments,
+        "popResult": popResult,
+      },
       logTimestamp: DateTime.now(),
     ));
   }
@@ -36,14 +40,18 @@ class OberonNavigationObserver extends NavigatorObserver {
     var arguments = route.settings.arguments?.toString();
     var previousArguments = previousRoute?.settings.arguments?.toString();
     var popResult = route.currentResult.toString();
-    LogVault.addEntry(MonitoringEntry.navigationEvent(
+    LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      type: "didPop",
-      routeName: routeName,
-      previousRouteName: previousRouteName,
-      arguments: arguments,
-      previousArguments: previousArguments,
-      popResult: popResult,
+      kind: "Навигация",
+      severity: "Отладка",
+      identification: "Закрыт",
+      payload: {
+        "routeName": routeName,
+        "previousRouteName": previousRouteName,
+        "arguments": arguments,
+        "previousArguments": previousArguments,
+        "popResult": popResult,
+      },
       logTimestamp: DateTime.now(),
     ));
   }
@@ -56,14 +64,18 @@ class OberonNavigationObserver extends NavigatorObserver {
     var arguments = route.settings.arguments?.toString();
     var previousArguments = previousRoute?.settings.arguments?.toString();
     var popResult = route.currentResult.toString();
-    LogVault.addEntry(MonitoringEntry.navigationEvent(
+    LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      type: "didRemove",
-      routeName: routeName,
-      previousRouteName: previousRouteName,
-      arguments: arguments,
-      previousArguments: previousArguments,
-      popResult: popResult,
+      kind: "Навигация",
+      severity: "Отладка",
+      identification: "Убран",
+      payload: {
+        "routeName": routeName,
+        "previousRouteName": previousRouteName,
+        "arguments": arguments,
+        "previousArguments": previousArguments,
+        "popResult": popResult,
+      },
       logTimestamp: DateTime.now(),
     ));
   }
@@ -75,14 +87,18 @@ class OberonNavigationObserver extends NavigatorObserver {
     var arguments = newRoute?.settings.arguments?.toString();
     var previousArguments = oldRoute?.settings.arguments?.toString();
     var popResult = newRoute?.currentResult.toString();
-    LogVault.addEntry(MonitoringEntry.navigationEvent(
+    LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      type: "didReplace",
-      routeName: routeName,
-      previousRouteName: previousRouteName,
-      arguments: arguments,
-      previousArguments: previousArguments,
-      popResult: popResult,
+      kind: "Навигация",
+      severity: "Отладка",
+      identification: "Заменен",
+      payload: {
+        "routeName": routeName,
+        "previousRouteName": previousRouteName,
+        "arguments": arguments,
+        "previousArguments": previousArguments,
+        "popResult": popResult,
+      },
       logTimestamp: DateTime.now(),
     ));
   }
@@ -96,28 +112,30 @@ class OberonNavigationObserver extends NavigatorObserver {
     var arguments = route.settings.arguments?.toString();
     var previousArguments = previousRoute?.settings.arguments?.toString();
     var popResult = route.currentResult.toString();
-    LogVault.addEntry(MonitoringEntry.navigationEvent(
+    LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      type: "didStartUserGesture",
-      routeName: routeName,
-      previousRouteName: previousRouteName,
-      arguments: arguments,
-      previousArguments: previousArguments,
-      popResult: popResult,
+      kind: "Навигация",
+      severity: "Отладка",
+      identification: "Начат жест",
+      payload: {
+        "routeName": routeName,
+        "previousRouteName": previousRouteName,
+        "arguments": arguments,
+        "previousArguments": previousArguments,
+        "popResult": popResult,
+      },
       logTimestamp: DateTime.now(),
     ));
   }
 
   @override
   void didStopUserGesture() {
-    LogVault.addEntry(MonitoringEntry.navigationEvent(
+    LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      type: "didStopUserGesture",
-      routeName: "",
-      previousRouteName: null,
-      arguments: null,
-      previousArguments: null,
-      popResult: null,
+      kind: "Навигация",
+      severity: "Отладка",
+      identification: "Жест завершен",
+      payload: {},
       logTimestamp: DateTime.now(),
     ));
   }

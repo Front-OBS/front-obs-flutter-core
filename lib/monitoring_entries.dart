@@ -88,108 +88,16 @@ class DateTimeConverter extends JsonConverter<DateTime, String> {
 
 @unfreezed
 class MonitoringEntry with _$MonitoringEntry {
-  const MonitoringEntry._();
-
-  factory MonitoringEntry.networkCall({
-    Uint8List? screenshot,
-    required String scope,
-    required String uri,
-    required String id,
-    @DateTimeConverter() required DateTime logTimestamp,
-    @DateTimeConverter() required DateTime start,
-    required Map<String, String> requestQuery,
-    required MonitoringNetworkCallPayload request,
-    required Map<String, String> requestHeaders,
-    DateTime? end,
-    required int statusCode,
-    Map<String, String>? responseHeaders,
-    required MonitoringNetworkCallPayload? response,
-  }) = MonitoringEntryNetworkCall;
-
-  factory MonitoringEntry.storageOperation({
-    Uint8List? screenshot,
-    required String scope,
-    required StarageOperationType storage,
-    required String storageName,
-    required String key,
-    required String value,
-    @DateTimeConverter() required DateTime logTimestamp,
-  }) = MonitoringEntryStarageOperation;
-
-  factory MonitoringEntry.exception({
-    Uint8List? screenshot,
-    required String scope,
-    required String text,
-    required List<StackFrame> frames,
-  }) = MonitoringEntryException;
-
-  factory MonitoringEntry.event({
-    Uint8List? screenshot,
-    required String scope,
-    required String event,
-    required String? payload,
-    @DateTimeConverter() required DateTime logTimestamp,
-  }) = MonitoringEntryTextLog;
-
-  factory MonitoringEntry.stateChange({
-    Uint8List? screenshot,
-    required String scope,
-    required String payload,
-    required String key,
-    @DateTimeConverter() required DateTime logTimestamp,
-  }) = MonitoringEntryStateLog;
-
-  factory MonitoringEntry.tapEvent({
+  factory MonitoringEntry({
     Uint8List? screenshot,
     required String scope,
     required String identification,
-    required String? payload,
-    required double coordX,
-    required double coordY,
+    required String kind,
+    required String severity,
+    required Map<String, dynamic>? payload,
     @DateTimeConverter() required DateTime logTimestamp,
-  }) = MonitoringEntryTapEventLog;
+  }) = _;
 
-  factory MonitoringEntry.scrollEvent({
-    Uint8List? screenshot,
-    required String scope,
-    required String identification,
-    required String? payload,
-    required double offsetFrom,
-    required double offsetTo,
-    required double viewport,
-    @DateTimeConverter() required DateTime logTimestamp,
-  }) = MonitoringEntryScrollEventLog;
-
-  factory MonitoringEntry.navigationEvent({
-    Uint8List? screenshot,
-    required String scope,
-    required String type,
-    required String routeName,
-    required String? previousRouteName,
-    required String? arguments,
-    required String? previousArguments,
-    required String? popResult,
-    @DateTimeConverter() required DateTime logTimestamp,
-  }) = MonitoringEntryNavigationEventLog;
-
-/*
-  factory MonitoringEntry.blocEvent({
-    required String sourceBlocType,
-    required BlocEventType type,
-    String? eventType,
-    required DateTime logTimestamp,
-  }) = MonitoringBlocEventLog;*/
-
-  MonitorEventKind get kind => this.map(
-        scrollEvent: (value) => MonitorEventKind.scroll,
-        navigationEvent: (value) => MonitorEventKind.navigation,
-        exception: (value) => MonitorEventKind.exception,
-        storageOperation: (value) => MonitorEventKind.storage,
-        networkCall: (value) => MonitorEventKind.network,
-        event: (value) => MonitorEventKind.log,
-        stateChange: (value) => MonitorEventKind.state,
-        tapEvent: (value) => MonitorEventKind.tap,
-      );
 /*
   factory MonitoringEntry.fromJson(Map<String, dynamic> json) =>
       _$MonitoringEntryFromJson(json);*/

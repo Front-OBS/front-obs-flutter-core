@@ -823,7 +823,8 @@
           "platform",
           "flavor",
           "version",
-          "build"
+          "build",
+          "publication"
         ],
         "properties": {
           "id": {
@@ -858,6 +859,11 @@
           "build": {
             "type": "integer",
             "format": "int32"
+          },
+          "publication": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
           }
         }
       },
@@ -1731,7 +1737,10 @@
         "required": [
           "id",
           "timestamp",
-          "kind"
+          "identification",
+          "kind",
+          "scope",
+          "severity"
         ],
         "properties": {
           "id": {
@@ -1743,335 +1752,24 @@
             "type": "integer",
             "format": "int64"
           },
-          "kind": {
-            "$ref": "#/components/schemas/EventKind"
-          },
-          "textEvent": {
-            "$ref": "#/components/schemas/TextEvent"
-          },
-          "stateEvent": {
-            "$ref": "#/components/schemas/StateEvent"
-          },
-          "exceptionEvent": {
-            "$ref": "#/components/schemas/ExceptionEvent"
-          },
-          "networkEvent": {
-            "$ref": "#/components/schemas/NetworkEvent"
-          },
-          "storageEvent": {
-            "$ref": "#/components/schemas/StorageEvent"
-          },
-          "tapEvent": {
-            "$ref": "#/components/schemas/TapEvent"
-          },
-          "scrollEvent": {
-            "$ref": "#/components/schemas/ScrollEvent"
-          },
-          "navigationEvent": {
-            "$ref": "#/components/schemas/NavigationEvent"
-          }
-        }
-      },
-      "EventKind": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "Text",
-          "State",
-          "Network",
-          "Storage",
-          "Tap",
-          "Scroll",
-          "Exception",
-          "Navigation"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7
-        ]
-      },
-      "TextEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "scope",
-          "text"
-        ],
-        "properties": {
-          "scope": {
-            "type": "string",
-            "minLength": 1
-          },
-          "text": {
-            "type": "string",
-            "minLength": 1
-          },
-          "payload": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "StateEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "scope",
-          "stateName",
-          "value"
-        ],
-        "properties": {
-          "scope": {
-            "type": "string",
-            "minLength": 1
-          },
-          "stateName": {
-            "type": "string",
-            "minLength": 1
-          },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
-      "ExceptionEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "scope",
-          "exception",
-          "traces"
-        ],
-        "properties": {
-          "scope": {
-            "type": "string",
-            "minLength": 1
-          },
-          "exception": {
-            "type": "string",
-            "minLength": 1
-          },
-          "traces": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TraceEntry"
-            }
-          }
-        }
-      },
-      "NetworkEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "scope",
-          "url",
-          "statusCode",
-          "requestHeaders",
-          "responseHeaders"
-        ],
-        "properties": {
-          "scope": {
-            "type": "string",
-            "minLength": 1
-          },
-          "url": {
-            "type": "string",
-            "minLength": 1
-          },
-          "statusCode": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "requestHeaders": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "responseHeaders": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "requestPayload": {
-            "$ref": "#/components/schemas/NetworkPayload"
-          },
-          "responsePayload": {
-            "$ref": "#/components/schemas/NetworkPayload"
-          }
-        }
-      },
-      "NetworkPayload": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "kind"
-        ],
-        "properties": {
-          "kind": {
-            "$ref": "#/components/schemas/NetworkPayloadKind"
-          },
-          "formData": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "json": {
-            "type": "string"
-          },
-          "custom": {
-            "type": "string"
-          }
-        }
-      },
-      "NetworkPayloadKind": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "FormData",
-          "Json",
-          "Custom"
-        ],
-        "enum": [
-          0,
-          1,
-          2
-        ]
-      },
-      "StorageEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "scope",
-          "key",
-          "value"
-        ],
-        "properties": {
-          "scope": {
-            "type": "string",
-            "minLength": 1
-          },
-          "key": {
-            "type": "string",
-            "minLength": 1
-          },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
-      "TapEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "scope",
-          "x",
-          "y"
-        ],
-        "properties": {
-          "scope": {
-            "type": "string",
-            "minLength": 1
-          },
-          "x": {
-            "type": "number",
-            "format": "double"
-          },
-          "y": {
-            "type": "number",
-            "format": "double"
-          },
-          "identification": {
-            "type": "string",
-            "nullable": true
-          },
-          "payload": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "ScrollEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "scope",
-          "identification",
-          "offsetStart",
-          "offsetEnd",
-          "viewport"
-        ],
-        "properties": {
-          "scope": {
-            "type": "string",
-            "minLength": 1
-          },
           "identification": {
             "type": "string",
             "minLength": 1
           },
-          "payload": {
-            "type": "string",
-            "nullable": true
-          },
-          "offsetStart": {
-            "type": "number",
-            "format": "double"
-          },
-          "offsetEnd": {
-            "type": "number",
-            "format": "double"
-          },
-          "viewport": {
-            "type": "number",
-            "format": "double"
-          }
-        }
-      },
-      "NavigationEvent": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "scope",
-          "kind",
-          "routeName"
-        ],
-        "properties": {
-          "scope": {
-            "type": "string",
-            "minLength": 1
-          },
           "kind": {
             "type": "string",
             "minLength": 1
           },
-          "routeName": {
+          "scope": {
             "type": "string",
             "minLength": 1
           },
-          "previousRouteName": {
+          "severity": {
             "type": "string",
-            "nullable": true
+            "minLength": 1
           },
-          "arguments": {
+          "payload": {
             "type": "string"
-          },
-          "previousArguments": {
-            "type": "string"
-          },
-          "popResult": {
-            "type": "string",
-            "nullable": true
           }
         }
       }
