@@ -342,7 +342,7 @@ class LogVault extends ChangeNotifier {
         kind: entry.kind,
         scope: entry.scope,
         severity: entry.severity,
-        payload: entry.payload == null
+        payload: entry.payload != null
             ? jsonEncode(encodePayload(entry.payload!))
             : null);
   }
