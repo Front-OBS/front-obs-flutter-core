@@ -318,26 +318,27 @@ class LogVault extends ChangeNotifier {
 
   static Uuid uid = Uuid();
 
-  static Map<String, dynamic> encodePayload(Map<String, dynamic> map) =>
-      map.map((key, value) {
-        dynamic out;
-        if (value is DateTime) {
-          out = value.toString();
-        } else if (value is Map<String, dynamic>) {
-          out = encodePayload(value);
-        } else if (value is List<dynamic>) {
-          out = value.map((e) => encodePayload(e));
-        } else if (value is String) {
-          out = value;
-        } else if (value is int) {
-          out = value;
-        } else if (value is double) {
-          out = value;
-        } else {
-          out = value.toString();
-        }
-        return MapEntry(key, out);
-      });
+  static Object? encodePayload(Object? value) {
+    dynamic out;
+    if (value is DateTime) {
+      out = value.toString();
+    } else if (value is Map<String, dynamic>) {
+      out = encodePayload(value);
+    } else if (value is List<dynamic>) {
+      out = value.map((e) => encodePayload(e));
+    } else if (value is String) {
+      out = value;
+    } else if (value is int) {
+      out = value;
+    } else if (value is double) {
+      out = value;
+    } else if (value is Map<String, dynamic>) {
+      out = value.toString();
+    } else {
+      out = value.toString();
+    }
+    return out;
+  }
 
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
     final ts = DateTime.now().millisecondsSinceEpoch;
@@ -350,7 +351,7 @@ class LogVault extends ChangeNotifier {
         scope: entry.scope,
         severity: entry.severity,
         payload: entry.payload != null
-            ? jsonEncode(encodePayload(entry.payload!))
+            ? jsonEncode(entry.payload!, toEncodable: encodePayload)
             : null);
   }
 
