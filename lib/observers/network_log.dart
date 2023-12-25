@@ -24,7 +24,7 @@ class OberonDioInterceptor extends Interceptor {
     } else {
       try {
         final json = data.toJson();
-        return {"Json": data};
+        return {"Json": json};
       } catch (ex) {
         return {"Raw": data};
       }
