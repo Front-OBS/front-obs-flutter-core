@@ -29,8 +29,8 @@ void exceptionLog(Object ext, StackTrace trace, {String? scope}) {
   LogVault.addException(ext, trace, scope: scope ?? "Общие ошибки");
 }
 
-void stateLog(String key, String value,
-    {String? previous, String scope = "Общее состояние"}) {
+void stateLog(String key, dynamic value,
+    {dynamic previous, String scope = "Общее состояние"}) {
   LogVault.addEntry(
     MonitoringEntry(
       scope: scope,
