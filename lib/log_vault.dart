@@ -333,7 +333,7 @@ class LogVault extends ChangeNotifier {
     } else if (value is double) {
       out = value;
     } else if (value is Map<String, dynamic>) {
-      out = value.toString();
+      out = value
     } else {
       out = value.toString();
     }
