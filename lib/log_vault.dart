@@ -320,16 +320,23 @@ class LogVault extends ChangeNotifier {
 
   static Map<String, dynamic> encodePayload(Map<String, dynamic> map) =>
       map.map((key, value) {
+        dynamic out;
         if (value is DateTime) {
-          return MapEntry(key, value.toString());
+          out = value.toString();
+        } else if (value is Map<String, dynamic>) {
+          out = encodePayload(value);
+        } else if (value is List<dynamic>) {
+          out = value.map((e) => encodePayload(e));
+        } else if (value is String) {
+          out = value;
+        } else if (value is int) {
+          out = value;
+        } else if (value is double) {
+          out = value;
+        } else {
+          out = value.toString();
         }
-        if (value is Map<String, dynamic>) {
-          return MapEntry(key, encodePayload(value));
-        }
-        if (value is List<dynamic>) {
-          return MapEntry(key, value.map((e) => encodePayload(e)));
-        }
-        return MapEntry(key, value);
+        return MapEntry(key, out);
       });
 
   static RegisteredEvent mapEventToRemote(MonitoringEntry entry) {
