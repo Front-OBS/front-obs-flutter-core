@@ -10,6 +10,7 @@ void debugLog(
   String scope = "Уведомления",
   Map<String, dynamic>? jsonPayload,
   bool liveOnly = false,
+  String type = "Уведомление",
 }) {
   LogVault.addEntry(
     MonitoringEntry(
@@ -17,7 +18,7 @@ void debugLog(
       identification: text,
       severity: "Отладка",
       payload: jsonPayload,
-      kind: "Уведомление",
+      kind: type,
       logTimestamp: DateTime.now(),
     ),
     liveOnly,
@@ -29,6 +30,7 @@ void actionLog(
   String scope = "Общие активность",
   Map<String, dynamic>? jsonPayload,
   bool liveOnly = false,
+  String type = "Уведомление",
 }) {
   LogVault.addEntry(
     MonitoringEntry(
@@ -36,7 +38,7 @@ void actionLog(
       identification: text,
       severity: "Активность",
       payload: jsonPayload,
-      kind: "Событие",
+      kind: type,
       logTimestamp: DateTime.now(),
     ),
     liveOnly,
