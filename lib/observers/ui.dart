@@ -9,8 +9,9 @@ import 'package:oberon_connector/log_vault.dart';
 import 'package:oberon_connector/monitoring_entries.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:image/image.dart' as img;
+import 'package:uuid/uuid.dart';
 
-class ScrollDetector extends StatelessWidget {
+class ScrollDetector extends StatefulWidget {
   ScrollDetector({
     required this.child,
     this.identification,
@@ -31,8 +32,16 @@ class ScrollDetector extends StatelessWidget {
   String? identification;
   final Map<String, dynamic>? payload;
 
+  @override
+  State<ScrollDetector> createState() => _ScrollDetectorState();
+}
+
+class _ScrollDetectorState extends State<ScrollDetector> {
   double startExtent = 0.0;
+
   bool debouncing = false;
+
+  final id = Uuid().v1();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +53,7 @@ class ScrollDetector extends StatelessWidget {
               debouncing = true;
             }
             EasyDebounce.debounce(
-                '____scroll_debouncer',
+                '____scroll_debouncer_$id',
                 // <-- An ID for this particular debouncer
                 Duration(seconds: 1), // <-- The debounce duration
                 () {
@@ -57,20 +66,22 @@ class ScrollDetector extends StatelessWidget {
                   notification.metrics.extentTotal;
 
               LogVault.addEntry(MonitoringEntry(
-                scope: scope,
+                scope: widget.scope,
                 kind: "Скролл",
                 severity: "Отладка",
-                identification: identification ?? "Без идентификации",
+                identification: widget.identification ?? "Без идентификации",
                 payload: {
-                  "Процент отступа от начала экрана": offsetStart,
-                  "Конец отступа": offsetCurrent,
+                  "Начало экрана": offsetCurrent == 0,
+                  "Конец экрана": offsetCurrent + viewport == 1,
+                  "Предыдущий отступ": offsetStart,
+                  "Нынешний отступ": offsetCurrent,
                   "Процент видимого экрана": viewport,
-                  if (payload != null) ...payload!,
+                  if (widget.payload != null) ...widget.payload!,
                 },
                 logTimestamp: DateTime.now(),
               ));
 
-              EasyDebounce.cancel("____scroll_debouncer");
+              EasyDebounce.cancel("____scroll_debouncer_$id");
             } // <-- The target method
                 );
             /*print(
@@ -80,7 +91,7 @@ class ScrollDetector extends StatelessWidget {
           }
           return false;
         },
-        child: child);
+        child: widget.child);
   }
 }
 

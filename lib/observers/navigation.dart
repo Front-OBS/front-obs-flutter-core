@@ -18,9 +18,9 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      kind: "Навигация",
-      severity: "Отладка",
-      identification: "Открыт",
+      kind: "Экран открыт",
+      severity: "Активность",
+      identification: routeName,
       payload: {
         "routeName": routeName,
         "previousRouteName": previousRouteName,
@@ -42,9 +42,9 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      kind: "Навигация",
-      severity: "Отладка",
-      identification: "Закрыт",
+      kind: "Экран закрыт",
+      severity: "Активность",
+      identification: routeName,
       payload: {
         "routeName": routeName,
         "previousRouteName": previousRouteName,
@@ -66,9 +66,9 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      kind: "Навигация",
-      severity: "Отладка",
-      identification: "Убран",
+      kind: "Экран убран",
+      severity: "Активность",
+      identification: routeName,
       payload: {
         "routeName": routeName,
         "previousRouteName": previousRouteName,
@@ -89,9 +89,9 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = newRoute?.currentResult.toString();
     LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      kind: "Навигация",
-      severity: "Отладка",
-      identification: "Заменен",
+      kind: "Экран заменен",
+      severity: "Активность",
+      identification: "${routeName} -> ${previousRouteName}",
       payload: {
         "routeName": routeName,
         "previousRouteName": previousRouteName,
@@ -114,9 +114,9 @@ class OberonNavigationObserver extends NavigatorObserver {
     var popResult = route.currentResult.toString();
     LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      kind: "Навигация",
-      severity: "Отладка",
-      identification: "Начат жест",
+      kind: "Начат жест навигации",
+      severity: "Активность",
+      identification: routeName,
       payload: {
         "routeName": routeName,
         "previousRouteName": previousRouteName,
@@ -132,9 +132,9 @@ class OberonNavigationObserver extends NavigatorObserver {
   void didStopUserGesture() {
     LogVault.addEntry(MonitoringEntry(
       scope: scope,
-      kind: "Навигация",
-      severity: "Отладка",
-      identification: "Жест завершен",
+      kind: "Жест навигации завершен",
+      severity: "Активность",
+      identification: "",
       payload: {},
       logTimestamp: DateTime.now(),
     ));

@@ -74,10 +74,11 @@ class LogVault extends ChangeNotifier {
         liveStreams ? Duration(milliseconds: 200) : Duration(seconds: 3);
     doLiveStreams = liveStreams;
     client = Swagger.create(
-        baseUrl: Uri.parse(
-      //"http://10.0.2.2:8080",
-      "https://oberon-lab.ru",
-    ));
+      baseUrl: Uri.parse(
+        //"http://localhost:8080",
+        "https://oberon-lab.ru",
+      ),
+    );
     deviceCode = await getDeviceCode();
 
     if (liveStreams) {
@@ -241,7 +242,7 @@ class LogVault extends ChangeNotifier {
       (List<RegisteredEvent>, Map<String, Uint8List?>) request) async {
     //EasyDebounce.cancel("oberon_event");
     final (events, ss) = request;
-
+/*
     ScreenshotsBatch? sbatch;
     if (ss.values.any((element) => element != null)) {
       final imagesGroupedByCrcWithListOfImagesAndEvents = groupBy(
@@ -265,26 +266,31 @@ class LogVault extends ChangeNotifier {
               crcByEvent[e.id] != null ? crcs.indexOf(crcByEvent[e.id]) : -1)
           .toList();
 
-      /*final batch =
-          await fnd.compute(computeBatchOfScreenshots, ss.values.toList());*/
+      */ /*final batch =
+          await fnd.compute(computeBatchOfScreenshots, ss.values.toList());*/ /*
       final encodedImages = await fnd.compute(
           (List<Uint8List> value) => value.map((e) => base64Encode(e)).toList(),
           images);
-      /* final sIndexes = ss.values
+      */ /* final sIndexes = ss.values
           .toList()
           .asMap()
           .entries
           .map((kv) => kv.value != null ? kv.key : null)
           .where((element) => element != null)
           .cast<int>()
-          .toList();*/
+          .toList();*/ /*
       sbatch = ScreenshotsBatch(frames: encodedImages, framesMaping: indexes);
     } else {
       sbatch = ScreenshotsBatch(
         frames: [],
         framesMaping: [for (final e in events) -1],
       );
-    }
+    }*/
+
+    final sbatch = ScreenshotsBatch(
+      frames: [],
+      framesMaping: [for (final e in events) -1],
+    );
     //print(batch.length / 1024 / 1024);
     sendingQueue.add(
       EventsBatch(
@@ -369,12 +375,10 @@ class LogVault extends ChangeNotifier {
     // entries.add(entry);
     //logsStreamController.sink.add(entry);
     //print("got entry ${entry.kind}");
-    final currentScreenshot = await recorderController.captureScreen();
+    //final currentScreenshot = await recorderController.captureScreen();
     //print("Has screenshot ${currentScreenshot != null}");
 
-    scheduleEvent(
-        mapEventToRemote(entry.copyWith(screenshot: currentScreenshot)),
-        currentScreenshot);
+    scheduleEvent(mapEventToRemote(entry.copyWith(screenshot: null)), null);
     //notifyListeners();
   }
 
