@@ -51,6 +51,7 @@ Future launchDebug<TEnv extends IApplicationEnvironment>({
   required ApplicationOptions<TEnv> options,
   required Launcher<TEnv> launcher,
   required OnReloadCallback? onRestart,
+  bool isDebugServer = false,
 }) async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +63,7 @@ Future launchDebug<TEnv extends IApplicationEnvironment>({
     final recorderController = ScreenRecorderController();
     LogVault.recorderController = recorderController;
 
-    await LogVault.initVault(true, projectKey);
+    await LogVault.initVault(true, projectKey, isDebugServer);
     try {
       runApp(
         ScreenRecorder(

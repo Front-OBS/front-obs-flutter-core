@@ -68,15 +68,15 @@ class LogVault extends ChangeNotifier {
   static late Stream<(List<RegisteredEvent>, Map<String, Uint8List?>)>
       sendsQueue = processBatchController.stream;
 
-  static Future initVault(bool liveStreams, String projectCode) async {
+  static Future initVault(bool liveStreams, String projectCode,
+      [bool debugServer = false]) async {
     _projectCode = projectCode;
     debouncingTime =
         liveStreams ? Duration(milliseconds: 200) : Duration(seconds: 3);
     doLiveStreams = liveStreams;
     client = Swagger.create(
       baseUrl: Uri.parse(
-        //"http://localhost:8080",
-        "https://oberon-lab.ru",
+        debugServer ? "http://localhost:8080" : "https://oberon-lab.ru",
       ),
     );
     deviceCode = await getDeviceCode();
