@@ -76,7 +76,7 @@ class LogVault extends ChangeNotifier {
     doLiveStreams = liveStreams;
     client = Swagger.create(
       baseUrl: Uri.parse(
-        debugServer ? "http://localhost:8080" : "http://84.38.185.37:8080",
+        debugServer ? "http://localhost:8080" : "http://84.38.185.37:80",
       ),
     );
     deviceCode = await getDeviceCode();
