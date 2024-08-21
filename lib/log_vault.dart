@@ -76,7 +76,7 @@ class LogVault extends ChangeNotifier {
     doLiveStreams = liveStreams;
     client = Swagger.create(
       baseUrl: Uri.parse(
-        debugServer ? "http://localhost:8080" : "https://logscope.ru",
+        debugServer ? "http://localhost:80" : "http://localhost:80",
       ),
     );
     deviceCode = await getDeviceCode();
@@ -88,7 +88,7 @@ class LogVault extends ChangeNotifier {
         final branch = _head.split('/').last;
         bundle = BundleInfo(branch: branch);
       } catch (ex) {
-        print("[OBERON] Не удалось получить информацию о гит-ветке");
+        print("[Front Obs] Cant determine git branch");
         bundle = BundleInfo();
       }
     } else {
@@ -165,7 +165,7 @@ class LogVault extends ChangeNotifier {
           return event;
         })
         .listen((event) {
-          print("[OBERON] Пакет обработан");
+          print("[Front Obs] Successfully processed telemetry");
         });
 
     sendingQueue.stream
@@ -179,7 +179,7 @@ class LogVault extends ChangeNotifier {
           return event;
         })
         .listen((event) {
-          print("[OBERON] Пакет успешно отправлен");
+          print("[Front Obs] Successfully send telemetry");
         });
     initialized = true;
   }
@@ -188,13 +188,13 @@ class LogVault extends ChangeNotifier {
 
   static void sendBatch(EventsBatch batch) async {
     print(
-        "[OBERON] Отправка пакета с ${batch.events.length} событиями. В очареди ${inQueueCount} пакетов на отправку");
+        "[OBERON] Sending batch with ${batch.events.length} event. Queue ${inQueueCount} packages to send");
     try {
       consuming = true;
       final response = await client.apiConsumerConsumePost(body: batch);
       consuming = false;
     } catch (ex) {
-      print("[OBERON] Ошибка отправки пакета $ex");
+      print("[OBERON] Field to send package $ex");
     }
     //eventsBuffer.removeRange(0, eventsToSend.length - 1);
   }
@@ -393,15 +393,15 @@ class LogVault extends ChangeNotifier {
   }*/
 
   static void addException(Object exception, StackTrace? trace,
-      {String scope = "Общие ошибки"}) {
+      {String scope = "General exceptions"}) {
     //print(exception.toString() + trace.toString());
     try {
       final t = trace != null ? Trace.from(trace) : null;
       addEntry(MonitoringEntry(
           identification: exception.toString(),
-          kind: "Исключение",
+          kind: "Exception",
           logTimestamp: DateTime.now(),
-          severity: "Ошибка",
+          severity: "Error",
           screenshot: null,
           scope: scope,
           payload: {
@@ -417,7 +417,7 @@ class LogVault extends ChangeNotifier {
             ],
           }));
     } catch (ex) {
-      print("[OBERON] Ошибка сборка сведений об ошибке");
+      print("[Front Obs] Field to collection exception data");
     }
   }
 
