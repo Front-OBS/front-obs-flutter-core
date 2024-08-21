@@ -1,4 +1,4 @@
-name: oberon_connector
+name: frontobs_core
 description: A new Flutter package project.
 version: 0.0.1
 homepage:
@@ -20,7 +20,7 @@ dependencies:
   package_info_plus: ^4.2.0
   easy_debounce: ^2.0.3
   fixnum: ^1.1.0
-  device_uuid: ^0.0.4
+  flutter_udid:
   crypto: ^3.0.3
   chopper: ^6.1.1
   json_annotation: ^4.8.0

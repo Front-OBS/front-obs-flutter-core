@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:oberon_connector/log_vault.dart';
+import 'package:frontobs_core/log_vault.dart';
 import 'package:uuid/uuid.dart';
 
 import '../monitoring_entries.dart';

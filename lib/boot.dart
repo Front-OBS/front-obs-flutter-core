@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:oberon_connector/log.dart';
-import 'package:oberon_connector/log_vault.dart';
-import 'package:oberon_connector/oberon_connector.dart';
-import 'package:oberon_connector/splash_screen.dart';
+import 'package:frontobs_core/log.dart';
+import 'package:frontobs_core/log_vault.dart';
+import 'package:frontobs_core/oberon_connector.dart';
+import 'package:frontobs_core/splash_screen.dart';
 
 import 'environments.dart';
 

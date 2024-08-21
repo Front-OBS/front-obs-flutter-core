@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:oberon_connector/api/swagger.enums.swagger.dart';
-import 'package:oberon_connector/log_vault.dart';
-import 'package:oberon_connector/monitoring_entries.dart';
+import 'package:frontobs_core/api/swagger.enums.swagger.dart';
+import 'package:frontobs_core/log_vault.dart';
+import 'package:frontobs_core/monitoring_entries.dart';
 
 class OberonNavigationObserver extends NavigatorObserver {
   OberonNavigationObserver({this.scope = "Главный роутер"});

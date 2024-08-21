@@ -3,10 +3,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:device_uuid/device_uuid.dart';
 import 'package:emojis/emoji.dart';
 import 'package:flutter/material.dart';
-import 'package:oberon_connector/oberon_connector.dart';
+import 'package:frontobs_core/oberon_connector.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:super_clipboard/super_clipboard.dart';

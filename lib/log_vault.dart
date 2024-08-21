@@ -7,13 +7,13 @@ import 'package:chopper/chopper.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:device_uuid/device_uuid.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart' as fnd;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:oberon_connector/environments.dart';
+import 'package:flutter_udid/flutter_udid.dart';
+import 'package:frontobs_core/environments.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:uuid/uuid.dart';
@@ -26,7 +26,7 @@ import 'package:image/image.dart' as img;
 Future<String> getDeviceCode() async {
   return Uuid.unparse(md5
       .convert(
-          Utf8Encoder().convert((await DeviceUuid().getUUID()) ?? "UNKNOWN"))
+          Utf8Encoder().convert(await FlutterUdid.consistentUdid))
       .bytes);
 }
 
@@ -76,7 +76,7 @@ class LogVault extends ChangeNotifier {
     doLiveStreams = liveStreams;
     client = Swagger.create(
       baseUrl: Uri.parse(
-        debugServer ? "http://localhost:80" : "http://localhost:80",
+        debugServer ? "http://localhost:8080" : "http://localhost:80",
       ),
     );
     deviceCode = await getDeviceCode();
@@ -115,7 +115,7 @@ class LogVault extends ChangeNotifier {
           machine: deviceInfo.utsname.machine,
         ),
       );
-    } else {
+    } else if (Platform.isAndroid) {
       var deviceInfo = await DeviceInfoPlugin().androidInfo;
       android = AndroidInfo(
         id: deviceInfo.id,
